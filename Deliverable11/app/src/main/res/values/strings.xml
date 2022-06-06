@@ -4,4 +4,8 @@
     <string name="enter_email">Enter your email adress</string>
     <string name="enter_password">Enter your password</string>
     <string name="login_msg1">Please login to your account</string>
+    <string name="create_account">Create an account</string>
+    <string name="SignUpForm">Sign up Form</string>
+    <string name="create_userName">Enter the username</string>
+    <string name="create_password">Enter your password</string>
 </resources>
