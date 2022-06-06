@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
         private Instructor teacher;
 
         //Constructor
-        public course(String name, String code) {
+        public Course(String name, String code) {
             this.name = name;
             this.code = code;
         }
