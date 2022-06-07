@@ -8,17 +8,22 @@
     tools:context=".sign_up_page">
 
     <TableLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/tableLayout2"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.458"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="1dp">
 
-        <TableRow android:padding="5dip">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dip">
 
             <TextView
-                android:layout_width="186dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:layout_span="1"
@@ -31,53 +36,169 @@
 
         </TableRow>
 
-
         <TableRow />
 
-            <TextView
-                android:layout_width="383dp"
-                android:layout_height="61dp"
-                android:layout_column="0"
-                android:layout_marginLeft="10dp"
-                android:text="@string/create_userName"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-            <EditText
-                android:id="@+id/create_userName"
-                android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:layout_marginLeft="10dp"
-                android:background="#fff"
-                android:hint="@string/create_userName"
-                android:padding="5dp"
-                android:textColor="#000" />
-
-        </TableRow>
-
-    <TableRow>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_marginLeft="10dp"
+            android:text="@string/create_userName"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
         <EditText
-            android:id="@+id/create_password"
+            android:id="@+id/create_userName"
             android:layout_height="wrap_content"
             android:layout_column="1"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
+            android:background="#fff"
+            android:hint="@string/create_userName"
+            android:padding="5dp"
+            android:textColor="#000" />
+
+        <TableRow />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_marginLeft="10dp"
+            android:text="@string/enter_email"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/signIn_email"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_marginLeft="10dp"
+            android:background="#fff"
+            android:hint="@string/enter_email"
+            android:padding="5dp"
+            android:textColor="#000" />
+
+        <TableRow />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_marginLeft="10dp"
+            android:text="@string/create_password"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            tools:layout_editor_absoluteX="66dp"
+            tools:layout_editor_absoluteY="257dp" />
+
+        <EditText
+            android:id="@+id/create_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_marginLeft="10dp"
             android:background="#fff"
             android:hint="password"
             android:padding="5dp"
             android:textColor="#000" />
 
+        <TableRow />
+
+        <TableRow />
 
         <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:text="@string/create_password"
-            android:textColor="#fff"
+            android:layout_marginLeft="10dp"
+            android:text="@string/reenter_password"
+            android:textColor="@color/black"
             android:textSize="16sp"
             tools:layout_editor_absoluteX="66dp"
             tools:layout_editor_absoluteY="257dp" />
-    </TableRow>
+
+        <EditText
+            android:id="@+id/reenter_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_marginLeft="10dp"
+            android:background="#fff"
+            android:hint="password"
+            android:padding="5dp"
+            android:textColor="#000" />
+
+        <TableRow />
+
+        <TableRow />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_marginLeft="10dp"
+                android:text="@string/enter_role"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                tools:layout_editor_absoluteX="66dp"
+                tools:layout_editor_absoluteY="257dp" />
 
 
-</TableLayout>
+        <TableRow />
+
+
+    </TableLayout>
+
+    <Button
+        android:id="@+id/create_the_account"
+        android:layout_width="204dp"
+        android:layout_height="46dp"
+        android:text="@string/create_account"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout2"
+        app:layout_constraintVertical_bias="0.296"
+        tools:ignore="MissingConstraints" />
+
+
+    <TableRow tools:ignore="MissingConstraints">
+
+    <RadioButton
+        android:id="@+id/checkbox_admin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:text="@string/create_admin"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="330dp" />
+
+    <RadioButton
+        android:id="@+id/checkbox_student"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/create_student"
+        app:layout_constraintEnd_toStartOf="@+id/checkbox_instructor"
+        app:layout_constraintStart_toEndOf="@+id/checkbox_admin"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="330dp" />
+
+    <RadioButton
+        android:id="@+id/checkbox_instructor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="44dp"
+        android:text="@string/create_instructor"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="330dp" />
+
+    <TableRow />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
