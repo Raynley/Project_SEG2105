@@ -6,9 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".welcome_admin">
 
+
     <TableLayout
+        android:id="@+id/tableLayout"
         android:layout_width="409dp"
-        android:layout_height="729dp"
+        android:layout_height="400dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,4 +28,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </TableLayout>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="417dp"
+        android:layout_height="78dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
