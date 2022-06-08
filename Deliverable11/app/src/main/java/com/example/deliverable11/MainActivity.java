@@ -228,6 +228,7 @@ public class MainActivity extends AppCompatActivity {
             }
             return b;
         }
+        //hi
 
         public boolean remove(Student student) {
             return student_database.remove(student);
