@@ -10,9 +10,9 @@
         android:id="@+id/textView"
         android:layout_width="268dp"
         android:layout_height="78dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="60dp"
         android:fontFamily="monospace"
-        android:text="TextView"
+        android:text="@string/login_msg1"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/purple_500"
@@ -38,6 +38,7 @@
         app:layout_constraintTop_toBottomOf="@+id/password"
         tools:text="@string/btn_login" />
 
+
     <EditText
         android:id="@+id/password"
         android:layout_width="308dp"
@@ -45,6 +46,7 @@
         android:layout_marginBottom="200dp"
         android:ems="10"
         android:hint="@string/enter_password"
+        android:autofillHints="password"
         android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -54,13 +56,13 @@
         android:id="@+id/userName"
         android:layout_width="308dp"
         android:layout_height="50dp"
+        android:layout_marginTop="92dp"
         android:ems="10"
         android:hint="@string/enter_username"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toTopOf="@+id/password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
 
     <TextView
         android:id="@+id/textView2"
