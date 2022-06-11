@@ -14,4 +14,9 @@
     <string name="create_admin">Admin</string>
     <string name="create_instructor">Instructor</string>
     <string name="create_student">Student</string>
+    <string name="add_course">Add a new course by entering the course code and title</string>
+    <string name="welcome_msg">Welcome admin123, you are logged in as an admin</string>
+    <string name="edit_course_explain">Edit or delete course information</string>
+    <string name="manage_instruc">Manage, delete or remove instructors</string>
+    <string name="Manage_students">Manage students, assign classes or delete students accounts</string>
 </resources>
