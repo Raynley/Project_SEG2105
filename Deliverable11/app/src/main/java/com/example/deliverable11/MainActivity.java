@@ -20,10 +20,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    EditText userName, password, re_password;
-    Button login, create;
-    FirebaseAuth fAuth;
-    ProgressBar bar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
