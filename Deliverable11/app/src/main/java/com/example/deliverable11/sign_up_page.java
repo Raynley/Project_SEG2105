@@ -38,6 +38,11 @@ public class sign_up_page<userName> extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         bar = findViewById(R.id.progressBar);
 
+        if(fAuth.getCurrentUser() != null){
+            startActivity(new Intent (getApplicationContext(), MainActivity.class));
+            finish();
+        }
+
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
