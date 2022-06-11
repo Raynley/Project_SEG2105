@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Deliverable11</string>
     <string name="btn_login">Login</string>
-    <string name="enter_email">Enter your email address</string>
+    <string name="enter_username">Enter your username</string>
     <string name="enter_password">Enter your password</string>
     <string name="login_msg1">Please login to your account</string>
     <string name="create_account">Create an account</string>

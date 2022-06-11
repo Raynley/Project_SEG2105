@@ -18,8 +18,9 @@
         android:textColor="@color/purple_500"
         android:textSize="26sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/userName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.426"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/login_msg1" />
@@ -28,46 +29,40 @@
         android:id="@+id/btn_login"
         android:layout_width="145dp"
         android:layout_height="63dp"
-
         android:textAlignment="center"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enter_password"
+        app:layout_constraintTop_toBottomOf="@+id/password"
         tools:text="@string/btn_login" />
 
 
     <EditText
-
-        android:id="@+id/enter_password"
+        android:id="@+id/password"
         android:layout_width="308dp"
         android:layout_height="50dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginBottom="200dp"
         android:ems="10"
         android:hint="@string/enter_password"
         android:autofillHints="password"
         android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enter_EmailAddress" />
-
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/enter_EmailAddress"
+        android:id="@+id/userName"
         android:layout_width="308dp"
         android:layout_height="50dp"
         android:layout_marginTop="92dp"
         android:ems="10"
-        android:hint="@string/enter_email"
-        android:autofillHints="username"
+        android:hint="@string/enter_username"
         android:inputType="textEmailAddress"
+        app:layout_constraintBottom_toTopOf="@+id/password"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView2"

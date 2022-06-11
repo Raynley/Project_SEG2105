@@ -1,8 +1,34 @@
-package com.example.deliverable11;
+/*package com.example.deliverable11;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.Objects;
+
+public class MainActivity extends AppCompatActivity {
+    EditText userName, password, re_password;
+    Button login, create;
+    FirebaseAuth fAuth;
+    ProgressBar bar;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
 class User {
     private String username;
@@ -30,13 +56,13 @@ class User {
     public boolean compare(User other) {
         return username.equals(other.username);
     }
-}
+}*/
 
-public class Instructor extends User {
+/*public class Instructor extends User {
     public Instructor(String username, String password) {
         super(username, password);
     }
-}
+}*/
 
 /*public class Instructor_Database {
     class I_ListNode {
