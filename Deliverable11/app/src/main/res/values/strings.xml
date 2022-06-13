@@ -23,4 +23,6 @@
     <string name="enter_course_name">Enter course name</string>
     <string name="enter_course_code">Enter course code</string>
     <string name="create_course_btn">Create course</string>
+    <string name="list_courses">Here are all available courses. Enter a course name and code, click on the icon delete to remove a course. To edit a course, enter new course infos then click edit</string>
+    <string name="enter_new_course_infos">Enter new course infos</string>
 </resources>
