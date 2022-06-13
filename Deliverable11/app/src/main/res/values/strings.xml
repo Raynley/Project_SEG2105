@@ -19,4 +19,8 @@
     <string name="edit_course_explain">Edit or delete course information</string>
     <string name="manage_instruc">Manage, delete or remove instructors</string>
     <string name="Manage_students">Manage students, assign classes or delete students accounts</string>
+    <string name="enter_course_info">Enter course information</string>
+    <string name="enter_course_name">Enter course name</string>
+    <string name="enter_course_code">Enter course code</string>
+    <string name="create_course_btn">Create course</string>
 </resources>
