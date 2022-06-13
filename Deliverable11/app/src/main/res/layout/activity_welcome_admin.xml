@@ -7,107 +7,6 @@
     tools:context=".welcome_admin">
 
 
-    <TableLayout
-        android:id="@+id/tableLayout"
-        android:layout_width="417dp"
-        android:layout_height="435dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="135dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:visibility="invisible"
-            tools:visibility="visible">
-
-            <TextView
-                android:id="@+id/add_class_explain"
-                android:layout_width="261dp"
-                android:layout_height="127dp"
-                android:gravity="center"
-                android:text="@string/add_course"
-                android:visibility="visible" />
-
-            <ImageView
-                android:id="@+id/icon_add"
-                android:layout_width="119dp"
-                android:layout_height="130dp"
-                app:srcCompat="@android:drawable/ic_menu_add" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:visibility="visible"
-            tools:visibility="visible">
-
-            <TextView
-                android:id="@+id/edit_course_explain"
-                android:layout_width="261dp"
-                android:layout_height="109dp"
-                android:gravity="center"
-                android:text="@string/edit_course_explain" />
-
-            <ImageView
-                android:id="@+id/icon_edit"
-                android:layout_width="133dp"
-                android:layout_height="match_parent"
-                app:srcCompat="@android:drawable/ic_menu_edit" />
-
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:visibility="visible"
-            tools:visibility="visible">
-
-            <TextView
-                android:id="@+id/manage_instructors"
-                android:layout_width="261dp"
-                android:layout_height="109dp"
-                android:gravity="center"
-                android:text="@string/manage_instruc" />
-
-            <ImageView
-                android:id="@+id/icon_delete"
-                android:layout_width="142dp"
-                android:layout_height="match_parent"
-                app:srcCompat="@android:drawable/ic_menu_delete" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:visibility="visible"
-            tools:visibility="visible">
-
-            <TextView
-                android:id="@+id/manage_students"
-                android:layout_width="261dp"
-                android:layout_height="109dp"
-                android:gravity="center"
-                android:text="@string/Manage_students" />
-
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="135dp"
-                android:layout_height="108dp"
-                app:srcCompat="@android:drawable/ic_menu_edit" />
-        </TableRow>
-    </TableLayout>
-
     <TextView
         android:id="@+id/welcome_message"
         android:layout_width="417dp"
@@ -116,8 +15,125 @@
         android:gravity="center"
         android:text="@string/welcome_msg"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/welcome_message">
+
+        <TableRow
+            android:id="@+id/add_course_row"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:weightSum="10">
+
+            <TextView
+                android:id="@+id/add_course_explain"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="7.5"
+                android:gravity="center"
+                android:singleLine="false"
+                android:background="#d8e5f2"
+                android:text="@string/add_course"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/add_course_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#d8e5f2"
+                android:layout_weight="2.5"
+                app:srcCompat="@android:drawable/ic_menu_add" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/Edit_course_row"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:weightSum="10">
+
+            <TextView
+                android:id="@+id/edit_course_explain"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="7.5"
+                android:gravity="center"
+                android:background="#ebf2f8"
+                android:text="@string/edit_course_explain"
+                android:textSize="22sp" />
+
+            <ImageView
+                android:id="@+id/edit_course_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2.5"
+                android:background="#ebf2f8"
+                app:srcCompat="@android:drawable/ic_menu_edit" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/manage_instruc_row"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+
+            android:weightSum="10">
+
+            <TextView
+                android:id="@+id/manage_instruct_explain"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="7.5"
+                android:gravity="center"
+                android:background="#d8e5f2"
+                android:text="@string/manage_instruc"
+                android:textSize="22sp" />
+
+            <ImageView
+                android:id="@+id/delete_instruc_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2.5"
+                android:background="#d8e5f2"
+                app:srcCompat="@android:drawable/ic_menu_delete" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/manage_stu_row"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:weightSum="10">
+
+            <TextView
+                android:id="@+id/manage_stud_explain"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="7.5"
+                android:gravity="center"
+                android:background="#ebf2f8"
+                android:text="@string/Manage_students"
+                android:textSize="20dp" />
+
+            <ImageView
+                android:id="@+id/manage_stud_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#ebf2f8"
+                android:layout_weight="2.5"
+
+                app:srcCompat="@android:drawable/ic_menu_edit" />
+        </TableRow>
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
