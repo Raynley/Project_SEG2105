@@ -25,4 +25,6 @@
     <string name="create_course_btn">Create course</string>
     <string name="list_courses">Here are all available courses. Enter a course name and code, click on the icon delete to remove a course. To edit a course, enter new course infos then click edit</string>
     <string name="enter_new_course_infos">Enter new course infos</string>
+    <string name="create_instructor_name">Instructor\'s name</string>
+    <string name="manage_instruc_textview">Enter the name of the instructor you want to add or remove then click on the appropriate icon</string>
 </resources>
