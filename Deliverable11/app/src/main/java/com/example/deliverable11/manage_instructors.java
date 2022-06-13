@@ -21,7 +21,7 @@ public class manage_instructors extends AppCompatActivity {
         
         name_entry = findViewById(R.id.course_code_to_edit);
         del_ins = findViewById(R.id.delete_course_btn);
-        add_ins = findViewById(R.id.add_button);
+        add_ins = findViewById(R.id.delete_instruc_btn);
         
         add_ins.setOnClickListener(new View.OnClickListener() {
             String name = name_entry.getText().toString().trim();
