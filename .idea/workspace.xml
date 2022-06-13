@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64eee442-bb5d-48cb-be9b-a8452ed19d5c" name="Changes" comment="" />
+    <list default="true" id="64eee442-bb5d-48cb-be9b-a8452ed19d5c" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Deliverable11/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Deliverable11/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Deliverable11/app/src/main/res/layout/activity_welcome_admin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Deliverable11/app/src/main/res/layout/activity_welcome_admin.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
