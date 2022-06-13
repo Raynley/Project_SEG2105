@@ -4,23 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".manage_instructors">
-
+    tools:context=".manage_students">
 
     <TextView
-        android:id="@+id/display_msg_instruc"
+        android:id="@+id/display_msg_stud"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/manage_instruc_textview"
+        android:text="@string/manage_stud_textview"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/manage_instruc_container"
+        android:id="@+id/manage_stud_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
@@ -29,10 +27,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/display_msg_instruc">
+        app:layout_constraintTop_toBottomOf="@+id/display_msg_stud">
 
         <LinearLayout
-            android:id="@+id/list_of_instruc_container"
+            android:id="@+id/list_of_stud_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="3"
@@ -40,44 +38,44 @@
             android:orientation="vertical"></LinearLayout>
 
         <LinearLayout
-            android:id="@+id/edit_add_option_container"
+            android:id="@+id/manage_stud_option_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="7"
             android:orientation="vertical">
 
             <TableRow
-                android:id="@+id/row_textview_6"
+                android:id="@+id/row_textview7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/enter_instruc_textview"
+                    android:id="@+id/enter_stud_name_textview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="50dp"
-                    android:text="Enter instructor's name"
+                    android:text="Enter student's name"
                     android:textColor="@color/black" />
             </TableRow>
 
             <TableRow
-                android:id="@+id/row_enter_instruc_name"
+                android:id="@+id/row_enter_stud_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/enter_instruc_name"
+                    android:id="@+id/enter_stud_name_editText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:hint="@string/create_instructor_name"
+                    android:hint="@string/enter_student_name"
                     android:inputType="textPersonName"
                     android:textSize="15dp"
                     tools:ignore="TouchTargetSizeCheck" />
             </TableRow>
 
             <TableRow
-                android:id="@+id/row_add_delete_instruc_btns"
+                android:id="@+id/row_edit_delete_stud_btns"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
@@ -86,7 +84,7 @@
 
 
                 <ImageButton
-                    android:id="@+id/delete_instruc_btn"
+                    android:id="@+id/delete_stud_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
@@ -97,7 +95,7 @@
 
 
                 <ImageButton
-                    android:id="@+id/add_instruc_button"
+                    android:id="@+id/add_stud_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="5"

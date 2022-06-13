@@ -27,4 +27,6 @@
     <string name="enter_new_course_infos">Enter new course infos</string>
     <string name="create_instructor_name">Instructor\'s name</string>
     <string name="manage_instruc_textview">Enter the name of the instructor you want to add or remove then click on the appropriate icon</string>
+    <string name="manage_stud_textview">Enter the name of the student to remove or add to the database, then click on the appropriate icon</string>
+    <string name="enter_student_name">Student\'s name</string>
 </resources>
