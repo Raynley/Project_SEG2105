@@ -27,7 +27,7 @@ public class welcome_admin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //TO COMPLETE
-                Intent intent = new Intent(welcome_admin.this,/*ENTER NAME OF FILE*/);
+                Intent intent = new Intent(welcome_admin.this,add_course.class);
                 startActivity(intent);
             }
         });
@@ -36,7 +36,7 @@ public class welcome_admin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //TO COMPLETE
-                Intent intent = new Intent(welcome_admin.this,/*ENTER NAME OF FILE*/);
+                Intent intent = new Intent(welcome_admin.this,edit_courses.class);
                 startActivity(intent);
             }
         });
@@ -45,7 +45,7 @@ public class welcome_admin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //TO COMPLETE
-                Intent intent = new Intent(welcome_admin.this,/*ENTER NAME OF FILE*/);
+                Intent intent = new Intent(welcome_admin.this,manage_instructors.class);
                 startActivity(intent);
             }
         });
@@ -54,7 +54,7 @@ public class welcome_admin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //TO COMPLETE
-                Intent intent = new Intent(welcome_admin.this,/*ENTER NAME OF FILE*/);
+                Intent intent = new Intent(welcome_admin.this,manage_students.class);
                 startActivity(intent);
             }
         });
