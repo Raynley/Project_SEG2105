@@ -6,16 +6,21 @@ public class User {
     private int id;
     private String type;
 
-    public User(String username, String password, int id) {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.id = id;
     }
 
     public User(String username, String password, int id, String type) {
         this.username = username;
         this.password = password;
         this.id = id;
+        this.type = type;
+    }
+
+    public User(String username, String password, String type) {
+        this.username = username;
+        this.password = password;
         this.type = type;
     }
 
