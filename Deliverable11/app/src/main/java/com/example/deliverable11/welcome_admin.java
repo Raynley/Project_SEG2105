@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -12,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class welcome_admin extends AppCompatActivity {
     FirebaseAuth fAuth;
     ImageView addCourse, editCourse, manageInstructor, manageStudent;
+    Button logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +24,15 @@ public class welcome_admin extends AppCompatActivity {
         editCourse = findViewById(R.id.edit_course_icon);
         manageInstructor = findViewById(R.id.delete_instruc_icon);
         manageStudent = findViewById(R.id.manage_stud_icon);
+        logout = findViewById(R.id.logout);
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(welcome_admin.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
         
         addCourse.setOnClickListener(new View.OnClickListener() {
             @Override
