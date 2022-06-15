@@ -1,208 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".sign_up_page">
+    tools:context=".welcome_admin">
 
-    <TableLayout
-        android:id="@+id/tableLayout2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="400dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.458"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="5dip">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_span="1"
-                android:gravity="center_horizontal"
-                android:text="@string/SignUpForm"
-                android:textColor="@color/black"
-                android:textSize="25sp"
-                android:textStyle="bold" />
-
-
-        </TableRow>
-
-        <TableRow />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_marginLeft="10dp"
-            android:text="@string/create_userName"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
-
-        <EditText
-            android:id="@+id/userName"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_marginLeft="10dp"
-            android:background="#fff"
-            android:hint="@string/create_userName"
-            android:padding="5dp"
-            android:textColor="#000" />
-
-        <TableRow />
-
-        <TableRow />
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_marginLeft="10dp"
-            android:text="@string/create_password"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            tools:layout_editor_absoluteX="66dp"
-            tools:layout_editor_absoluteY="257dp" />
-
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_marginLeft="10dp"
-            android:background="#fff"
-            android:hint="password"
-            android:padding="5dp"
-            android:textColor="#000" />
-
-        <TableRow />
-
-        <TableRow />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_marginLeft="10dp"
-            android:text="@string/reenter_password"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            tools:layout_editor_absoluteX="66dp"
-            tools:layout_editor_absoluteY="257dp" />
-
-        <EditText
-            android:id="@+id/reenter_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_marginLeft="10dp"
-            android:background="#fff"
-            android:hint="password"
-            android:padding="5dp"
-            android:textColor="#000" />
-
-        <TableRow />
-
-        <TableRow />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_marginLeft="10dp"
-            android:text="@string/enter_role"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            tools:layout_editor_absoluteX="66dp"
-            tools:layout_editor_absoluteY="257dp" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-
-    </TableLayout>
-
-    <Button
-        android:id="@+id/create_the_account"
-        android:layout_width="204dp"
-        android:layout_height="46dp"
-        android:text="@string/create_account"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkbox_student"
-        app:layout_constraintVertical_bias="0.296"
-        tools:ignore="MissingConstraints" />
-
-    <TableRow tools:ignore="MissingConstraints"/>
-
-    <RadioButton
-        android:id="@+id/checkbox_admin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:text="@string/create_admin"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="330dp" />
-
-    <RadioButton
-        android:id="@+id/checkbox_student"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/create_student"
-        app:layout_constraintEnd_toStartOf="@+id/checkbox_instructor"
-        app:layout_constraintStart_toEndOf="@+id/checkbox_admin"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="330dp" />
-
-    <RadioButton
-        android:id="@+id/checkbox_instructor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="44dp"
-        android:text="@string/create_instructor"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="330dp" />
 
     <TextView
-        android:id="@+id/login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="250dp"
-        android:text="Already have an account? Log in here"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/welcome_message"
+        android:layout_width="350dp"
+        android:layout_height="78dp"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:text="@string/welcome_msg"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.575"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_the_account"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login" />
+        app:layout_constraintTop_toBottomOf="@id/welcome_message">
+
+        <TableRow
+            android:id="@+id/add_course_row"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:weightSum="10">
+
+            <TextView
+                android:id="@+id/add_course_explain"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="7.5"
+                android:gravity="center"
+                android:singleLine="false"
+                android:background="#d8e5f2"
+                android:text="@string/add_course"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/add_course_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#d8e5f2"
+                android:layout_weight="2.5"
+                app:srcCompat="@android:drawable/ic_menu_add" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/Edit_course_row"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:weightSum="10">
+
+            <TextView
+                android:id="@+id/edit_course_explain"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="7.5"
+                android:gravity="center"
+                android:background="#ebf2f8"
+                android:text="@string/edit_course_explain"
+                android:textSize="22sp" />
+
+            <ImageView
+                android:id="@+id/edit_course_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2.5"
+                android:background="#ebf2f8"
+                app:srcCompat="@android:drawable/ic_menu_edit" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/manage_instruc_row"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+
+            android:weightSum="10">
+
+            <TextView
+                android:id="@+id/manage_instruct_explain"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="7.5"
+                android:gravity="center"
+                android:background="#d8e5f2"
+                android:text="@string/manage_instruc"
+                android:textSize="22sp" />
+
+            <ImageView
+                android:id="@+id/delete_instruc_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2.5"
+                android:background="#d8e5f2"
+                app:srcCompat="@android:drawable/ic_menu_delete" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/manage_stu_row"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:weightSum="10">
+
+            <TextView
+                android:id="@+id/manage_stud_explain"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="7.5"
+                android:gravity="center"
+                android:background="#ebf2f8"
+                android:text="@string/Manage_students"
+                android:textSize="20dp" />
+
+            <ImageView
+                android:id="@+id/manage_stud_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#ebf2f8"
+                android:layout_weight="2.5"
+
+                app:srcCompat="@android:drawable/ic_menu_edit" />
+
+        </TableRow>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="100dp"
+        android:layout_height="37dp"
+        android:text="Log out"
+        tools:layout_editor_absoluteY="1dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
