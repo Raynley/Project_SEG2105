@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".sign_up_page">
+    tools:context=".SignUp">
 
     <TableLayout
         android:id="@+id/tableLayout2"
@@ -56,6 +55,7 @@
             android:layout_marginLeft="10dp"
             android:background="#fff"
             android:hint="@string/create_userName"
+            android:minHeight="48dp"
             android:padding="5dp"
             android:textColor="#000" />
 
@@ -83,6 +83,7 @@
             android:layout_marginLeft="10dp"
             android:background="#fff"
             android:hint="password"
+            android:minHeight="48dp"
             android:padding="5dp"
             android:textColor="#000" />
 
@@ -109,6 +110,7 @@
             android:layout_marginLeft="10dp"
             android:background="#fff"
             android:hint="password"
+            android:minHeight="48dp"
             android:padding="5dp"
             android:textColor="#000" />
 
@@ -137,7 +139,7 @@
     <Button
         android:id="@+id/create_the_account"
         android:layout_width="204dp"
-        android:layout_height="46dp"
+        android:layout_height="48dp"
         android:text="@string/create_account"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -147,8 +149,6 @@
         app:layout_constraintTop_toBottomOf="@+id/checkbox_student"
         app:layout_constraintVertical_bias="0.296"
         tools:ignore="MissingConstraints" />
-
-    <TableRow tools:ignore="MissingConstraints"/>
 
     <RadioButton
         android:id="@+id/checkbox_admin"
