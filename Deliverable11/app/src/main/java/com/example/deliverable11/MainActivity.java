@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         icreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),sign_up_page.class));
+                startActivity(new Intent(getApplicationContext(),SignUp.class));
             }
         });
     }
