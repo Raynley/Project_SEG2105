@@ -54,6 +54,8 @@ public class add_course extends AppCompatActivity {
                     Course course = new Course(name, code);
 
                     reference.child(name).setValue(course);
+                    course_name.setText("");
+                    course_code.setText("");
                 }
             }
         });
