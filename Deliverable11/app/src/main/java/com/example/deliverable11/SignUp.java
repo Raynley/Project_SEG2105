@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class SignUp extends AppCompatActivity {
     EditText iname, ipassword, irepassword;
     Button iregister;
-    TextView ilogin;
+    TextView ilogin, enter_email;
     FirebaseAuth fAuth;
     //ProgressBar iprogressbar;
 
@@ -34,6 +34,7 @@ public class SignUp extends AppCompatActivity {
         irepassword = findViewById(R.id.reenter_password);
         iregister = findViewById(R.id.create_the_account);
         ilogin = findViewById(R.id.login);
+        enter_email =findViewById(R.id.enter_email);
 
         fAuth = FirebaseAuth.getInstance();
         //iprogressbar = findViewById(R.id.progressBar);
