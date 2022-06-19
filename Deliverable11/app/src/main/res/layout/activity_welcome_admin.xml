@@ -20,6 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/row_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -40,9 +41,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="7.5"
+                android:background="#d8e5f2"
                 android:gravity="center"
                 android:singleLine="false"
-                android:background="#d8e5f2"
                 android:text="@string/add_course"
                 android:textSize="20sp" />
 
@@ -50,8 +51,8 @@
                 android:id="@+id/add_course_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="#d8e5f2"
                 android:layout_weight="2.5"
+                android:background="#d8e5f2"
                 app:srcCompat="@android:drawable/ic_menu_add" />
         </TableRow>
 
@@ -67,8 +68,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="7.5"
-                android:gravity="center"
                 android:background="#ebf2f8"
+                android:gravity="center"
                 android:text="@string/edit_course_explain"
                 android:textSize="22sp" />
 
@@ -94,8 +95,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="7.5"
-                android:gravity="center"
                 android:background="#d8e5f2"
+                android:gravity="center"
                 android:text="@string/manage_instruc"
                 android:textSize="22sp" />
 
@@ -120,8 +121,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="7.5"
-                android:gravity="center"
                 android:background="#ebf2f8"
+                android:gravity="center"
                 android:text="@string/Manage_students"
                 android:textSize="20dp" />
 
@@ -129,8 +130,8 @@
                 android:id="@+id/manage_stud_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="#ebf2f8"
                 android:layout_weight="2.5"
+                android:background="#ebf2f8"
 
                 app:srcCompat="@android:drawable/ic_menu_edit" />
 
@@ -142,5 +143,6 @@
             android:layout_height="wrap_content"
             android:text="Log out" />
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
