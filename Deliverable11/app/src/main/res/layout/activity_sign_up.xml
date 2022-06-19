@@ -141,58 +141,62 @@
         android:layout_width="204dp"
         android:layout_height="48dp"
         android:text="@string/create_account"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
 
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkbox_student"
-        app:layout_constraintVertical_bias="0.296"
-        tools:ignore="MissingConstraints" />
-
-    <RadioButton
-        android:id="@+id/checkbox_admin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:text="@string/create_admin"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableRow"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="330dp" />
+        tools:visibility="visible" />
 
-    <RadioButton
-        android:id="@+id/checkbox_student"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/create_student"
-        app:layout_constraintEnd_toStartOf="@+id/checkbox_instructor"
-        app:layout_constraintStart_toEndOf="@+id/checkbox_admin"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="330dp" />
-
-    <RadioButton
-        android:id="@+id/checkbox_instructor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="44dp"
-        android:text="@string/create_instructor"
+    <TableRow
+        android:id="@+id/tableRow"
+        android:layout_width="405dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="72dp"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="330dp" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout2">
+
+        <RadioButton
+            android:id="@+id/checkbox_admin"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="25dp"
+            android:text="@string/create_admin"
+            tools:ignore="MissingConstraints" />
+
+        <RadioButton
+            android:id="@+id/checkbox_student"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="25dp"
+            android:text="@string/create_student"
+            tools:ignore="MissingConstraints" />
+
+        <RadioButton
+            android:id="@+id/checkbox_instructor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="44dp"
+            android:text="@string/create_instructor"
+            tools:ignore="MissingConstraints" />
+    </TableRow>
 
     <TextView
         android:id="@+id/login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="250dp"
         android:text="Already have an account? Log in here"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.575"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_the_account"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/create_the_account" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -202,7 +206,9 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login" />
+        app:layout_constraintTop_toBottomOf="@+id/login"
+        app:layout_constraintVertical_bias="0.48" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
