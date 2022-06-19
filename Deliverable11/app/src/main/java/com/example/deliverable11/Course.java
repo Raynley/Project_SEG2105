@@ -13,6 +13,8 @@ public class Course {
         this.code = code;
     }
 
+    private Course(){}
+
     public String getName() {
         return name;
     }
@@ -43,5 +45,9 @@ public class Course {
 
     public void addStudent(Student student) {
         student_list.add(student);
+    }
+
+    public String toString() {
+        return name + " : " + code;
     }
 }
