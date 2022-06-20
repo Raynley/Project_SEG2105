@@ -16,6 +16,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -91,13 +92,29 @@ public class edit_courses extends AppCompatActivity {
                     return;
                 } else if (TextUtils.isEmpty(new_code)) {
                     new_code = old_code;
-                    //ENTER INTO DATABASE
+                    Course course = new Course(new_name, new_code);
+                    database.getReference("Courses").child(old_name).setValue(course);
+                    old_code_entry.setText("");
+                    old_name_entry.setText("");
+                    new_code_entry.setText("");
+                    new_name_entry.setText("");
                 } else if (TextUtils.isEmpty(new_name)) {
                     new_name = old_name;
-                    //ENTER INTO DATABASE
+                    Course course = new Course(new_name, new_code);
+                    database.getReference("Courses").child(old_name).setValue(course);
+                    old_code_entry.setText("");
+                    old_name_entry.setText("");
+                    new_code_entry.setText("");
+                    new_name_entry.setText("");
                 } else {
-                    //ENTER INTO DATABASE
+                    Course course = new Course(new_name, new_code);
+                    database.getReference("Courses").child(old_name).setValue(course);
+                    old_code_entry.setText("");
+                    old_name_entry.setText("");
+                    new_code_entry.setText("");
+                    new_name_entry.setText("");
                 }
+                reference.addValueEventListener(postListener);
             }
         });
         
@@ -106,8 +123,6 @@ public class edit_courses extends AppCompatActivity {
             public void onClick(View v) {
                 String old_code = old_code_entry.getText().toString().trim();
                 String old_name = old_name_entry.getText().toString().trim();
-                String new_code = new_code_entry.getText().toString().trim();
-                String new_name = new_name_entry.getText().toString().trim();
                 
                 if (TextUtils.isEmpty(old_code) && TextUtils.isEmpty(old_name)) {
                     old_code_entry.setError("Course code required");
@@ -121,9 +136,14 @@ public class edit_courses extends AppCompatActivity {
                     return;
                 } else {
                     //REMOVE FROM DATABASE
+                    database.getReference("Courses").child(old_name).removeValue();
+                    old_code_entry.setText("");
+                    old_name_entry.setText("");
+                    new_code_entry.setText("");
+                    new_name_entry.setText("");
                 }
+                reference.addValueEventListener(postListener);
             }
         });
 
     }
-}
