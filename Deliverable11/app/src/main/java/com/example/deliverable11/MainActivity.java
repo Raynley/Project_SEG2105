@@ -17,14 +17,18 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
     EditText iname, ipassword;
     Button ilogin;
     TextView icreate;
-
-    ProgressBar iprogressbar;
-    FirebaseAuth fAuth;
+    FirebaseDatabase database;
+    DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,47 +39,43 @@ public class MainActivity extends AppCompatActivity {
         ipassword = findViewById(R.id.password);
         ilogin = findViewById(R.id.btn_login);
         icreate = findViewById(R.id.textView2);
-
-        FirebaseAuth fAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
 
         ilogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = iname.getText().toString().trim();
-                String password = ipassword.getText().toString().trim();
+                String name = iname.getText().toString();
+                String password = ipassword.getText().toString();
+                String type;
 
                 if(TextUtils.isEmpty(name)){
                     iname.setError("name is required");
                     return;
-                }
-
-                if(TextUtils.isEmpty(password)){
+                } else if(TextUtils.isEmpty(password)){
                     ipassword.setError("Password is required");
                     return;
-                }
-
-                if(name.length() < 6){
-                    iname.setError("The name should be at least 6 characters long");
-                }
-
-                if(password.length() < 6){
-                    ipassword.setError("Password must be >= 6 Characters");
-                    return;
-                }
-
-                fAuth.signInWithEmailAndPassword(name,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(MainActivity.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), welcome_admin.class));
-                        }else{
-                            Toast.makeText(MainActivity.this, "Loggin unsuccessful" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                } else {
+                    if (name.equals("admin") && password.equals("admin123")) {
+                        startActivity(new Intent(getApplicationContext(),welcome_admin.class));
                     }
-                });
+                    /*reference = database.getReference("User");
+                    ValueEventListener postListener = new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                String data_password = ;
+                                if (data_password.equals(password)) {
+                                    startActivity(new Intent(MainActivity.this, welcome_admin.class));
+                                }
+                            }
+                        }
 
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {}
+                    };
 
+                    reference.addValueEventListener(postListener);*/
+                }
             }
         });
 
