@@ -134,20 +134,14 @@
                 android:background="#ebf2f8"
 
                 app:srcCompat="@android:drawable/ic_menu_edit" />
+
         </TableRow>
 
-        <TableRow
+        <Button
+            android:id="@+id/log_out"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/logout"
-                android:layout_width="wrap_content"
-                android:text="@string/logout_btn"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-        </TableRow>
-
+            android:layout_height="wrap_content"
+            android:text="Log out" />
     </LinearLayout>
 
 
