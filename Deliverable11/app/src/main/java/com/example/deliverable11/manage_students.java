@@ -33,7 +33,7 @@ public class manage_students extends AppCompatActivity {
         add_btn = findViewById(R.id.add_stud_button);
         display = findViewById(R.id.student_display);
         database = FirebaseDatabase.getInstance();
-        reference = database.getReference("Student");
+        reference = database.getReference("User").child("Student");
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
@@ -42,7 +42,7 @@ public class manage_students extends AppCompatActivity {
                     Student student = snapshot.getValue(Student.class);
                     String textDisplay = "";
                     for (DataSnapshot ds : snapshot.getChildren()) {
-                        textDisplay = textDisplay + ds.getValue(Student.class).getUsername() + "\n";
+                        textDisplay = textDisplay + ds.getValue(Student.class).toString() + "\n";
                     }
                     display.setText(textDisplay);
                 }
@@ -62,20 +62,11 @@ public class manage_students extends AppCompatActivity {
                     name_entry.setError("Name is required");
                 } else {
                     //REMOVE FROM DATABASE
+                    database.getReference("User").child("Student").child(name).removeValue();
+                    name_entry.setText("");
                 }
             }
         });
-
-        add_btn.setOnClickListener(new View.OnClickListener() {
-            String name = name_entry.getText().toString().trim();
-            @Override
-            public void onClick(View v) {
-                if (TextUtils.isEmpty(name)) {
-                    name_entry.setError("Name is required");
-                } else {
-                    //ADD TO DATABASE
-                }
-            }
-        });
+        reference.addValueEventListener(postListener);
     }
 }
