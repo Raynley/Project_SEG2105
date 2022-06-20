@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class welcome_admin extends AppCompatActivity {
     FirebaseAuth fAuth;
     ImageView addCourse, editCourse, manageInstructor, manageStudent;
-    Button ilogout;
+    Button logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,14 +24,15 @@ public class welcome_admin extends AppCompatActivity {
         editCourse = findViewById(R.id.edit_course_icon);
         manageInstructor = findViewById(R.id.delete_instruc_icon);
         manageStudent = findViewById(R.id.manage_stud_icon);
-        ilogout = findViewById(R.id.log_out);
+        /*logout = findViewById(R.id.logout);
 
-        ilogout.setOnClickListener(new View.OnClickListener() {
+        logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logout(v);
+                Intent intent = new Intent(welcome_admin.this, MainActivity.class);
+                startActivity(intent);
             }
-        });
+        });*/
         
         addCourse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,12 +69,6 @@ public class welcome_admin extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
-
-    public void logout(View view){
-        FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getApplicationContext(),MainActivity.class));
-        finish();
     }
     
 }
