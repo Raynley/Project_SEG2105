@@ -55,9 +55,9 @@ public class manage_students extends AppCompatActivity {
         reference.addValueEventListener(postListener);
 
         del_btn.setOnClickListener(new View.OnClickListener() {
-            String name = name_entry.getText().toString().trim();
             @Override
             public void onClick(View v) {
+                String name = name_entry.getText().toString();
                 if (TextUtils.isEmpty(name)) {
                     name_entry.setError("Name is required");
                 } else {
