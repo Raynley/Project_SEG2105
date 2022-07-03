@@ -7,6 +7,11 @@ public class Course {
     private String code;
     private Instructor instructor;
     private ArrayList<Student> student_list;
+    private int course_capacity;
+    private int number_of_students;
+    private String description;
+    private String days;
+    private String hours;
 
     public Course(String name, String code) {
         this.name = name;
@@ -14,6 +19,14 @@ public class Course {
     }
 
     private Course(){}
+
+    public int getCourse_capacity() {
+        return course_capacity;
+    }
+
+    public void setCourse_capacity(int course_capacity) {
+        this.course_capacity = course_capacity;
+    }
 
     public String getName() {
         return name;
@@ -31,12 +44,37 @@ public class Course {
         this.code = code;
     }
 
-    public void setInstructor(Instructor instructor) {
-        this.instructor = instructor;
+    public boolean setInstructor(Instructor instructor) {
+        if (this.instructor == null) {
+            this.instructor = instructor;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public String getDays() {
+        return days;
+    }
+
+    public void setDays(String days) {
+        this.days = days;
+    }
+
+    public String getHours() {
+        return hours;
+    }
+
+    public void setHours(String hours) {
+        this.hours = hours;
     }
 
     public Instructor getInstructor() {
         return instructor;
+    }
+
+    public void removeInstructor() {
+        instructor = null;
     }
 
     public ArrayList<Student> getStudent_list() {
@@ -45,9 +83,28 @@ public class Course {
 
     public void addStudent(Student student) {
         student_list.add(student);
+        number_of_students++;
     }
 
     public String toString() {
-        return name + " : " + code;
+        String str = name + ":" + code;
+        if (instructor != null) {
+            str = str + " - Instructor: " + instructor.getUsername();
+        }
+        if (course_capacity != 0) {
+            str = str + " - course capacity: " + course_capacity;
+        }
+        if (description != null) {
+            str = str + " - description: " + description;
+        }
+        return str;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean equals(Course newcourse) {
+        return newcourse.code.equals(code) && newcourse.name.equals(name);
     }
 }
