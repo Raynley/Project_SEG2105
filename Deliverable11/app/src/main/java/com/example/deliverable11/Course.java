@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Course {
     private String name;
     private String code;
-    private Instructor instructor;
+    private String instructor;
     private ArrayList<Student> student_list;
     private int course_capacity;
     private int number_of_students;
@@ -44,7 +44,7 @@ public class Course {
         this.code = code;
     }
 
-    public boolean setInstructor(Instructor instructor) {
+    public boolean setInstructor(String instructor) {
         if (this.instructor == null) {
             this.instructor = instructor;
             return true;
@@ -69,12 +69,12 @@ public class Course {
         this.hours = hours;
     }
 
-    public Instructor getInstructor() {
+    public String getInstructor() {
         return instructor;
     }
 
     public void removeInstructor() {
-        instructor = null;
+        instructor = "";
     }
 
     public ArrayList<Student> getStudent_list() {
@@ -89,7 +89,7 @@ public class Course {
     public String toString() {
         String str = name + ":" + code;
         if (instructor != null) {
-            str = str + " - Instructor: " + instructor.getUsername();
+            str = str + " - Instructor: " + instructor;
         }
         if (course_capacity != 0) {
             str = str + " - course capacity: " + course_capacity;
@@ -108,3 +108,4 @@ public class Course {
         return newcourse.code.equals(code) && newcourse.name.equals(name);
     }
 }
+
