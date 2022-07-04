@@ -23,12 +23,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
     EditText iname, ipassword;
     Button ilogin;
     TextView icreate;
     FirebaseDatabase database;
     DatabaseReference reference;
+    ArrayList<Admin> adminList;
+    ArrayList<Student> studentList;
+    ArrayList<Instructor> instructorList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +46,38 @@ public class MainActivity extends AppCompatActivity {
         icreate = findViewById(R.id.textView2);
         database = FirebaseDatabase.getInstance();
 
+        ValueEventListener initLists = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    adminList.clear();
+                    for (DataSnapshot ds : snapshot.child("Admin").getChildren()) {
+                        adminList.add(ds.getValue(Admin.class));
+                    }
+                    instructorList.clear();
+                    for (DataSnapshot ds : snapshot.child("Instructor").getChildren()) {
+                        instructorList.add(ds.getValue(Instructor.class));
+                    }
+                    studentList.clear();
+                    for (DataSnapshot ds : snapshot.child("Student").getChildren()) {
+                        studentList.add(ds.getValue(Student.class));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
         ilogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String name = iname.getText().toString();
                 String password = ipassword.getText().toString();
-                String type;
+                int i;
+                Intent intent;
 
                 if(TextUtils.isEmpty(name)){
                     iname.setError("name is required");
@@ -55,26 +86,42 @@ public class MainActivity extends AppCompatActivity {
                     ipassword.setError("Password is required");
                     return;
                 } else {
-                    if (name.equals("admin") && password.equals("admin123")) {
-                        startActivity(new Intent(getApplicationContext(),welcome_admin.class));
-                    }
-                    /*reference = database.getReference("User");
-                    ValueEventListener postListener = new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (snapshot.exists()) {
-                                String data_password = ;
-                                if (data_password.equals(password)) {
-                                    startActivity(new Intent(MainActivity.this, welcome_admin.class));
-                                }
+                    reference = database.getReference("User");
+                    reference.addValueEventListener(initLists);
+                    for (i = 0; i < adminList.size(); i++) {
+                        if (adminList.get(i).getUsername().equals(name)) {
+                            if (adminList.get(i).getPassword().equals(password)) {
+                                intent = new Intent(getApplicationContext(),welcome_admin.class);
+                                intent.putExtra("USERNAME", name);
+                                startActivity(intent);
+                            } else {
+                                ipassword.setText("Username and password don't match");
                             }
                         }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {}
-                    };
-
-                    reference.addValueEventListener(postListener);*/
+                    }
+                    for (i = 0; i < instructorList.size(); i++) {
+                        if (instructorList.get(i).getUsername().equals(name)) {
+                            if (instructorList.get(i).getPassword().equals(password)) {
+                                intent = new Intent(getApplicationContext(),instructor_editcourse.class);
+                                intent.putExtra("USERNAME", name);
+                                startActivity(intent);
+                            } else {
+                                ipassword.setText("Username and password don't match");
+                            }
+                        }
+                    }
+                    /*
+                    For the student class
+                    for (i = 0; i < studentList.size(); i++) {
+                        if (studentList.get(i).getUsername().equals(name)) {
+                            if (studentList.get(i).getPassword().equals(password)) {
+                                startActivity(new Intent(getApplicationContext(),ENTER NEW CLASS));
+                            } else {
+                                ipassword.setText("Username and password don't match");
+                            }
+                        }
+                    }
+                     */
                 }
             }
         });
