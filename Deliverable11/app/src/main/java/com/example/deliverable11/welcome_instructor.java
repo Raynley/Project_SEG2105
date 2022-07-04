@@ -1,14 +1,14 @@
 package com.example.deliverable11;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,7 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class instructor_editcourse extends AppCompatActivity {
+public class welcome_instructor extends AppCompatActivity {
     EditText name_entry, code_entry, new_days, new_hours, new_capacity, new_description;
     TextView displayCourses, error_display;
     ImageButton add_btn, remove_btn, edit_btn;
@@ -28,7 +28,7 @@ public class instructor_editcourse extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_instructor_editcourse);
+        setContentView(R.layout.activity_welcome_instructor);
 
         name_entry = findViewById(R.id.course_name_to_edit_inst);
         code_entry = findViewById(R.id.course_code_to_edit_inst);

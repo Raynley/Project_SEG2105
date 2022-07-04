@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".edit_courses">
-
+    tools:context=".welcome_instructor">
     <TextView
         android:id="@+id/display_list_courses_inst"
         android:layout_width="0dp"
@@ -216,4 +215,5 @@
 
         </LinearLayout>
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
