@@ -107,6 +107,7 @@ public class instructor_editcourse extends AppCompatActivity {
                         We have to find a way to make it so that the
                         username they enter in the login page is kept until
                         this step for it to be used below.
+                        FIXED
                          */
                         String username;
                         if (savedInstanceState == null) {
