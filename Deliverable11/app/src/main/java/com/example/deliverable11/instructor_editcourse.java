@@ -108,7 +108,18 @@ public class instructor_editcourse extends AppCompatActivity {
                         username they enter in the login page is kept until
                         this step for it to be used below.
                          */
-                        if (newCourse.setInstructor(/*THISINSTRUCTOR*/)) {
+                        String username;
+                        if (savedInstanceState == null) {
+                            Bundle b = getIntent().getExtras();
+                            if (b == null) {
+                                username = null;
+                            } else {
+                                username = b.getString("USERNAME");
+                            }
+                        } else {
+                            username = (String) savedInstanceState.getSerializable("USERNAME");
+                        }
+                        if (newCourse.setInstructor(username)) {
                             reference.child(name).setValue(newCourse);
                             name_entry.setText("");
                             code_entry.setText("");
@@ -217,12 +228,18 @@ public class instructor_editcourse extends AppCompatActivity {
                     for (int i = 0; i < courseList.size(); i++) {
                         if (courseList.get(i).equals(newCourse)) {
                             newCourse = courseList.get(i);
-                            /*
-                            We have to find a way to make it so that the
-                            username they enter in the login page is kept until
-                            this step for it to be used below.
-                            */
-                            if (newCourse.getInstructor().getUsername().equals(/*THISUSERNAME*/)) {
+                            String username;
+                            if (savedInstanceState == null) {
+                                Bundle b = getIntent().getExtras();
+                                if (b == null) {
+                                    username = null;
+                                } else {
+                                    username = b.getString("USERNAME");
+                                }
+                            } else {
+                                username = (String) savedInstanceState.getSerializable("USERNAME");
+                            }
+                            if (newCourse.getInstructor().equals(username)) {
                                 newCourse.removeInstructor();
                                 reference.child(name).removeValue();
                                 reference.child(name).setValue(newCourse);
