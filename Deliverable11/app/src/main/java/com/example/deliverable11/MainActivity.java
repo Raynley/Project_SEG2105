@@ -45,6 +45,10 @@ public class MainActivity extends AppCompatActivity {
         ilogin = findViewById(R.id.btn_login);
         icreate = findViewById(R.id.textView2);
         database = FirebaseDatabase.getInstance();
+        reference = database.getReference("User");
+        adminList = new ArrayList<>();
+        studentList = new ArrayList<>();
+        instructorList = new ArrayList<>();
 
         ValueEventListener initLists = new ValueEventListener() {
             @Override
@@ -70,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         };
+        reference.addValueEventListener(initLists);
 
         ilogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,8 +91,6 @@ public class MainActivity extends AppCompatActivity {
                     ipassword.setError("Password is required");
                     return;
                 } else {
-                    reference = database.getReference("User");
-                    reference.addValueEventListener(initLists);
                     for (i = 0; i < adminList.size(); i++) {
                         if (adminList.get(i).getUsername().equals(name)) {
                             if (adminList.get(i).getPassword().equals(password)) {
