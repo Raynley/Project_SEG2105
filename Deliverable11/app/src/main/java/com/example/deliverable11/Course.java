@@ -108,4 +108,3 @@ public class Course {
         return newcourse.code.equals(code) && newcourse.name.equals(name);
     }
 }
-
