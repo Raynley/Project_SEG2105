@@ -121,6 +121,7 @@ public class welcome_instructor extends AppCompatActivity {
                             username = (String) savedInstanceState.getSerializable("USERNAME");
                         }
                         if (newCourse.setInstructor(username)) {
+                            reference.child(name).removeValue();
                             reference.child(name).setValue(newCourse);
                             name_entry.setText("");
                             code_entry.setText("");
@@ -261,5 +262,6 @@ public class welcome_instructor extends AppCompatActivity {
                 }
             }
         });
+        reference.addValueEventListener(postListener);
     }
 }
