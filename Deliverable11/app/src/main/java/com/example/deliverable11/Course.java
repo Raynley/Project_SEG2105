@@ -16,6 +16,7 @@ public class Course {
     public Course(String name, String code) {
         this.name = name;
         this.code = code;
+        instructor = "";
     }
 
     private Course(){}
@@ -45,7 +46,7 @@ public class Course {
     }
 
     public boolean setInstructor(String instructor) {
-        if (this.instructor == null) {
+        if (this.instructor.equals("")) {
             this.instructor = instructor;
             return true;
         } else {
