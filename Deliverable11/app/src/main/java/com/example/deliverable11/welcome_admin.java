@@ -24,7 +24,7 @@ public class welcome_admin extends AppCompatActivity {
         editCourse = findViewById(R.id.edit_course_icon);
         manageInstructor = findViewById(R.id.delete_instruc_icon);
         manageStudent = findViewById(R.id.manage_stud_icon);
-        /*logout = findViewById(R.id.logout);
+        logout = findViewById(R.id.log_out);
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,7 +32,7 @@ public class welcome_admin extends AppCompatActivity {
                 Intent intent = new Intent(welcome_admin.this, MainActivity.class);
                 startActivity(intent);
             }
-        });*/
+        });
         
         addCourse.setOnClickListener(new View.OnClickListener() {
             @Override
