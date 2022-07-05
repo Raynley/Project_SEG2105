@@ -19,7 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class manage_instructors extends AppCompatActivity {
     EditText name_entry;
-    ImageButton del_ins, add_ins;
+    ImageButton del_ins;
     TextView display;
     FirebaseDatabase database;
     DatabaseReference reference;
@@ -29,12 +29,11 @@ public class manage_instructors extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_instructors);
         
-        name_entry = findViewById(R.id.course_code_to_edit);
-        del_ins = findViewById(R.id.delete_course_btn);
-        add_ins = findViewById(R.id.delete_instruc_btn);
+        name_entry = findViewById(R.id.enter_instruc_name);
+        del_ins = findViewById(R.id.delete_instruc_btn);
         display = findViewById(R.id.instructor_display);
         database = FirebaseDatabase.getInstance();
-        reference = database.getReference("Instructor");
+        reference = database.getReference("User").child("Instructor");
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
@@ -43,7 +42,7 @@ public class manage_instructors extends AppCompatActivity {
                     Instructor instructor = snapshot.getValue(Instructor.class);
                     String textDisplay = "";
                     for (DataSnapshot ds : snapshot.getChildren()) {
-                        textDisplay = textDisplay + ds.getValue(Instructor.class).getUsername() + "\n";
+                        textDisplay = textDisplay + ds.getValue(Instructor.class).toString() + "\n";
                     }
                     display.setText(textDisplay);
                 }
@@ -52,32 +51,22 @@ public class manage_instructors extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         };
-
         reference.addValueEventListener(postListener);
         
-        add_ins.setOnClickListener(new View.OnClickListener() {
-            String name = name_entry.getText().toString().trim();
-            @Override
-            public void onClick(View v) {
-                if (TextUtils.isEmpty(name)) {
-                    name_entry.setError("Name required");
-                } else {
-                    //ADD TO DATABASE
-                }
-            }
-        });
-        
         del_ins.setOnClickListener(new View.OnClickListener() {
-            String name = name_entry.getText().toString().trim();
             @Override
             public void onClick(View v) {
+                String name = name_entry.getText().toString().trim();
                 if (TextUtils.isEmpty(name)) {
                     name_entry.setError("Name required");
                 } else {
                     //DELETE FROM DATABASE
+                    database.getReference("User").child("Instructor").child(name).removeValue();
+                    name_entry.setText("");
                 }
             }
         });
+        reference.addValueEventListener(postListener);
         
     }
 }

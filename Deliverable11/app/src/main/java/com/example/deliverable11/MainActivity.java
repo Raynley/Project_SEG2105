@@ -1,89 +1,74 @@
 package com.example.deliverable11;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.ImageView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends AppCompatActivity {
-    EditText iname, ipassword;
-    Button ilogin;
-    TextView icreate;
-
-    ProgressBar iprogressbar;
+public class welcome_admin extends AppCompatActivity {
     FirebaseAuth fAuth;
+    ImageView addCourse, editCourse, manageInstructor, manageStudent;
+    Button logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_welcome_admin);
+        
+        addCourse = findViewById(R.id.add_course_icon);
+        editCourse = findViewById(R.id.edit_course_icon);
+        manageInstructor = findViewById(R.id.delete_instruc_icon);
+        manageStudent = findViewById(R.id.manage_stud_icon);
+        logout = findViewById(R.id.log_out);
 
-        iname = findViewById(R.id.userName);
-        ipassword = findViewById(R.id.password);
-        ilogin = findViewById(R.id.btn_login);
-        icreate = findViewById(R.id.textView2);
-
-        FirebaseAuth fAuth = FirebaseAuth.getInstance();
-
-        ilogin.setOnClickListener(new View.OnClickListener() {
+        logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = iname.getText().toString().trim();
-                String password = ipassword.getText().toString().trim();
-
-                if(TextUtils.isEmpty(name)){
-                    iname.setError("name is required");
-                    return;
-                }
-
-                if(TextUtils.isEmpty(password)){
-                    ipassword.setError("Password is required");
-                    return;
-                }
-
-                if(name.length() < 6){
-                    iname.setError("The name should be at least 6 characters long");
-                }
-
-                if(password.length() < 6){
-                    ipassword.setError("Password must be >= 6 Characters");
-                    return;
-                }
-
-                fAuth.signInWithEmailAndPassword(name,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(MainActivity.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), welcome_admin.class));
-                        }else{
-                            Toast.makeText(MainActivity.this, "Loggin unsuccessful" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-
+                Intent intent = new Intent(welcome_admin.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        
+        addCourse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TO COMPLETE
+                Intent intent = new Intent(welcome_admin.this,add_course.class);
+                startActivity(intent);
             }
         });
 
-        icreate.setOnClickListener(new View.OnClickListener() {
+        editCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),SignUp.class));
+                //TO COMPLETE
+                Intent intent = new Intent(welcome_admin.this,edit_courses.class);
+                startActivity(intent);
+            }
+        });
+
+        manageInstructor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TO COMPLETE
+                Intent intent = new Intent(welcome_admin.this,manage_instructors.class);
+                startActivity(intent);
+            }
+        });
+
+        manageStudent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TO COMPLETE
+                Intent intent = new Intent(welcome_admin.this,manage_students.class);
+                startActivity(intent);
             }
         });
     }
+    
 }
