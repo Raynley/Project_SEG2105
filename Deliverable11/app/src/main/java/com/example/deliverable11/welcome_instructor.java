@@ -24,6 +24,8 @@ public class welcome_instructor extends AppCompatActivity {
     ImageButton add_btn, remove_btn, edit_btn;
     FirebaseDatabase database;
     DatabaseReference reference;
+    //https://stackoverflow.com/questions/47779081/retrieve-information-from-firebase-element-clicked-in-listview
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,12 +156,16 @@ public class welcome_instructor extends AppCompatActivity {
                 String days = new_days.getText().toString();
                 String hours = new_hours.getText().toString();
                 String capacityString = new_capacity.getText().toString();
-                int capacity = -1;
-                try {
-                    capacity = Integer.parseInt(capacityString);
-                } catch (NumberFormatException e) {
+                int capacity =-1;
+
+                if(!isValidCapacity(capacityString)) {
                     new_capacity.setText("You must enter a number");
+                    return;
                 }
+                else{
+                    capacity = Integer.parseInt(name);
+                }
+
                 String description = new_description.getText().toString();
                 if (TextUtils.isEmpty(name) && TextUtils.isEmpty(code)) {
                     name_entry.setText("Name required");
@@ -263,5 +269,19 @@ public class welcome_instructor extends AppCompatActivity {
             }
         });
         reference.addValueEventListener(postListener);
+
+
+    }
+
+    public static Boolean isValidCapacity(String name){
+        int capacity = -1;
+        try {
+            capacity = Integer.parseInt(name);
+            return true ;
+
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
     }
 }

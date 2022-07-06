@@ -84,10 +84,10 @@ public class MainActivity extends AppCompatActivity {
                 int i;
                 Intent intent;
 
-                if(TextUtils.isEmpty(name)){
+                if(nameEmpty( name)){
                     iname.setError("name is required");
                     return;
-                } else if(TextUtils.isEmpty(password)){
+                } else if(nameEmpty(password)){
                     ipassword.setError("Password is required");
                     return;
                 } else {
@@ -136,4 +136,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    public static Boolean nameEmpty(String name){
+        if(name.length()==0){
+            return true;
+        }
+        return  false;
+    }
+
 }

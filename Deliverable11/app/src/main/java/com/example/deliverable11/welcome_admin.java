@@ -2,25 +2,37 @@ package com.example.deliverable11;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 public class welcome_admin extends AppCompatActivity {
     FirebaseAuth fAuth;
+    EditText welcome_message;
     ImageView addCourse, editCourse, manageInstructor, manageStudent;
     Button logout;
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_admin);
+
+
+        welcome_message =  findViewById(R.id.welcome_message);
+        Intent intent = getIntent();
+        String name = ("name");
+        welcome_message.setText("Welcome "+ name+", you are logged in as an admin");
         
         addCourse = findViewById(R.id.add_course_icon);
+        welcome_message =  findViewById(R.id.welcome_message);
         editCourse = findViewById(R.id.edit_course_icon);
         manageInstructor = findViewById(R.id.delete_instruc_icon);
         manageStudent = findViewById(R.id.manage_stud_icon);

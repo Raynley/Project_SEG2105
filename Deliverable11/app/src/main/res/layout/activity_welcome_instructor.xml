@@ -10,7 +10,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Here is a list of the courses. You can add yourself or remove yourself from a course. You cannot add yourself to a course which already has an instructor. You can edit the course days, course hours, course description and student course capacity."
+        android:text="Here is a list of the courses. You can add yourself or remove yourself as instructor for a course. You cannot add yourself to a course which already has an instructor. You can edit the course days, course hours, course description and student course capacity."
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
 
@@ -134,6 +134,7 @@
                     android:id="@+id/add_btn"
                     android:layout_width="41dp"
                     android:layout_height="match_parent"
+                    android:background="#cccc"
                     app:srcCompat="@android:drawable/ic_menu_add" />
             </TableRow>
 
