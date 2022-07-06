@@ -103,13 +103,8 @@ public class welcome_instructor extends AppCompatActivity {
                 Course newCourse = new Course(name, code);
                 for (int i = 0; i < courseList.size(); i++) {
                     if (courseList.get(i).equals(newCourse)) {
-                        /*
-                        We have to find a way to make it so that the
-                        username they enter in the login page is kept until
-                        this step for it to be used below.
-                        FIXED
-                         */
                         String username;
+                        newCourse = courseList.get(i);
                         if (savedInstanceState == null) {
                             Bundle b = getIntent().getExtras();
                             if (b == null) {
@@ -130,17 +125,11 @@ public class welcome_instructor extends AppCompatActivity {
                             new_capacity.setText("");
                             new_description.setText("");
                             error_display.setText("");
+                            break;
                         } else {
                             error_display.setText("Course already has an instructor assigned to it");
+                            break;
                         }
-                    } else {
-                        error_display.setText("Course was not found");
-                        name_entry.setText("");
-                        code_entry.setText("");
-                        new_days.setText("");
-                        new_hours.setText("");
-                        new_capacity.setText("");
-                        new_description.setText("");
                     }
                 }
             }
@@ -191,6 +180,9 @@ public class welcome_instructor extends AppCompatActivity {
                             }
                             if (!TextUtils.isEmpty(description)) {
                                 newCourse.setDescription(description);
+                            }
+                            if (!courseList.get(i).getInstructor().equals("")) {
+                                newCourse.assignInstructor(newCourse.getInstructor());
                             }
                             reference.child(name).setValue(newCourse);
                             name_entry.setText("");
