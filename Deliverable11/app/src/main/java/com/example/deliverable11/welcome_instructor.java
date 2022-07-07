@@ -162,6 +162,17 @@ public class welcome_instructor extends AppCompatActivity {
                 String hours = new_hours.getText().toString();
                 String capacityString = new_capacity.getText().toString();
                 String description = new_description.getText().toString();
+                String username;
+                if (savedInstanceState == null) {
+                    Bundle b = getIntent().getExtras();
+                    if (b == null) {
+                        username = null;
+                    } else {
+                        username = b.getString("USERNAME");
+                    }
+                } else {
+                    username = (String) savedInstanceState.getSerializable("USERNAME");
+                }
                 int capacity = -1;
                 try {
                     capacity = Integer.parseInt(capacityString);
@@ -192,27 +203,31 @@ public class welcome_instructor extends AppCompatActivity {
                     for (int i = 0; i < courseList.size(); i++) {
                         if (courseList.get(i).equals(newCourse)) {
                             newCourse = courseList.get(i);
-                            if (!TextUtils.isEmpty(days)) {
-                                newCourse.setDays(days);
+                            if (newCourse.getInstructor().equals(username)) {
+                                if (!TextUtils.isEmpty(days)) {
+                                    newCourse.setDays(days);
+                                }
+                                if (!TextUtils.isEmpty(hours)) {
+                                    newCourse.setHours(hours);
+                                }
+                                if (capacity > 0) {
+                                    newCourse.setCourse_capacity(capacity);
+                                }
+                                if (!TextUtils.isEmpty(description)) {
+                                    newCourse.setDescription(description);
+                                }
+                                database.getReference("Courses").child(name).removeValue();
+                                reference.child(name).setValue(newCourse);
+                                name_entry.setText("");
+                                code_entry.setText("");
+                                new_days.setText("");
+                                new_hours.setText("");
+                                new_capacity.setText("");
+                                new_description.setText("");
+                                error_display.setText("");
+                            } else {
+                                error_display.setText("You are not the instructor for this course");
                             }
-                            if (!TextUtils.isEmpty(hours)) {
-                                newCourse.setHours(hours);
-                            }
-                            if (capacity > 0) {
-                                newCourse.setCourse_capacity(capacity);
-                            }
-                            if (!TextUtils.isEmpty(description)) {
-                                newCourse.setDescription(description);
-                            }
-                            database.getReference("Courses").child(name).removeValue();
-                            reference.child(name).setValue(newCourse);
-                            name_entry.setText("");
-                            code_entry.setText("");
-                            new_days.setText("");
-                            new_hours.setText("");
-                            new_capacity.setText("");
-                            new_description.setText("");
-                            error_display.setText("");
                         }
                     }
                 }
@@ -324,5 +339,16 @@ public class welcome_instructor extends AppCompatActivity {
             }
         });
         reference.addValueEventListener(postListener);
+    }
+    public static Boolean isValidCapacity(String name){
+        int capacity = -1;
+        try {
+            capacity = Integer.parseInt(name);
+            return true ;
+
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
     }
 }

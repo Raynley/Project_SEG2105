@@ -145,4 +145,17 @@ public class SignUp extends AppCompatActivity {
         });
 
     }
+    public static Boolean isCorrectLength(String x){
+        if (x.length()<6){
+            return false;
+        }
+        return true;
+    }
+
+    public static Boolean passwordMatch(String x, String y){
+        if(!x.equals(y)){
+            return false;
+        }
+        return true;
+    }
 }

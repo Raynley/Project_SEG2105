@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         adminList = new ArrayList<>();
         studentList = new ArrayList<>();
         instructorList = new ArrayList<>();
+        String name = iname.getText().toString();
+        String password = ipassword.getText().toString();
 
         ValueEventListener initLists = new ValueEventListener() {
             @Override
@@ -131,5 +133,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(),SignUp.class));
             }
         });
+    }
+    public static boolean nameEmpty(String name){
+        if(name.length()==0){
+            return true;
+        }
+        return false;
     }
 }
