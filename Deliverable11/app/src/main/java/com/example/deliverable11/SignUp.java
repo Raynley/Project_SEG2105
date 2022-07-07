@@ -89,10 +89,10 @@ public class SignUp extends AppCompatActivity {
                 } else if (TextUtils.isEmpty(password)) {
                     ipassword.setError("Password is required");
                     return;
-                } else if (password.length() < 6) {
-                    ipassword.setError("Password must be >= 6 Characters");
+                } else if (!isCorrectLength(password)) {
+                    ipassword.setError("must contain 6+ characters");
                     return;
-                } else if (!password.equals(rePassword)){
+                } else if (!passwordMatch(password,rePassword)){
                     irepassword.setError("Both passwords aren't the same");
                 } else {
                     if (type == "student") {
@@ -144,5 +144,18 @@ public class SignUp extends AppCompatActivity {
             }
         });
 
+    }
+    public static Boolean isCorrectLength(String x){
+        if (x.length()<6){
+            return false;
+        }
+        return true;
+    }
+
+    public static Boolean passwordMatch(String x, String y){
+        if(!x.equals(y)){
+            return false;
+        }
+        return true;
     }
 }
