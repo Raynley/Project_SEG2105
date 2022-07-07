@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class welcome_instructor extends AppCompatActivity {
     EditText name_entry, code_entry, new_days, new_hours, new_capacity, new_description;
     TextView displayCourses, error_display;
-    ImageButton add_btn, remove_btn, edit_btn;
+    ImageButton add_btn, remove_btn, edit_btn, search_btn;
     FirebaseDatabase database;
     DatabaseReference reference;
 
@@ -40,6 +40,7 @@ public class welcome_instructor extends AppCompatActivity {
         add_btn = findViewById(R.id.add_btn);
         remove_btn = findViewById(R.id.delete_course_btn_inst);
         edit_btn = findViewById(R.id.edit_course_btn_inst);
+        search_btn = findViewById(R.id.search_btn);
         error_display = findViewById(R.id.Error);
         database = FirebaseDatabase.getInstance();
         reference = database.getReference("Courses");
@@ -143,6 +144,7 @@ public class welcome_instructor extends AppCompatActivity {
                         new_description.setText("");
                     }
                 }
+                reference.addValueEventListener(postListener);
             }
         });
 
@@ -154,13 +156,15 @@ public class welcome_instructor extends AppCompatActivity {
                 String days = new_days.getText().toString();
                 String hours = new_hours.getText().toString();
                 String capacityString = new_capacity.getText().toString();
+                String description = new_description.getText().toString();
                 int capacity = -1;
                 try {
                     capacity = Integer.parseInt(capacityString);
                 } catch (NumberFormatException e) {
-                    new_capacity.setText("You must enter a number");
+                    if (!TextUtils.isEmpty(capacityString)) {
+                        new_capacity.setText("You must enter a number");
+                    }
                 }
-                String description = new_description.getText().toString();
                 if (TextUtils.isEmpty(name) && TextUtils.isEmpty(code)) {
                     name_entry.setText("Name required");
                     code_entry.setText("Code required");
@@ -174,12 +178,15 @@ public class welcome_instructor extends AppCompatActivity {
                     code_entry.setText("Code required");
                     error_display.setText("");
                     return;
-                } else {
+                } else if (TextUtils.isEmpty(days) && TextUtils.isEmpty(hours) && TextUtils.isEmpty(capacityString)
+                        && TextUtils.isEmpty(description)) {
+                    error_display.setText("Information to edit missing");
+                }else {
                     reference.addValueEventListener(initList);
                     Course newCourse = new Course(name, code);
                     for (int i = 0; i < courseList.size(); i++) {
                         if (courseList.get(i).equals(newCourse)) {
-                            database.getReference("Courses").child(name).removeValue();
+                            newCourse = courseList.get(i);
                             if (!TextUtils.isEmpty(days)) {
                                 newCourse.setDays(days);
                             }
@@ -191,7 +198,8 @@ public class welcome_instructor extends AppCompatActivity {
                             }
                             if (!TextUtils.isEmpty(description)) {
                                 newCourse.setDescription(description);
-                            }
+                            } 
+                            database.getReference("Courses").child(name).removeValue();
                             reference.child(name).setValue(newCourse);
                             name_entry.setText("");
                             code_entry.setText("");
@@ -203,6 +211,7 @@ public class welcome_instructor extends AppCompatActivity {
                         }
                     }
                 }
+                reference.addValueEventListener(postListener);
             }
         });
 
@@ -260,6 +269,53 @@ public class welcome_instructor extends AppCompatActivity {
                         }
                     }
                 }
+                reference.addValueEventListener(postListener);
+            }
+        });
+
+        search_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reference.addValueEventListener(initList);
+                String name = name_entry.getText().toString();
+                String code = code_entry.getText().toString();
+                int i;
+                String display = "";
+                Course current;
+                if (TextUtils.isEmpty(name) && TextUtils.isEmpty(code)) {
+                    name_entry.setText("A value is needed");
+                    return;
+                } else if (!TextUtils.isEmpty(code)) {
+                    for (i = 0; i < courseList.size(); i++) {
+                        current = courseList.get(i);
+                        if (current.getCode().equals(code)) {
+                            display = display + current.toString() + "\n";
+                        }
+                    }
+                    displayCourses.setText(display);
+                } else if (!TextUtils.isEmpty(name)) {
+                    for (i = 0; i < courseList.size(); i++) {
+                        current = courseList.get(i);
+                        if (current.getName().equals(name)) {
+                            display = display + current.toString() + "\n";
+                        }
+                    }
+                    displayCourses.setText(display);
+                } else {
+                    for (i = 0; i < courseList.size(); i++) {
+                        current = courseList.get(i);
+                        if (current.getName().equals(name) && current.getCode().equals(code)) {
+                            display = display + current.toString() + "\n";
+                        }
+                    }
+                    displayCourses.setText(display);
+                }
+            }
+        });
+        displayCourses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reference.addValueEventListener(postListener);
             }
         });
         reference.addValueEventListener(postListener);
