@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     EditText iname, ipassword;
     Button ilogin;
     TextView icreate;
-    EditText welcome_message;
     FirebaseDatabase database;
     DatabaseReference reference;
     ArrayList<Admin> adminList;
@@ -41,10 +40,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        welcome_message =  findViewById(R.id.welcome_message);
-        Intent intent = getIntent();
-        String name = ("name");
-        welcome_message.setText("Welcome "+ name+", you are logged in as an admin");
+      
 
         iname = findViewById(R.id.userName);
         ipassword = findViewById(R.id.password);
