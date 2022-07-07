@@ -37,7 +37,7 @@
         <entry key="app/src/main/res/layout/activity_instructor_editcourse.xml" value="0.3015479046365489" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.22010869565217392" />
         <entry key="app/src/main/res/layout/activity_welcome_admin.xml" value="0.23822463768115942" />
-        <entry key="app/src/main/res/layout/activity_welcome_instructor.xml" value="0.3444212319194407" />
+        <entry key="app/src/main/res/layout/activity_welcome_instructor.xml" value="0.1" />
       </map>
     </option>
   </component>
