@@ -6,7 +6,11 @@ public class Course {
     private String name;
     private String code;
     private String instructor;
-    private ArrayList<Student> student_list;
+    /*
+    Possibly need to change student list
+    to a database kind of thing
+     */
+    private ArrayList<String> student_list;
     private int course_capacity;
     private int number_of_students;
     private String description;
@@ -78,27 +82,41 @@ public class Course {
         instructor = "";
     }
 
-    public ArrayList<Student> getStudent_list() {
+    public ArrayList<String> getStudent_list() {
         return student_list;
     }
 
-    public void addStudent(Student student) {
-        student_list.add(student);
-        number_of_students++;
+    public boolean addStudent(String student) {
+        if (student_list == null) {
+            student_list = new ArrayList<>();
+            student_list.add(student);
+            return true;
+        } else {
+            if (number_of_students >= course_capacity) {
+                return false;
+            } else {
+                student_list.add(student);
+                number_of_students++;
+                return true;
+            }
+        }
     }
 
+    /*
+    Will maybe need to change because of implementation
+    of the list of students to the database.
+     */
     public String toString() {
-        String str = name + ":" + code;
-        if (instructor != null) {
-            str = str + " - Instructor: " + instructor;
+        String students = "";
+        if (student_list != null) {
+            if (student_list.size() > 0) {
+                for (int i = 0; i < student_list.size(); i++) {
+                    students = students + student_list.get(i);
+                }
+            }
         }
-        if (course_capacity != 0) {
-            str = str + " - course capacity: " + course_capacity;
-        }
-        if (description != null) {
-            str = str + " - description: " + description;
-        }
-        return str;
+        return name + ":" + code + " - Instructor: " + instructor + " - course capacity: " + course_capacity +
+                " - days:" + days +  " - hours:" + hours + "- description: " + description + " - students: " + students;
     }
 
     public void setDescription(String description) {
@@ -107,5 +125,11 @@ public class Course {
 
     public boolean equals(Course newcourse) {
         return newcourse.code.equals(code) && newcourse.name.equals(name);
+    }
+
+    public String stud_toString() {
+        return name + ":" + code + " - Instructor: " + instructor + " - course capacity: " + course_capacity +
+                " - days:" + days +  " - hours:" + hours + "- description: " + description +
+                " - number of students: " + number_of_students;
     }
 }

@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         };
-        reference.addValueEventListener(initLists);
 
         ilogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 String password = ipassword.getText().toString();
                 int i;
                 Intent intent;
-
+                reference.addValueEventListener(initLists);
                 if(TextUtils.isEmpty(name)){
                     iname.setError("name is required");
                     return;
@@ -113,18 +112,15 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                     }
-                    /*
-                    For the student class
                     for (i = 0; i < studentList.size(); i++) {
                         if (studentList.get(i).getUsername().equals(name)) {
                             if (studentList.get(i).getPassword().equals(password)) {
-                                startActivity(new Intent(getApplicationContext(),ENTER NEW CLASS));
+                                startActivity(new Intent(getApplicationContext(), welcome_student.class));
                             } else {
                                 ipassword.setText("Username and password don't match");
                             }
                         }
                     }
-                     */
                 }
             }
         });
