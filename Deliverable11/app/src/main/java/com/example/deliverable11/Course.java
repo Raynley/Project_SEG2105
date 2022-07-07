@@ -6,6 +6,10 @@ public class Course {
     private String name;
     private String code;
     private String instructor;
+    /*
+    Possibly need to change student list
+    to a database kind of thing
+     */
     private ArrayList<String> student_list;
     private int course_capacity;
     private int number_of_students;
@@ -98,6 +102,10 @@ public class Course {
         }
     }
 
+    /*
+    Will maybe need to change because of implementation
+    of the list of students to the database.
+     */
     public String toString() {
         String students = "";
         if (student_list != null) {

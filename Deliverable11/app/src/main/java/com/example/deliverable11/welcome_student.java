@@ -76,6 +76,11 @@ public class welcome_student extends AppCompatActivity {
         };
 
         reference.addValueEventListener(postListener);
+        /*
+        Having trouble adding student to database.
+        Have to verify if you can add ArrayLists to databases.
+        Possible changes required.
+         */
         add_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,6 +133,11 @@ public class welcome_student extends AppCompatActivity {
                 }
             }
         });
+        /*
+        Need to add remove button functionalities.
+        Will need to add a remove method to the course class.
+        Will need to implement weird stuff to database.
+         */
         search_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
