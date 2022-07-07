@@ -163,12 +163,12 @@ public class welcome_instructor extends AppCompatActivity {
                 String capacityString = new_capacity.getText().toString();
                 String description = new_description.getText().toString();
                 int capacity = -1;
-                try {
+                if(!isValidCapacity(capacityString)) {
+                    new_capacity.setText("You must enter a number");
+                    return;
+                }
+                else{
                     capacity = Integer.parseInt(capacityString);
-                } catch (NumberFormatException e) {
-                    if (!TextUtils.isEmpty(capacityString)) {
-                        new_capacity.setText("You must enter a number");
-                    }
                 }
                 if (TextUtils.isEmpty(name) && TextUtils.isEmpty(code)) {
                     name_entry.setText("Name required");
@@ -324,5 +324,16 @@ public class welcome_instructor extends AppCompatActivity {
             }
         });
         reference.addValueEventListener(postListener);
+    }
+    public static Boolean isValidCapacity(String name){
+        int capacity = -1;
+        try {
+            capacity = Integer.parseInt(name);
+            return true ;
+
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
     }
 }
