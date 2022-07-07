@@ -16,6 +16,7 @@ public class Course {
     public Course(String name, String code) {
         this.name = name;
         this.code = code;
+        instructor = "";
     }
 
     private Course(){}
@@ -51,10 +52,6 @@ public class Course {
         } else {
             return false;
         }
-    }
-
-    public void assignInstructor(String instructor) {
-        this.instructor = instructor;
     }
 
     public String getDays() {
@@ -97,12 +94,6 @@ public class Course {
         }
         if (course_capacity != 0) {
             str = str + " - course capacity: " + course_capacity;
-        }
-        if (days != null) {
-            str = str + " - days: " + days;
-        }
-        if (hours != null) {
-            str = str + " - hours: " + hours;
         }
         if (description != null) {
             str = str + " - description: " + description;

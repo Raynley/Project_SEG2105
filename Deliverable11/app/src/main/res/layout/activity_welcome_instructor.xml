@@ -134,7 +134,9 @@
                     android:id="@+id/add_btn"
                     android:layout_width="41dp"
                     android:layout_height="match_parent"
-                    app:srcCompat="@android:drawable/ic_menu_add" />
+                    android:background="#cccc"
+                    app:srcCompat="@android:drawable/ic_menu_add"
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
             </TableRow>
 
             <TableRow
