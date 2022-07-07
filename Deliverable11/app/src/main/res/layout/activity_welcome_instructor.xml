@@ -40,6 +40,7 @@
                 android:id="@+id/displayCourse_inst"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:clickable="true"
                 android:text="" />
         </LinearLayout>
 
@@ -132,11 +133,18 @@
 
                 <ImageButton
                     android:id="@+id/add_btn"
-                    android:layout_width="41dp"
+                    android:layout_width="30dp"
                     android:layout_height="match_parent"
                     android:background="#cccc"
                     app:srcCompat="@android:drawable/ic_menu_add"
                     tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+                <ImageButton
+                    android:id="@+id/search_btn"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:background="#cccc"
+                    app:srcCompat="@android:drawable/ic_menu_search" />
             </TableRow>
 
             <TableRow
