@@ -82,9 +82,20 @@ public class Course {
         return student_list;
     }
 
-    public void addStudent(String student) {
-        student_list.add(student);
-        number_of_students++;
+    public boolean addStudent(String student) {
+        if (student_list == null) {
+            student_list = new ArrayList<>();
+            student_list.add(student);
+            return true;
+        } else {
+            if (number_of_students >= course_capacity) {
+                return false;
+            } else {
+                student_list.add(student);
+                number_of_students++;
+                return true;
+            }
+        }
     }
 
     public String toString() {
@@ -106,5 +117,11 @@ public class Course {
 
     public boolean equals(Course newcourse) {
         return newcourse.code.equals(code) && newcourse.name.equals(name);
+    }
+
+    public String stud_toString() {
+        return name + ":" + code + " - Instructor: " + instructor + " - course capacity: " + course_capacity +
+                " - days:" + days +  " - hours:" + hours + "- description: " + description +
+                " - number of students: " + number_of_students;
     }
 }

@@ -102,6 +102,7 @@ public class welcome_instructor extends AppCompatActivity {
                 }
                 reference.addValueEventListener(initList);
                 Course newCourse = new Course(name, code);
+                Boolean found = false;
                 for (int i = 0; i < courseList.size(); i++) {
                     if (courseList.get(i).equals(newCourse)) {
                         /*
@@ -111,6 +112,7 @@ public class welcome_instructor extends AppCompatActivity {
                         FIXED
                          */
                         String username;
+                        found = true;
                         if (savedInstanceState == null) {
                             Bundle b = getIntent().getExtras();
                             if (b == null) {
@@ -131,18 +133,21 @@ public class welcome_instructor extends AppCompatActivity {
                             new_capacity.setText("");
                             new_description.setText("");
                             error_display.setText("");
+                            break;
                         } else {
                             error_display.setText("Course already has an instructor assigned to it");
+                            break;
                         }
-                    } else {
-                        error_display.setText("Course was not found");
-                        name_entry.setText("");
-                        code_entry.setText("");
-                        new_days.setText("");
-                        new_hours.setText("");
-                        new_capacity.setText("");
-                        new_description.setText("");
                     }
+                }
+                if (!found) {
+                    error_display.setText("Course was not found");
+                    name_entry.setText("");
+                    code_entry.setText("");
+                    new_days.setText("");
+                    new_hours.setText("");
+                    new_capacity.setText("");
+                    new_description.setText("");
                 }
                 reference.addValueEventListener(postListener);
             }
