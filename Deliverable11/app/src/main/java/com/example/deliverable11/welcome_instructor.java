@@ -198,7 +198,7 @@ public class welcome_instructor extends AppCompatActivity {
                             }
                             if (!TextUtils.isEmpty(description)) {
                                 newCourse.setDescription(description);
-                            } 
+                            }
                             database.getReference("Courses").child(name).removeValue();
                             reference.child(name).setValue(newCourse);
                             name_entry.setText("");
