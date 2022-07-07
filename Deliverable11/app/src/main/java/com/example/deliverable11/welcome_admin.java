@@ -16,6 +16,7 @@ public class welcome_admin extends AppCompatActivity {
     ImageView addCourse, editCourse, manageInstructor, manageStudent;
     Button logout;
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
