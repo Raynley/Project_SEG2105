@@ -174,12 +174,12 @@ public class welcome_instructor extends AppCompatActivity {
                     username = (String) savedInstanceState.getSerializable("USERNAME");
                 }
                 int capacity = -1;
-                try {
+                if(!isValidCapacity(capacityString)) {
+                    new_capacity.setText("You must enter a number");
+                    return;
+                }
+                else{
                     capacity = Integer.parseInt(capacityString);
-                } catch (NumberFormatException e) {
-                    if (!TextUtils.isEmpty(capacityString)) {
-                        new_capacity.setText("You must enter a number");
-                    }
                 }
                 if (TextUtils.isEmpty(name) && TextUtils.isEmpty(code)) {
                     name_entry.setText("Name required");
@@ -356,7 +356,8 @@ public class welcome_instructor extends AppCompatActivity {
         });
         reference.addValueEventListener(postListener);
     }
-    public static boolean isValidCapacity(String name){
+    
+    public static Boolean isValidCapacity(String name){
         int capacity = -1;
         try {
             capacity = Integer.parseInt(name);

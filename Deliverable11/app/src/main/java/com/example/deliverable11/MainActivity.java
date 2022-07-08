@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+      
 
         iname = findViewById(R.id.userName);
         ipassword = findViewById(R.id.password);
@@ -85,10 +87,10 @@ public class MainActivity extends AppCompatActivity {
                 int i;
                 Intent intent;
                 reference.addValueEventListener(initLists);
-                if(TextUtils.isEmpty(name)){
+                if(nameEmpty( name)){
                     iname.setError("name is required");
                     return;
-                } else if(TextUtils.isEmpty(password)){
+                } else if(nameEmpty(password)){
                     ipassword.setError("Password is required");
                     return;
                 } else {
