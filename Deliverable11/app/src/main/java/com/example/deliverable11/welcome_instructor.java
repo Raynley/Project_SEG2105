@@ -287,7 +287,7 @@ public class welcome_instructor extends AppCompatActivity {
                                 username = (String) savedInstanceState.getSerializable("USERNAME");
                             }
                             if (newCourse.getInstructor().equals(username)) {
-                                newCourse.removeInstructor();
+                                newCourse = new Course(name, code);
                                 reference.child(name).removeValue();
                                 reference.child(name).setValue(newCourse);
                                 name_entry.setText("");
