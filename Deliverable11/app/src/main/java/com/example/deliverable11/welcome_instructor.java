@@ -197,7 +197,7 @@ public class welcome_instructor extends AppCompatActivity {
                 } else if (TextUtils.isEmpty(days) && TextUtils.isEmpty(hours) && TextUtils.isEmpty(capacityString)
                         && TextUtils.isEmpty(description)) {
                     error_display.setText("Information to edit missing");
-                }else {
+                } else {
                     reference.addValueEventListener(initList);
                     Course newCourse = new Course(name, code);
                     for (int i = 0; i < courseList.size(); i++) {
@@ -205,16 +205,32 @@ public class welcome_instructor extends AppCompatActivity {
                             newCourse = courseList.get(i);
                             if (newCourse.getInstructor().equals(username)) {
                                 if (!TextUtils.isEmpty(days)) {
-                                    newCourse.setDays(days);
+                                    if (isValidDays(days)) {
+                                        newCourse.setDays(days);
+                                    } else {
+                                        new_days.setText("Invalid days entered");
+                                    }
                                 }
                                 if (!TextUtils.isEmpty(hours)) {
-                                    newCourse.setHours(hours);
+                                    if (isValidHours(hours)) {
+                                        newCourse.setHours(hours);
+                                    } else {
+                                        new_hours.setText("Invalid hours entered");
+                                    }
                                 }
-                                if (capacity > 0) {
-                                    newCourse.setCourse_capacity(capacity);
+                                if (!TextUtils.isEmpty(capacityString)) {
+                                    if (isValidCapacity(capacityString)) {
+                                        newCourse.setCourse_capacity(capacity);
+                                    } else {
+                                        new_capacity.setText("Invalid capacity entered");
+                                    }
                                 }
                                 if (!TextUtils.isEmpty(description)) {
-                                    newCourse.setDescription(description);
+                                    if (isValidDescription(description)) {
+                                        newCourse.setDescription(description);
+                                    } else {
+                                        new_description.setText("Invalid description entered");
+                                    }
                                 }
                                 database.getReference("Courses").child(name).removeValue();
                                 reference.child(name).setValue(newCourse);
@@ -340,7 +356,7 @@ public class welcome_instructor extends AppCompatActivity {
         });
         reference.addValueEventListener(postListener);
     }
-    public static Boolean isValidCapacity(String name){
+    public static boolean isValidCapacity(String name){
         int capacity = -1;
         try {
             capacity = Integer.parseInt(name);
@@ -350,5 +366,70 @@ public class welcome_instructor extends AppCompatActivity {
             return false;
         }
 
+    }
+
+    private boolean isDayOfWeek(String day) {
+        day = day.trim();
+        if (day.equals("Monday") || day.equals("monday") || day.equals("Tuesday") || day.equals("tuesday")
+                || day.equals("Wednesday") || day.equals("wednesday") || day.equals("Thursday") ||
+                day.equals("thursday") || day.equals("Friday") || day.equals("friday") || day.equals("Saturday")
+                || day.equals("saturday") || day.equals("Sunday") || day.equals("sunday")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isValidDays(String days) {
+        String[] list_days = days.split(",");
+        boolean verification = true;
+        for (int i = 0; i < list_days.length; i++) {
+            verification = verification && isDayOfWeek(list_days[i]);
+            if (!verification) {
+                break;
+            }
+        }
+        return verification;
+    }
+
+    private boolean isHour(String hour) {
+        String[] hourNumbers = hour.split(":");
+        boolean verification = true;
+        int numb;
+        for (int i = 0; i < hourNumbers.length; i++) {
+            try {
+                numb = Integer.parseInt(hourNumbers[i]);
+            } catch (NumberFormatException e) {
+                verification = false;
+                break;
+            }
+        }
+        return verification;
+    }
+
+    private boolean isValidTime(String time) {
+        String[] time_list = time.split("-");
+        boolean verification = true;
+        for (int i = 0; i < time_list.length; i++) {
+            verification = isHour(time_list[i]);
+            if (!verification) {
+                break;
+            }
+        }
+        return verification;
+    }
+
+    public boolean isValidHours(String hours) {
+        String[] hours_list = hours.split(" ");
+        for (int i = 0; i < hours_list.length; i++) {
+            if (!isValidTime(hours_list[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isValidDescription(String description) {
+        return true;
     }
 }
