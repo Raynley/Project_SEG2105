@@ -105,13 +105,8 @@ public class welcome_instructor extends AppCompatActivity {
                 Boolean found = false;
                 for (int i = 0; i < courseList.size(); i++) {
                     if (courseList.get(i).equals(newCourse)) {
-                        /*
-                        We have to find a way to make it so that the
-                        username they enter in the login page is kept until
-                        this step for it to be used below.
-                        FIXED
-                         */
                         String username;
+                        newCourse = courseList.get(i);
                         found = true;
                         if (savedInstanceState == null) {
                             Bundle b = getIntent().getExtras();
@@ -123,7 +118,8 @@ public class welcome_instructor extends AppCompatActivity {
                         } else {
                             username = (String) savedInstanceState.getSerializable("USERNAME");
                         }
-                        if (newCourse.setInstructor(username)) {
+                        if (!newCourse.getHasInstructor()) {
+                            newCourse.setInstructor(username);
                             reference.child(name).removeValue();
                             reference.child(name).setValue(newCourse);
                             name_entry.setText("");
@@ -173,13 +169,14 @@ public class welcome_instructor extends AppCompatActivity {
                 } else {
                     username = (String) savedInstanceState.getSerializable("USERNAME");
                 }
-                int capacity = -1;
-                if(!isValidCapacity(capacityString)) {
-                    new_capacity.setText("You must enter a number");
-                    return;
-                }
-                else{
-                    capacity = Integer.parseInt(capacityString);
+                int capacity = 0;
+                if (!TextUtils.isEmpty(capacityString)) {
+                    try {
+                        capacity = Integer.parseInt(capacityString);
+                    } catch (NumberFormatException e) {
+                        new_capacity.setText("You must enter a number");
+                        return;
+                    }
                 }
                 if (TextUtils.isEmpty(name) && TextUtils.isEmpty(code)) {
                     name_entry.setText("Name required");
@@ -431,6 +428,6 @@ public class welcome_instructor extends AppCompatActivity {
     }
 
     public boolean isValidDescription(String description) {
-        return true;
+        return description instanceof String;
     }
 }
