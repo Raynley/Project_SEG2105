@@ -9,16 +9,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 public class welcome_admin extends AppCompatActivity {
     FirebaseAuth fAuth;
-    EditText welcome_message;
+    TextView welcome_message;
     ImageView addCourse, editCourse, manageInstructor, manageStudent;
     Button logout;
 
-    @SuppressLint("WrongViewCast")
+    //@SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +35,20 @@ public class welcome_admin extends AppCompatActivity {
         manageInstructor = findViewById(R.id.delete_instruc_icon);
         manageStudent = findViewById(R.id.manage_stud_icon);
         logout = findViewById(R.id.log_out);
+
+        String username;
+        if (savedInstanceState == null) {
+            Bundle b = getIntent().getExtras();
+            if (b == null) {
+                username = null;
+            } else {
+                username = b.getString("USERNAME");
+            }
+        } else {
+            username = (String) savedInstanceState.getSerializable("USERNAME");
+        }
+
+        welcome_message.setText("Welcome " + username + ", you are logged in as an admin.");
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
