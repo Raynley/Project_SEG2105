@@ -16,11 +16,18 @@ public class Course {
     private String description;
     private String days;
     private String hours;
+    private boolean hasInstructor;
 
     public Course(String name, String code) {
         this.name = name;
         this.code = code;
         instructor = "";
+        hasInstructor = false;
+        description = "";
+        days = "";
+        hours = "";
+        course_capacity = 0;
+        number_of_students = 0;
     }
 
     private Course(){}
@@ -49,13 +56,9 @@ public class Course {
         this.code = code;
     }
 
-    public boolean setInstructor(String instructor) {
-        if (this.instructor.equals("")) {
-            this.instructor = instructor;
-            return true;
-        } else {
-            return false;
-        }
+    public void setInstructor(String instructor) {
+        this.instructor = instructor;
+        hasInstructor = true;
     }
 
     public String getDays() {
@@ -80,6 +83,7 @@ public class Course {
 
     public void removeInstructor() {
         instructor = "";
+        hasInstructor = false;
     }
 
     public ArrayList<String> getStudent_list() {
@@ -100,6 +104,10 @@ public class Course {
                 return true;
             }
         }
+    }
+
+    public boolean getHasInstructor(){
+        return hasInstructor;
     }
 
     /*
