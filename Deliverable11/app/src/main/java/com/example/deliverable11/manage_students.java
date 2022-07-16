@@ -16,6 +16,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class manage_students extends AppCompatActivity {
     EditText name_entry;
     ImageButton add_btn, del_btn;
@@ -34,6 +36,24 @@ public class manage_students extends AppCompatActivity {
         display = findViewById(R.id.student_display);
         database = FirebaseDatabase.getInstance();
         reference = database.getReference("User").child("Student");
+        ArrayList<Student> studentList = new ArrayList<>();
+
+        ValueEventListener initList = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    studentList.clear();
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        studentList.add(ds.getValue(Student.class));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
@@ -62,11 +82,27 @@ public class manage_students extends AppCompatActivity {
                     name_entry.setError("Name is required");
                 } else {
                     //REMOVE FROM DATABASE
-                    database.getReference("User").child("Student").child(name).removeValue();
-                    name_entry.setText("");
+                    int index = getIndex(name, studentList);
+                    if (index < 0) {
+                        name_entry.setError("Student not found");
+                        return;
+                    } else {
+                        reference.child("Student").child(String.valueOf(index)).removeValue();
+                    }
+                    /*database.getReference("User").child("Student").child(name).removeValue();
+                    name_entry.setText("");*/
                 }
             }
         });
         reference.addValueEventListener(postListener);
+    }
+
+    public int getIndex(String student, ArrayList<Student> studentList) {
+        for (int i = 0; i < studentList.size(); i++) {
+            if (student.equals(studentList.get(i).getUsername())) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

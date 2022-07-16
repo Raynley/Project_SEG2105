@@ -189,11 +189,20 @@ public class edit_courses extends AppCompatActivity {
                     return;
                 } else {
                     //REMOVE FROM DATABASE
-                    database.getReference("Courses").child(old_name).removeValue();
-                    old_code_entry.setText("");
-                    old_name_entry.setText("");
-                    new_code_entry.setText("");
-                    new_name_entry.setText("");
+                    int index = getIndex(new Course(old_name, old_code), courseList);
+                    if (index < 0) {
+                        old_code_entry.setText("Course not found");
+                        old_name_entry.setText("");
+                        new_code_entry.setText("");
+                        new_name_entry.setText("");
+                        return;
+                    } else {
+                        reference.child(String.valueOf(index)).removeValue();
+                        old_code_entry.setText("");
+                        old_name_entry.setText("");
+                        new_code_entry.setText("");
+                        new_name_entry.setText("");
+                    }
                 }
                 reference.addValueEventListener(postListener);
             }

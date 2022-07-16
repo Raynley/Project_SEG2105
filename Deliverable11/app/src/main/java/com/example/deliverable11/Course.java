@@ -17,7 +17,6 @@ public class Course {
     private String days;
     private String hours;
     private boolean hasInstructor;
-    private int index;
 
     public Course(String name, String code) {
         this.name = name;
@@ -140,14 +139,6 @@ public class Course {
         return name + ":" + code + " - Instructor: " + instructor + " - course capacity: " + course_capacity +
                 " - days:" + days +  " - hours:" + hours + "- description: " + description +
                 " - number of students: " + number_of_students;
-    }
-
-    public int getIndex(){
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
     }
 
     public String basicToString() {

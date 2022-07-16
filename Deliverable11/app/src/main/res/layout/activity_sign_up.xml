@@ -188,14 +188,8 @@
         app:layout_constraintTop_toBottomOf="@+id/tableLayout2">
 
         <RadioButton
-            android:id="@+id/admin_button"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Admin     " />
-
-        <RadioButton
             android:id="@+id/instructor_button"
-            android:layout_width="wrap_content"
+            android:layout_width="208dp"
             android:layout_height="match_parent"
             android:text="Instructor     " />
 

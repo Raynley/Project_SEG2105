@@ -17,6 +17,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Array;
+import java.util.ArrayList;
+
 public class manage_instructors extends AppCompatActivity {
     EditText name_entry;
     ImageButton del_ins;
@@ -34,6 +37,24 @@ public class manage_instructors extends AppCompatActivity {
         display = findViewById(R.id.instructor_display);
         database = FirebaseDatabase.getInstance();
         reference = database.getReference("User").child("Instructor");
+        ArrayList<Instructor> instructorList = new ArrayList<>();
+
+        ValueEventListener initList = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    instructorList.clear();
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        instructorList.add(ds.getValue(Instructor.class));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
@@ -56,17 +77,34 @@ public class manage_instructors extends AppCompatActivity {
         del_ins.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                reference.addValueEventListener(initList);
                 String name = name_entry.getText().toString().trim();
                 if (TextUtils.isEmpty(name)) {
                     name_entry.setError("Name required");
                 } else {
                     //DELETE FROM DATABASE
-                    database.getReference("User").child("Instructor").child(name).removeValue();
-                    name_entry.setText("");
+                    int index = getIndex(name, instructorList);
+                    if (index < 0) {
+                        name_entry.setText("Instructor not found");
+                        return;
+                    } else {
+                        reference.child(String.valueOf(index)).removeValue();
+                        return;
+                    }
+                    /*database.getReference("User").child("Instructor").child(name).removeValue();
+                    name_entry.setText("");*/
                 }
             }
         });
         reference.addValueEventListener(postListener);
         
+    }
+    public int getIndex(String instructor, ArrayList<Instructor> instructorList) {
+        for (int i = 0; i < instructorList.size(); i++) {
+            if (instructor.equals(instructorList.get(i).getUsername())) {
+                return i;
+            }
+        }
+         return -1;
     }
 }
