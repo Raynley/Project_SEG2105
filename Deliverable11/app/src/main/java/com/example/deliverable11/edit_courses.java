@@ -111,8 +111,7 @@ public class edit_courses extends AppCompatActivity {
                     return;
                 } else if (TextUtils.isEmpty(new_code)) {
                     new_code = old_code;
-                    Course course = new Course(new_name, new_code);
-                    int index = getIndex(course, courseList);
+                    int index = getIndex(new Course(new_name, new_code), courseList);
                     if (index < 0) {
                         old_code_entry.setText("Course not found");
                         old_name_entry.setText("");
@@ -120,9 +119,7 @@ public class edit_courses extends AppCompatActivity {
                         new_name_entry.setText("");
                         return;
                     } else {
-                        Course newCourse = courseList.get(index);
-                        newCourse.setName(new_name);
-                        reference.child(String.valueOf(index)).setValue(newCourse);
+                        reference.child(String.valueOf(index)).child("name").setValue(new_name);
                         old_code_entry.setText("");
                         old_name_entry.setText("");
                         new_code_entry.setText("");
@@ -130,8 +127,7 @@ public class edit_courses extends AppCompatActivity {
                     }
                 } else if (TextUtils.isEmpty(new_name)) {
                     new_name = old_name;
-                    Course course = new Course(new_name, new_code);
-                    int index = getIndex(course, courseList);
+                    int index = getIndex(new Course(new_name, new_code), courseList);
                     if (index < 0) {
                         old_code_entry.setText("Course not found");
                         old_name_entry.setText("");
@@ -139,17 +135,14 @@ public class edit_courses extends AppCompatActivity {
                         new_name_entry.setText("");
                         return;
                     } else {
-                        Course newCourse = courseList.get(index);
-                        newCourse.setCode(new_code);
-                        reference.child(String.valueOf(index)).setValue(newCourse);
+                        reference.child(String.valueOf(index)).child("code").setValue(new_code);
                         old_code_entry.setText("");
                         old_name_entry.setText("");
                         new_code_entry.setText("");
                         new_name_entry.setText("");
                     }
                 } else {
-                    Course course = new Course(new_name, new_code);
-                    int index = getIndex(course, courseList);
+                    int index = getIndex(new Course(new_name, new_code), courseList);
                     if (index < 0) {
                         old_code_entry.setText("Course not found");
                         old_name_entry.setText("");
@@ -157,10 +150,8 @@ public class edit_courses extends AppCompatActivity {
                         new_name_entry.setText("");
                         return;
                     } else {
-                        Course newCourse = courseList.get(index);
-                        newCourse.setName(new_name);
-                        newCourse.setCode(new_code);
-                        reference.child(String.valueOf(index)).setValue(newCourse);
+                        reference.child(String.valueOf(index)).child("name").setValue(new_name);
+                        reference.child(String.valueOf(index)).child("code").setValue(new_code);
                         old_code_entry.setText("");
                         old_name_entry.setText("");
                         new_code_entry.setText("");

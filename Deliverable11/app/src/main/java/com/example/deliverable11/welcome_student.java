@@ -44,6 +44,7 @@ public class welcome_student extends AppCompatActivity {
         reference = database.getReference("Courses");
         ArrayList<Course> courseList = new ArrayList<>();
         ArrayList<Course> enrolled_courses = new ArrayList<>();
+        ArrayList<String> students = new ArrayList<>();
         final String username = (String) savedInstanceState.getSerializable("USERNAME");;
 
         ValueEventListener postListener = new ValueEventListener() {
@@ -62,11 +63,13 @@ public class welcome_student extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {}
         };
 
-        ValueEventListener find_enrolled_courses = new ValueEventListener() {
+        ValueEventListener init_students = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        students.add(ds.getValue(Student.class).getUsername());
+                    }
                 }
             }
 
@@ -133,6 +136,18 @@ public class welcome_student extends AppCompatActivity {
             public void onClick(View v) {
                 String name = name_entry.getText().toString();
                 String code = code_entry.getText().toString();
+                reference.addValueEventListener(initList);
+                String username;
+                if (savedInstanceState == null) {
+                    Bundle b = getIntent().getExtras();
+                    if (b == null) {
+                        username = null;
+                    } else {
+                        username = b.getString("USERNAME");
+                    }
+                } else {
+                    username = (String) savedInstanceState.getSerializable("USERNAME");
+                }
                 if (TextUtils.isEmpty(name) && TextUtils.isEmpty(code)) {
                     name_entry.setText("Name required");
                     code_entry.setText("Code required");
@@ -148,33 +163,23 @@ public class welcome_student extends AppCompatActivity {
                     return;
                 }
                 reference.addValueEventListener(initList);
-                Course newCourse = new Course(name, code);
-                for (int i = 0; i < courseList.size(); i++) {
-                    Course current = courseList.get(i);
-                    if (current.equals(newCourse)) {
-                        newCourse = current;
-                        String username;
-                        if (savedInstanceState == null) {
-                            Bundle b = getIntent().getExtras();
-                            if (b == null) {
-                                username = null;
-                            } else {
-                                username = b.getString("USERNAME");
-                            }
+                int index = getIndex(new Course(name, code), courseList);
+                if (index < 0) {
+                    error_display.setText("Course not found");
+                    return;
+                } else {
+                    reference.child(String.valueOf(index)).child("Students").addValueEventListener(init_students);
+                    boolean inCourse = inCourse(username, students);
+                    if (inCourse) {
+                        error_display.setText("You are already enrolled in this course");
+                        return;
+                    } else {
+                        Course current = courseList.get(index);
+                        if (current.addStudent()) {
+                            reference.child(String.valueOf(index)).child("course_capacity").setValue(current.getCourse_capacity());
+                            reference.child(String.valueOf(index)).child("Students").child(String.valueOf(students.size())).setValue(username);
                         } else {
-                            username = (String) savedInstanceState.getSerializable("USERNAME");
-                        }
-                        if (newCourse.addStudent(username)) {
-                            reference.child(name).removeValue();
-                            reference.child(name).setValue(newCourse);
-                            name_entry.setText("");
-                            code_entry.setText("");
-                            break;
-                        } else {
-                            error_display.setText("Course capacity full. Enrolment failed");
-                            name_entry.setText("");
-                            code_entry.setText("");
-                            break;
+                            error_display.setText("Course at capacity. Enrolment failed");
                         }
                     }
                 }
@@ -231,5 +236,23 @@ public class welcome_student extends AppCompatActivity {
             }
         });
         reference.addValueEventListener(postListener);
+    }
+
+    public int getIndex(Course course, ArrayList<Course> courseList) {
+        for (int i = 0; i < courseList.size(); i++) {
+            if (course.equals(courseList.get(i))) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public boolean inCourse(String username, ArrayList<String> studentList) {
+        for (int i = 0; i < studentList.size(); i++) {
+            if (username.equals(studentList.get(i))) {
+                return true;
+            }
+        }
+        return false;
     }
 }

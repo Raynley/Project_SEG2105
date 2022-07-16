@@ -10,7 +10,6 @@ public class Course {
     Possibly need to change student list
     to a database kind of thing
      */
-    private ArrayList<String> student_list;
     private int course_capacity;
     private int number_of_students;
     private String description;
@@ -86,24 +85,12 @@ public class Course {
         hasInstructor = false;
     }
 
-    public ArrayList<String> getStudent_list() {
-        return student_list;
-    }
-
-    public boolean addStudent(String student) {
-        if (student_list == null) {
-            student_list = new ArrayList<>();
-            student_list.add(student);
+    public boolean addStudent() {
+        if (course_capacity > number_of_students) {
+            number_of_students++;
             return true;
-        } else {
-            if (number_of_students >= course_capacity) {
-                return false;
-            } else {
-                student_list.add(student);
-                number_of_students++;
-                return true;
-            }
         }
+        return false;
     }
 
     public boolean getHasInstructor(){
@@ -115,16 +102,8 @@ public class Course {
     of the list of students to the database.
      */
     public String toString() {
-        String students = "";
-        if (student_list != null) {
-            if (student_list.size() > 0) {
-                for (int i = 0; i < student_list.size(); i++) {
-                    students = students + student_list.get(i);
-                }
-            }
-        }
         return name + ":" + code + " - Instructor: " + instructor + " - course capacity: " + course_capacity +
-                " - days:" + days +  " - hours:" + hours + "- description: " + description + " - students: " + students;
+                " - days:" + days +  " - hours:" + hours + " - description: " + description + " - number of students" + number_of_students;
     }
 
     public void setDescription(String description) {
