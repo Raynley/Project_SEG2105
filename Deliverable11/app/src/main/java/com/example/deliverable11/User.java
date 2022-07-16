@@ -3,6 +3,7 @@ package com.example.deliverable11;
 public class User {
     private String username;
     private String password;
+    private int index;
 
     public User(String username, String password) {
         this.username = username;
@@ -33,6 +34,14 @@ public class User {
 
     public String toString() {
         return username;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 }
 

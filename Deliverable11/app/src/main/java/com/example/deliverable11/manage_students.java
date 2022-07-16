@@ -100,7 +100,7 @@ public class manage_students extends AppCompatActivity {
     public int getIndex(String student, ArrayList<Student> studentList) {
         for (int i = 0; i < studentList.size(); i++) {
             if (student.equals(studentList.get(i).getUsername())) {
-                return i;
+                return studentList.get(i).getIndex();
             }
         }
         return -1;

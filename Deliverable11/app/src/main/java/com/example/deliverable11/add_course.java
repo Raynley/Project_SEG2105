@@ -77,6 +77,7 @@ public class add_course extends AppCompatActivity {
                     String code = course_code.getEditableText().toString();
 
                     Course course = new Course(name, code);
+                    course.setIndex(course_list.size());
 
                     reference.child(String.valueOf(course_list.size())).setValue(course);
                     course_name.setText("");

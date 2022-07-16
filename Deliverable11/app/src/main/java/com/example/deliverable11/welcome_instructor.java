@@ -435,7 +435,7 @@ public class welcome_instructor extends AppCompatActivity {
     public int getIndex(Course course, ArrayList<Course> courseList) {
         for (int i = 0; i < courseList.size(); i++) {
             if (course.equals(courseList.get(i))) {
-                return i;
+                return courseList.get(i).getIndex();
             }
         }
         return -1;

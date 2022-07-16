@@ -102,7 +102,7 @@ public class manage_instructors extends AppCompatActivity {
     public int getIndex(String instructor, ArrayList<Instructor> instructorList) {
         for (int i = 0; i < instructorList.size(); i++) {
             if (instructor.equals(instructorList.get(i).getUsername())) {
-                return i;
+                return instructorList.get(i).getIndex();
             }
         }
          return -1;

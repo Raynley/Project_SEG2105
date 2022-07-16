@@ -124,6 +124,7 @@ public class SignUp extends AppCompatActivity {
                         Student student = new Student(name, password);
                         reference = rootCourse.getReference("User").child("Student");
                         reference.addValueEventListener(initStudentList);
+                        student.setIndex(studentList.size());
                         reference.child(String.valueOf(studentList.size())).setValue(student);
                         iname.setText("");
                         ipassword.setText("");
@@ -132,6 +133,7 @@ public class SignUp extends AppCompatActivity {
                         Instructor instructor = new Instructor(name, password);
                         reference = rootCourse.getReference("User").child("Instructor");
                         reference.addValueEventListener(initInstructorList);
+                        instructor.setIndex(instructorList.size());
                         reference.child(String.valueOf(instructorList.size())).setValue(instructor);
                         iname.setText("");
                         ipassword.setText("");

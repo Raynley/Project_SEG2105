@@ -88,7 +88,7 @@ public class welcome_student extends AppCompatActivity {
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         current = ds.getValue(Course.class);
                         for (DataSnapshot ds_student : ds.child("Students").getChildren()) {
-                            if (ds.getValue(Student.class).getUsername().equals(username)) {
+                            if (ds_student.getValue(Student.class).getUsername().equals(username)) {
                                 enrolled_courses.add(current);
                                 break;
                             }
@@ -241,7 +241,7 @@ public class welcome_student extends AppCompatActivity {
     public int getIndex(Course course, ArrayList<Course> courseList) {
         for (int i = 0; i < courseList.size(); i++) {
             if (course.equals(courseList.get(i))) {
-                return i;
+                return courseList.get(i).getIndex();
             }
         }
         return -1;
