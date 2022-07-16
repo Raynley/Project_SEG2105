@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.renderscript.Sampler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 public class welcome_student extends AppCompatActivity {
     EditText name_entry, code_entry;
     ImageButton add_btn, remove_btn, search_btn;
-    TextView displayCourses, error_display;
+    TextView displayCourses, error_display, course_view;
     ArrayList<Course> courseList;
     FirebaseDatabase database;
     DatabaseReference reference;
@@ -38,9 +39,12 @@ public class welcome_student extends AppCompatActivity {
         search_btn = findViewById(R.id.search_btn);
         displayCourses = findViewById(R.id.displayCourse);
         error_display = findViewById(R.id.Error);
+        course_view = findViewById(R.id.Enrol_View);
         database = FirebaseDatabase.getInstance();
         reference = database.getReference("Courses");
         ArrayList<Course> courseList = new ArrayList<>();
+        ArrayList<Course> enrolled_courses = new ArrayList<>();
+        final String username = (String) savedInstanceState.getSerializable("USERNAME");;
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
@@ -56,6 +60,48 @@ public class welcome_student extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
+        };
+
+        ValueEventListener find_enrolled_courses = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        ValueEventListener init_enrolled_courses = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Course current;
+                    String textDisplay = "";
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        current = ds.getValue(Course.class);
+                        for (DataSnapshot ds_student : ds.child(String.valueOf(current.getIndex())).getChildren()) {
+                            if (ds.getValue(Student.class).getUsername().equals(username)) {
+                                enrolled_courses.add(current);
+                                break;
+                            }
+                        }
+                    }
+                    for (int i = 0; i < enrolled_courses.size(); i++) {
+                        textDisplay = textDisplay + enrolled_courses.get(i).basicToString();
+                    }
+                    course_view.setText(textDisplay);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
         };
 
         ValueEventListener initList = new ValueEventListener() {
@@ -76,6 +122,7 @@ public class welcome_student extends AppCompatActivity {
         };
 
         reference.addValueEventListener(postListener);
+        reference.addValueEventListener(init_enrolled_courses);
         /*
         Having trouble adding student to database.
         Have to verify if you can add ArrayLists to databases.

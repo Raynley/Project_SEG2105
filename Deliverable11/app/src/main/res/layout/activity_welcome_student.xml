@@ -139,6 +139,18 @@
                     app:srcCompat="@android:drawable/ic_menu_search" />
             </TableRow>
 
+            <TextView
+                android:id="@+id/Enrol_Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Here are the courses you are enrolled in:" />
+
+            <TextView
+                android:id="@+id/Enrol_View"
+                android:layout_width="match_parent"
+                android:layout_height="290dp"
+                android:text="" />
+
         </LinearLayout>
     </LinearLayout>
 
