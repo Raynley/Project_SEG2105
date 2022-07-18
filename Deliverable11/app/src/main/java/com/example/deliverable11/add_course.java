@@ -32,15 +32,20 @@ public class add_course extends AppCompatActivity {
         course_name = findViewById(R.id.create_course_name);
         course_code = findViewById(R.id.create_course_code);
         course_btn = findViewById(R.id.create_course_btn);
+        rootCourse = FirebaseDatabase.getInstance();
+        reference = rootCourse.getReference("Courses");
         ArrayList<Course> course_list = new ArrayList<>();
+        final int[] index = {1};
 
         ValueEventListener initList = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     course_list.clear();
+                    index[0] = 1;
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         course_list.add(ds.getValue(Course.class));
+                        index[0]++;
                     }
                 }
             }
@@ -50,6 +55,7 @@ public class add_course extends AppCompatActivity {
 
             }
         };
+        reference.addValueEventListener(initList);
 
         course_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,16 +76,12 @@ public class add_course extends AppCompatActivity {
                     return;
                 } else {
                     //ENTER THE NEW COURSE INTO THE DATABASE
-                    rootCourse = FirebaseDatabase.getInstance();
-                    reference = rootCourse.getReference("Courses");
-
                     String name = course_name.getEditableText().toString();
                     String code = course_code.getEditableText().toString();
 
                     Course course = new Course(name, code);
-                    course.setIndex(course_list.size());
-
-                    reference.child(String.valueOf(course_list.size())).setValue(course);
+                    course.setIndex(index[0]);
+                    reference.child(String.valueOf(index[0])).setValue(course);
                     course_name.setText("");
                     course_code.setText("");
                 }

@@ -48,7 +48,6 @@ public class edit_courses extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    Course course = snapshot.getValue(Course.class);
                     String textDisplay = "";
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         textDisplay = textDisplay + ds.getValue(Course.class).toString() + "\n";
@@ -79,6 +78,7 @@ public class edit_courses extends AppCompatActivity {
         };
 
         reference.addValueEventListener(postListener);
+        reference.addValueEventListener(initList);
 
         edit_btn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -142,7 +142,7 @@ public class edit_courses extends AppCompatActivity {
                         new_name_entry.setText("");
                     }
                 } else {
-                    int index = getIndex(new Course(new_name, new_code), courseList);
+                    int index = getIndex(new Course(old_name, old_code), courseList);
                     if (index < 0) {
                         old_code_entry.setText("Course not found");
                         old_name_entry.setText("");

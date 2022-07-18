@@ -87,9 +87,11 @@ public class Course {
     }
 
     public boolean addStudent() {
-        if (course_capacity > number_of_students) {
-            number_of_students++;
-            return true;
+        if (course_capacity > 0) {
+            if (course_capacity > number_of_students) {
+                number_of_students++;
+                return true;
+            }
         }
         return false;
     }

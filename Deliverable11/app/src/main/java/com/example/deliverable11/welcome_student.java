@@ -45,7 +45,6 @@ public class welcome_student extends AppCompatActivity {
         ArrayList<Course> courseList = new ArrayList<>();
         ArrayList<Course> enrolled_courses = new ArrayList<>();
         ArrayList<String> students = new ArrayList<>();
-        final String username = (String) savedInstanceState.getSerializable("USERNAME");;
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
@@ -85,6 +84,17 @@ public class welcome_student extends AppCompatActivity {
                 if (snapshot.exists()) {
                     Course current;
                     String textDisplay = "";
+                    String username;
+                    if (savedInstanceState == null) {
+                        Bundle b = getIntent().getExtras();
+                        if (b == null) {
+                            username = null;
+                        } else {
+                            username = b.getString("USERNAME");
+                        }
+                    } else {
+                        username = (String) savedInstanceState.getSerializable("USERNAME");
+                    }
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         current = ds.getValue(Course.class);
                         for (DataSnapshot ds_student : ds.child("Students").getChildren()) {
@@ -168,16 +178,19 @@ public class welcome_student extends AppCompatActivity {
                     error_display.setText("Course not found");
                     return;
                 } else {
-                    reference.child(String.valueOf(index)).child("Students").addValueEventListener(init_students);
+                    reference.child(String.valueOf(index)).addValueEventListener(init_students);
                     boolean inCourse = inCourse(username, students);
                     if (inCourse) {
                         error_display.setText("You are already enrolled in this course");
                         return;
                     } else {
-                        Course current = courseList.get(index);
+                        Course current = findCourse(index, courseList);
                         if (current.addStudent()) {
                             reference.child(String.valueOf(index)).child("course_capacity").setValue(current.getCourse_capacity());
                             reference.child(String.valueOf(index)).child("Students").child(String.valueOf(students.size())).setValue(username);
+                            error_display.setText("");
+                            name_entry.setText("");
+                            code_entry.setText("");
                         } else {
                             error_display.setText("Course at capacity. Enrolment failed");
                         }
@@ -209,6 +222,7 @@ public class welcome_student extends AppCompatActivity {
                             display = display + current.toString() + "\n";
                         }
                     }
+                    error_display.setText("");
                     displayCourses.setText(display);
                 } else if (!TextUtils.isEmpty(name)) {
                     for (i = 0; i < courseList.size(); i++) {
@@ -217,6 +231,7 @@ public class welcome_student extends AppCompatActivity {
                             display = display + current.toString() + "\n";
                         }
                     }
+                    error_display.setText("");
                     displayCourses.setText(display);
                 } else {
                     for (i = 0; i < courseList.size(); i++) {
@@ -225,6 +240,7 @@ public class welcome_student extends AppCompatActivity {
                             display = display + current.toString() + "\n";
                         }
                     }
+                    error_display.setText("");
                     displayCourses.setText(display);
                 }
             }
@@ -254,5 +270,18 @@ public class welcome_student extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    public Course findCourse(int index, ArrayList<Course> courseList) {
+        for (int i = 0; i < courseList.size(); i++) {
+            if (courseList.get(i).getIndex() == index) {
+                return courseList.get(i);
+            }
+        }
+        return null;
+    }
+
+    public String[] findDays(String days) {
+
     }
 }
