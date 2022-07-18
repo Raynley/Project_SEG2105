@@ -18,6 +18,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+/**Allows instructor to add themselves to a course. Change the details of it and remove
+ * themselves from a course
+ * @author tannergiddings
+ */
 public class welcome_instructor extends AppCompatActivity {
     EditText name_entry, code_entry, new_days, new_hours, new_capacity, new_description;
     TextView displayCourses, error_display;
@@ -47,6 +51,10 @@ public class welcome_instructor extends AppCompatActivity {
         ArrayList<Course> courseList = new ArrayList<Course>();
 
         ValueEventListener postListener = new ValueEventListener() {
+            /**Displays the courses to the instructor
+             * @author tannergiddings
+             * @param snapshot snapshot of database
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -63,6 +71,10 @@ public class welcome_instructor extends AppCompatActivity {
         };
 
         ValueEventListener initList = new ValueEventListener() {
+            /**Initialises courseList
+             * @author tannergiddings
+             * @param snapshot
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -82,6 +94,10 @@ public class welcome_instructor extends AppCompatActivity {
         reference.addValueEventListener(postListener);
 
         add_btn.setOnClickListener(new View.OnClickListener() {
+            /**Adds instructor to course if there isn't already an instructor assigned to it
+             * @author tannergiddings
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 String name = name_entry.getText().toString();
@@ -144,6 +160,10 @@ public class welcome_instructor extends AppCompatActivity {
         });
 
         edit_btn.setOnClickListener(new View.OnClickListener() {
+            /**Allows instructor to edit a course's details
+             * @author tannergiddings
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 String name = name_entry.getText().toString();
@@ -249,6 +269,10 @@ public class welcome_instructor extends AppCompatActivity {
         });
 
         remove_btn.setOnClickListener(new View.OnClickListener() {
+            /**Allows an instructor to remove themselves from a course
+             * @author tannergiddings
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 String name = name_entry.getText().toString();
@@ -308,6 +332,10 @@ public class welcome_instructor extends AppCompatActivity {
         });
 
         search_btn.setOnClickListener(new View.OnClickListener() {
+            /**Allows instructor to search for a course based on name and code
+             * @author tannergiddings
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 reference.addValueEventListener(initList);
@@ -355,7 +383,12 @@ public class welcome_instructor extends AppCompatActivity {
         });
         reference.addValueEventListener(postListener);
     }
-    
+
+    /**Verifies if the entry is a valid capacity. i.e is a positive integer
+     * @author tannergiddings
+     * @param name capacity to be verified
+     * @return if it is a valid capacity
+     */
     public static Boolean isValidCapacity(String name){
         int capacity = -1;
         try {
@@ -368,6 +401,11 @@ public class welcome_instructor extends AppCompatActivity {
 
     }
 
+    /**Verifies if the entry is a day of the week
+     * @author tannergiddings
+     * @param day entry to be verified
+     * @return if the entry is a day or not
+     */
     private boolean isDayOfWeek(String day) {
         day = day.trim();
         if (day.equals("Monday") || day.equals("monday") || day.equals("Tuesday") || day.equals("tuesday")
@@ -380,6 +418,11 @@ public class welcome_instructor extends AppCompatActivity {
         }
     }
 
+    /**Verifies if days is a valid string of days of the week
+     * @author tannergiddings
+     * @param days entry to be verified
+     * @return if it is valid
+     */
     public boolean isValidDays(String days) {
         String[] list_days = days.split(",");
         boolean verification = true;
@@ -392,6 +435,11 @@ public class welcome_instructor extends AppCompatActivity {
         return verification;
     }
 
+    /**Verifies if the entry is a valid hour
+     * @author tannergiddings
+     * @param hour entry to be verified
+     * @return if it is valid
+     */
     private boolean isHour(String hour) {
         String[] hourNumbers = hour.split(":");
         boolean verification = true;
@@ -407,6 +455,11 @@ public class welcome_instructor extends AppCompatActivity {
         return verification;
     }
 
+    /**Verifies if the entry is a valid time
+     * @author tannergiddings
+     * @param time entry to be verified
+     * @return if it is a valid time
+     */
     private boolean isValidTime(String time) {
         String[] time_list = time.split("-");
         boolean verification = true;
@@ -419,6 +472,11 @@ public class welcome_instructor extends AppCompatActivity {
         return verification;
     }
 
+    /**Verifies if the entry is valid for hours of the course
+     * @author tannergiddings
+     * @param hours entry to be verified
+     * @return if it is valid
+     */
     public boolean isValidHours(String hours) {
         String[] hours_list = hours.split(" ");
         for (int i = 0; i < hours_list.length; i++) {
@@ -429,10 +487,21 @@ public class welcome_instructor extends AppCompatActivity {
         return true;
     }
 
+    /**Verifies if the entry is a valid description
+     * @author tannergiddings
+     * @param description entry to be verified
+     * @return if it's a valid description
+     */
     public boolean isValidDescription(String description) {
         return description instanceof String;
     }
 
+    /**Finds index for a course
+     * @author tannergiddings
+     * @param course course who's index is to be found
+     * @param courseList arraylist in which the index can be found
+     * @return index of course if found. If not, it returns -1.
+     */
     public int getIndex(Course course, ArrayList<Course> courseList) {
         for (int i = 0; i < courseList.size(); i++) {
             if (course.equals(courseList.get(i))) {

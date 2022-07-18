@@ -25,6 +25,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+/**Allows a new user to sign up as an instructor or a student
+ * @author Moumin Farah
+ */
 public class SignUp extends AppCompatActivity {
     EditText iname, ipassword, irepassword;
     Button iregister;
@@ -54,6 +57,10 @@ public class SignUp extends AppCompatActivity {
         type = "";
 
         ValueEventListener initStudentList = new ValueEventListener() {
+            /**initialises list of new students
+             * @author tannergiddings
+             * @param snapshot snapshot of database
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -71,6 +78,10 @@ public class SignUp extends AppCompatActivity {
         };
 
         ValueEventListener initInstructorList = new ValueEventListener() {
+            /**initialises instructorList
+             * @author tannergiddings
+             * @param snapshot snapshot of database
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -88,6 +99,10 @@ public class SignUp extends AppCompatActivity {
         };
 
         instructorBtn.setOnClickListener(new View.OnClickListener() {
+            /**changes 'type' to "instructor"
+             * @author tannergiddings
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 type = "instructor";
@@ -95,6 +110,10 @@ public class SignUp extends AppCompatActivity {
         });
 
         studentBtn.setOnClickListener(new View.OnClickListener() {
+            /**changes 'type' to "student"
+             * @author tannergiddings
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 type = "student";
@@ -102,6 +121,10 @@ public class SignUp extends AppCompatActivity {
         });
 
         iregister.setOnClickListener(new View.OnClickListener() {
+            /**Verifies if it's a proper user, creates it and adds it to the database
+             * @author Moumin Farah
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 String name = iname.getText().toString().trim();
@@ -144,6 +167,10 @@ public class SignUp extends AppCompatActivity {
         });
 
         ilogin.setOnClickListener(new View.OnClickListener() {
+            /**Brings the user back to MainActivity
+             * @author Moumin Farah
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -151,6 +178,12 @@ public class SignUp extends AppCompatActivity {
         });
 
     }
+
+    /**Verifies if a string is of correct length
+     * @author Laure
+     * @param x entry to be verified
+     * @return false if length of string is greater than 6, true otherwise
+     */
     public static Boolean isCorrectLength(String x){
         if (x.length()<6){
             return false;
@@ -158,6 +191,12 @@ public class SignUp extends AppCompatActivity {
         return true;
     }
 
+    /**Verifies if two string equals eachother
+     * @author Laure
+     * @param x First string to compare
+     * @param y Second string to compare
+     * @return True if they are equals. False otherwise
+     */
     public static Boolean passwordMatch(String x, String y){
         if(!x.equals(y)){
             return false;

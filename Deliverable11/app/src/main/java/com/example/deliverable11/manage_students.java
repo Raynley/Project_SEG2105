@@ -18,6 +18,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+/**Allows admin to manage students
+ * @author tannergiddings
+ */
 public class manage_students extends AppCompatActivity {
     EditText name_entry;
     ImageButton add_btn, del_btn;
@@ -39,6 +42,10 @@ public class manage_students extends AppCompatActivity {
         ArrayList<Student> studentList = new ArrayList<>();
 
         ValueEventListener initList = new ValueEventListener() {
+            /**Initialises studentList arraylist
+             * @author tannergiddings
+             * @param snapshot snapshot of database
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -56,6 +63,10 @@ public class manage_students extends AppCompatActivity {
         };
 
         ValueEventListener postListener = new ValueEventListener() {
+            /**Displays the students to the admin
+             * @author tannergiddings
+             * @param snapshot snapshot of database
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -75,6 +86,10 @@ public class manage_students extends AppCompatActivity {
         reference.addValueEventListener(postListener);
 
         del_btn.setOnClickListener(new View.OnClickListener() {
+            /**Removes student from database if found
+             * @author tannergiddings
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 String name = name_entry.getText().toString();
@@ -97,6 +112,12 @@ public class manage_students extends AppCompatActivity {
         reference.addValueEventListener(postListener);
     }
 
+    /**Finds index of student in database
+     * @author tannergiddings
+     * @param student student who's index is to be found
+     * @param studentList list in which it can be found
+     * @return student's index of -1 if not found
+     */
     public int getIndex(String student, ArrayList<Student> studentList) {
         for (int i = 0; i < studentList.size(); i++) {
             if (student.equals(studentList.get(i).getUsername())) {

@@ -25,6 +25,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+/**Class for functionnalities of MainActivity.xml. Allows users to log in.
+ * @author Moumin Farah
+ */
 public class MainActivity extends AppCompatActivity {
     EditText iname, ipassword;
     Button ilogin;
@@ -36,11 +39,12 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Instructor> instructorList;
 
     @Override
+    /**OnCreate method
+     * @author Moumin Farah
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-      
 
         iname = findViewById(R.id.userName);
         ipassword = findViewById(R.id.password);
@@ -56,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
 
         ValueEventListener initLists = new ValueEventListener() {
             @Override
+            /**Initialises adminList, instructorList and studentList with the admins, instructors
+             * and students in the database
+             * @author tannergiddings
+             */
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     adminList.clear();
@@ -80,6 +88,10 @@ public class MainActivity extends AppCompatActivity {
         };
 
         ilogin.setOnClickListener(new View.OnClickListener() {
+            /**Logs the user in based on their role
+             * @author tannergiddings
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 String name = iname.getText().toString();
@@ -130,12 +142,22 @@ public class MainActivity extends AppCompatActivity {
         });
 
         icreate.setOnClickListener(new View.OnClickListener() {
+            /**Brings User to SingUp page
+             * @author Moumin Farah
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(),SignUp.class));
             }
         });
     }
+
+    /**Verifies if entry is null
+     * @author Laure
+     * @param name String to be verified
+     * @return if the name is empty or not
+     */
     public static boolean nameEmpty(String name){
         if(name.length()==0){
             return true;

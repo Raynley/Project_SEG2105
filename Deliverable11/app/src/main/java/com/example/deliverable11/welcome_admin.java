@@ -13,13 +13,16 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+/**Methods and functionnalities for welcome_admin.xml
+ * Allows admin to go to add_course, edit_course, manage_instructors and manage_students
+ * @author tannergiddings
+ */
 public class welcome_admin extends AppCompatActivity {
     FirebaseAuth fAuth;
     TextView welcome_message;
     ImageView addCourse, editCourse, manageInstructor, manageStudent;
     Button logout;
 
-    //@SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +54,10 @@ public class welcome_admin extends AppCompatActivity {
         welcome_message.setText("Welcome " + username + ", you are logged in as an admin.");
 
         logout.setOnClickListener(new View.OnClickListener() {
+            /**Goes back to MainActivity
+             * @author tannergiddings
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(welcome_admin.this, MainActivity.class);
@@ -59,36 +66,48 @@ public class welcome_admin extends AppCompatActivity {
         });
         
         addCourse.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Goes to add_course
+             * @param v
+             */
             @Override
             public void onClick(View v) {
-                //TO COMPLETE
                 Intent intent = new Intent(welcome_admin.this,add_course.class);
                 startActivity(intent);
             }
         });
 
         editCourse.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Goes to edit_course
+             * @param v
+             */
             @Override
             public void onClick(View v) {
-                //TO COMPLETE
                 Intent intent = new Intent(welcome_admin.this,edit_courses.class);
                 startActivity(intent);
             }
         });
 
         manageInstructor.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Goes to manage_instructors
+             * @param v
+             */
             @Override
             public void onClick(View v) {
-                //TO COMPLETE
                 Intent intent = new Intent(welcome_admin.this,manage_instructors.class);
                 startActivity(intent);
             }
         });
 
         manageStudent.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Goes to manage_students
+             * @param v
+             */
             @Override
             public void onClick(View v) {
-                //TO COMPLETE
                 Intent intent = new Intent(welcome_admin.this,manage_students.class);
                 startActivity(intent);
             }
