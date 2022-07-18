@@ -228,6 +228,30 @@ public class welcome_student extends AppCompatActivity {
              * @author tannergiddings
              * @param v
              */
+
+            @Override
+            public void onClick(View v) {
+                reference.addValueEventListener(initList);
+                String name = name_entry.getText().toString().trim();
+                String code = code_entry.getText().toString().trim();
+                String days = day_entry.getText().toString().trim();
+                ArrayList<Course> courses_to_display = courseList;
+
+                if (!TextUtils.isEmpty(name)) {
+                    courses_to_display = compareName(courses_to_display, name);
+                }
+
+                if (!TextUtils.isEmpty(code)) {
+                    courses_to_display = compareCode(courses_to_display, code);
+                }
+
+                if (!TextUtils.isEmpty(days)) {
+                    courses_to_display = findDaysAmongCourses(courses_to_display, days);
+                }
+
+                displayCourses.setText(toStringList(courses_to_display));
+            }
+            /*
             @Override
             public void onClick(View v) {
                 reference.addValueEventListener(initList);
@@ -275,7 +299,7 @@ public class welcome_student extends AppCompatActivity {
                     error_display.setText("");
                     displayCourses.setText(display);
                 }
-            }
+            }*/
         });
         displayCourses.setOnClickListener(new View.OnClickListener() {
             /**displays courses
@@ -419,5 +443,50 @@ public class welcome_student extends AppCompatActivity {
             }
         }
         return courseList;
+    }
+
+    /**Finds a list of courses with the entered code
+     * @author tannergiddings
+     * @param list arraylist of courses
+     * @param code code to compare courses with
+     * @return list with courses with the code
+     */
+    public ArrayList<Course> compareCode(ArrayList<Course> list, String code) {
+        ArrayList<Course> newList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getCode().equals(code)) {
+                newList.add(list.get(i));
+            }
+        }
+        return newList;
+    }
+
+    /**Finds a list of courses with the entered name
+     * @author tannergiddings
+     * @param list arraylist of courses
+     * @param name name to compare courses with
+     * @return list with courses with the name
+     */
+    public ArrayList<Course> compareName(ArrayList<Course> list, String name) {
+        ArrayList<Course> newList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getName().equals(name)) {
+                newList.add(list.get(i));
+            }
+        }
+        return newList;
+    }
+
+    /**Returns a string of the courses in the arrayList
+     * @author tannergiddings
+     * @param list arraylist to turn into a string
+     * @return a string of the courses
+     */
+    public String toStringList(ArrayList<Course> list) {
+        String str = "";
+        for (int i = 0; i < list.size(); i++) {
+            str = str + list.get(i).toString();
+        }
+        return str;
     }
 }
