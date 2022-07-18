@@ -20,6 +20,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.sql.Array;
 import java.util.ArrayList;
 
+/**Methods and functions for Admin to manage instructors
+ * @author tannergiddings
+ */
 public class manage_instructors extends AppCompatActivity {
     EditText name_entry;
     ImageButton del_ins;
@@ -40,6 +43,10 @@ public class manage_instructors extends AppCompatActivity {
         ArrayList<Instructor> instructorList = new ArrayList<>();
 
         ValueEventListener initList = new ValueEventListener() {
+            /**Initialises instructorList
+             * @author tannergiddings
+             * @param snapshot snapshot of database
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -57,6 +64,10 @@ public class manage_instructors extends AppCompatActivity {
         };
 
         ValueEventListener postListener = new ValueEventListener() {
+            /**Displays the courses to the admin
+             * @author tannergiddings
+             * @param snapshot snapshot of database
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -75,6 +86,10 @@ public class manage_instructors extends AppCompatActivity {
         reference.addValueEventListener(postListener);
         
         del_ins.setOnClickListener(new View.OnClickListener() {
+            /**Removes instructor from database
+             * @author tannergiddings
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 reference.addValueEventListener(initList);
@@ -99,6 +114,13 @@ public class manage_instructors extends AppCompatActivity {
         reference.addValueEventListener(postListener);
         
     }
+
+    /**finds the index of the instructor for database
+     * @author tannergiddings
+     * @param instructor instructor's index to be found
+     * @param instructorList list in which to be found
+     * @return index of instructor or -1 if not found
+     */
     public int getIndex(String instructor, ArrayList<Instructor> instructorList) {
         for (int i = 0; i < instructorList.size(); i++) {
             if (instructor.equals(instructorList.get(i).getUsername())) {

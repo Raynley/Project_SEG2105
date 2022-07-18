@@ -21,6 +21,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+/**Class for methods and functionnality of edit_course.xml. Allows admin to edit course names and codes
+ * @author tannergiddings
+ */
 public class edit_courses extends AppCompatActivity {
     EditText old_code_entry, old_name_entry, new_code_entry, new_name_entry;
     ImageButton edit_btn, del_btn;
@@ -45,6 +48,7 @@ public class edit_courses extends AppCompatActivity {
         ArrayList<Course> courseList = new ArrayList<>();
 
         ValueEventListener postListener = new ValueEventListener() {
+            /**Displays the courses to the admin*/
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -61,6 +65,7 @@ public class edit_courses extends AppCompatActivity {
         };
 
         ValueEventListener initList = new ValueEventListener() {
+            /**Initializes 'courseList' with all the courses*/
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -81,6 +86,9 @@ public class edit_courses extends AppCompatActivity {
         reference.addValueEventListener(initList);
 
         edit_btn.setOnClickListener(new View.OnClickListener(){
+            /**Verifies if there is a valid course entered then does the changes required
+             * @author tannergiddings
+             */
             @Override
             public void onClick(View v) {
                 reference.addValueEventListener(initList);
@@ -163,6 +171,7 @@ public class edit_courses extends AppCompatActivity {
         });
         
         del_btn.setOnClickListener(new View.OnClickListener(){
+            /**Verifies if there is such a course and deletes it from the database*/
             @Override
             public void onClick(View v) {
                 String old_code = old_code_entry.getText().toString().trim();
@@ -199,6 +208,13 @@ public class edit_courses extends AppCompatActivity {
             }
         });
     }
+
+    /**find the index for a specific course in the database
+     * @author tannergiddings
+     * @param course course's index to be found
+     * @param courseList arrayList in which the course is to be found
+     * @return index of the course or -1 if course not found
+     */
     public int getIndex(Course course, ArrayList<Course> courseList) {
         for (int i = 0; i < courseList.size(); i++) {
             if (course.equals(courseList.get(i))) {

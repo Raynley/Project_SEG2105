@@ -17,6 +17,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+/** Java code for add_course.xml file. Allows the admin to add a course to the database.
+ * @author tannergiddings
+ */
 public class add_course extends AppCompatActivity {
     EditText course_name, course_code;
     Button course_btn;
@@ -38,6 +41,10 @@ public class add_course extends AppCompatActivity {
         final int[] index = {1};
 
         ValueEventListener initList = new ValueEventListener() {
+
+            /** Initialises 'ArrayList<Course>' course_list with all the courses
+             * @author tannergiddings
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -58,6 +65,10 @@ public class add_course extends AppCompatActivity {
         reference.addValueEventListener(initList);
 
         course_btn.setOnClickListener(new View.OnClickListener() {
+            /**When the course button is clicked. A new course is created and added to the database
+             * @author tannergidding
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 String newCourseName = course_name.getText().toString().trim();

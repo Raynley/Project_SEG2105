@@ -96,13 +96,18 @@
                     android:inputType="textPersonName"
                     android:textSize="15dp"
                     tools:ignore="TouchTargetSizeCheck" />
+
             </TableRow>
 
-            <TextView
-                android:id="@+id/Error"
+            <EditText
+                android:id="@+id/daySearch"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:text="" />
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textSize="15dp"
+                android:hint="Enter course date"
+                tools:ignore="TouchTargetSizeCheck"/>
 
             <TableRow
                 android:id="@+id/row_edit_delete_btn"
@@ -150,12 +155,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="235dp"
                 android:text="" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
 
         </LinearLayout>
     </LinearLayout>
