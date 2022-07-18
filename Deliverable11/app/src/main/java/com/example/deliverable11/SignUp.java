@@ -17,8 +17,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class SignUp extends AppCompatActivity {
     EditText iname, ipassword, irepassword;
@@ -27,7 +32,7 @@ public class SignUp extends AppCompatActivity {
     //FirebaseAuth fAuth;
     FirebaseDatabase rootCourse;
     DatabaseReference reference;
-    RadioButton instructorBtn, studentBtn, adminBtn;
+    RadioButton instructorBtn, studentBtn;
     //ProgressBar iprogressbar;
     String type;
 
@@ -44,16 +49,43 @@ public class SignUp extends AppCompatActivity {
         ilogin = findViewById(R.id.login);
         instructorBtn = findViewById(R.id.instructor_button);
         studentBtn = findViewById(R.id.student_button);
-        adminBtn = findViewById(R.id.admin_button);
+        ArrayList<Student> studentList = new ArrayList<>();
+        ArrayList<Instructor> instructorList = new ArrayList<>();
         type = "";
 
-        //fAuth = FirebaseAuth.getInstance();
-        //iprogressbar = findViewById(R.id.progressBar);
+        ValueEventListener initStudentList = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    studentList.clear();
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        studentList.add(ds.getValue(Student.class));
+                    }
+                }
+            }
 
-        /*if (fAuth.getCurrentUser() != null) {
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            finish();
-        }*/
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        ValueEventListener initInstructorList = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    instructorList.clear();
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        instructorList.add(ds.getValue(Instructor.class));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
 
         instructorBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,13 +98,6 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 type = "student";
-            }
-        });
-
-        adminBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                type = "admin";
             }
         });
 
@@ -95,45 +120,26 @@ public class SignUp extends AppCompatActivity {
                 } else if (!passwordMatch(password,rePassword)){
                     irepassword.setError("Both passwords aren't the same");
                 } else {
-                    if (type == "student") {
+                    if (type.equals("student")) {
                         Student student = new Student(name, password);
                         reference = rootCourse.getReference("User").child("Student");
-                        reference.child(name).setValue(student);
+                        reference.addValueEventListener(initStudentList);
+                        student.setIndex(studentList.size());
+                        reference.child(String.valueOf(studentList.size())).setValue(student);
                         iname.setText("");
                         ipassword.setText("");
                         irepassword.setText("");
-
-                    } else if (type == "admin") {
-                        Admin admin = new Admin(name, password);
-                        reference = rootCourse.getReference("User").child("Admin");
-                        reference.child(name).setValue(admin);
-                        iname.setText("");
-                        ipassword.setText("");
-                        irepassword.setText("");
-                    } else if (type == "instructor") {
+                    } else if (type.equals("instructor")) {
                         Instructor instructor = new Instructor(name, password);
                         reference = rootCourse.getReference("User").child("Instructor");
-                        reference.child(name).setValue(instructor);
+                        reference.addValueEventListener(initInstructorList);
+                        instructor.setIndex(instructorList.size());
+                        reference.child(String.valueOf(instructorList.size())).setValue(instructor);
                         iname.setText("");
                         ipassword.setText("");
                         irepassword.setText("");
                     }
                 }
-
-                //iprogressbar.setVisibility(View.VISIBLE);
-
-                //Register User
-                /*fAuth.createUserWithEmailAndPassword(name, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(SignUp.this, "User Created", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        } else {
-                            Toast.makeText(SignUp.this, "error occured" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });*/
             }
         });
 

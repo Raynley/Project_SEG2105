@@ -102,41 +102,8 @@ public class welcome_instructor extends AppCompatActivity {
                 }
                 reference.addValueEventListener(initList);
                 Course newCourse = new Course(name, code);
-                Boolean found = false;
-                for (int i = 0; i < courseList.size(); i++) {
-                    if (courseList.get(i).equals(newCourse)) {
-                        String username;
-                        newCourse = courseList.get(i);
-                        found = true;
-                        if (savedInstanceState == null) {
-                            Bundle b = getIntent().getExtras();
-                            if (b == null) {
-                                username = null;
-                            } else {
-                                username = b.getString("USERNAME");
-                            }
-                        } else {
-                            username = (String) savedInstanceState.getSerializable("USERNAME");
-                        }
-                        if (!newCourse.getHasInstructor()) {
-                            newCourse.setInstructor(username);
-                            reference.child(name).removeValue();
-                            reference.child(name).setValue(newCourse);
-                            name_entry.setText("");
-                            code_entry.setText("");
-                            new_days.setText("");
-                            new_hours.setText("");
-                            new_capacity.setText("");
-                            new_description.setText("");
-                            error_display.setText("");
-                            break;
-                        } else {
-                            error_display.setText("Course already has an instructor assigned to it");
-                            break;
-                        }
-                    }
-                }
-                if (!found) {
+                int index = getIndex(newCourse, courseList);
+                if (index < 0) {
                     error_display.setText("Course was not found");
                     name_entry.setText("");
                     code_entry.setText("");
@@ -144,6 +111,33 @@ public class welcome_instructor extends AppCompatActivity {
                     new_hours.setText("");
                     new_capacity.setText("");
                     new_description.setText("");
+                } else {
+                    String username;
+                    newCourse = courseList.get(index);
+                    if (savedInstanceState == null) {
+                        Bundle b = getIntent().getExtras();
+                        if (b == null) {
+                            username = null;
+                        } else {
+                            username = b.getString("USERNAME");
+                        }
+                    } else {
+                        username = (String) savedInstanceState.getSerializable("USERNAME");
+                    }
+                    if (!newCourse.getHasInstructor()) {
+                        reference.child(String.valueOf(index)).child("instructor").setValue(username);
+                        name_entry.setText("");
+                        code_entry.setText("");
+                        new_days.setText("");
+                        new_hours.setText("");
+                        new_capacity.setText("");
+                        new_description.setText("");
+                        error_display.setText("");
+                        return;
+                    } else {
+                        error_display.setText("Course already has an instructor assigned to it");
+                        return;
+                    }
                 }
                 reference.addValueEventListener(postListener);
             }
@@ -197,52 +191,58 @@ public class welcome_instructor extends AppCompatActivity {
                 } else {
                     reference.addValueEventListener(initList);
                     Course newCourse = new Course(name, code);
-                    for (int i = 0; i < courseList.size(); i++) {
-                        if (courseList.get(i).equals(newCourse)) {
-                            newCourse = courseList.get(i);
-                            if (newCourse.getInstructor().equals(username)) {
-                                if (!TextUtils.isEmpty(days)) {
-                                    if (isValidDays(days)) {
-                                        newCourse.setDays(days);
-                                    } else {
-                                        new_days.setText("Invalid days entered");
-                                    }
+                    int index = getIndex(newCourse, courseList);
+                    if (index < 0) {
+                        error_display.setText("Course was not found");
+                        name_entry.setText("");
+                        code_entry.setText("");
+                        new_days.setText("");
+                        new_hours.setText("");
+                        new_capacity.setText("");
+                        new_description.setText("");
+                    } else {
+                        newCourse = courseList.get(index);
+                        if (newCourse.getInstructor().equals(username)) {
+                            if (!TextUtils.isEmpty(days)) {
+                                if (isValidDays(days)) {
+                                    reference.child(String.valueOf(index)).child("days").setValue(days);
+                                } else {
+                                    new_days.setText("Invalid days entered");
                                 }
-                                if (!TextUtils.isEmpty(hours)) {
-                                    if (isValidHours(hours)) {
-                                        newCourse.setHours(hours);
-                                    } else {
-                                        new_hours.setText("Invalid hours entered");
-                                    }
-                                }
-                                if (!TextUtils.isEmpty(capacityString)) {
-                                    if (isValidCapacity(capacityString)) {
-                                        newCourse.setCourse_capacity(capacity);
-                                    } else {
-                                        new_capacity.setText("Invalid capacity entered");
-                                    }
-                                }
-                                if (!TextUtils.isEmpty(description)) {
-                                    if (isValidDescription(description)) {
-                                        newCourse.setDescription(description);
-                                    } else {
-                                        new_description.setText("Invalid description entered");
-                                    }
-                                }
-                                database.getReference("Courses").child(name).removeValue();
-                                reference.child(name).setValue(newCourse);
-                                name_entry.setText("");
-                                code_entry.setText("");
-                                new_days.setText("");
-                                new_hours.setText("");
-                                new_capacity.setText("");
-                                new_description.setText("");
-                                error_display.setText("");
-                            } else {
-                                error_display.setText("You are not the instructor for this course");
                             }
+                            if (!TextUtils.isEmpty(hours)) {
+                                if (isValidHours(hours)) {
+                                    reference.child(String.valueOf(index)).child("hours").setValue(hours);
+                                } else {
+                                    new_hours.setText("Invalid hours entered");
+                                }
+                            }
+                            if (!TextUtils.isEmpty(capacityString)) {
+                                if (isValidCapacity(capacityString)) {
+                                    reference.child(String.valueOf(index)).child("course_capacity").setValue(capacity);
+                                } else {
+                                    new_capacity.setText("Invalid capacity entered");
+                                }
+                            }
+                            if (!TextUtils.isEmpty(description)) {
+                                if (isValidDescription(description)) {
+                                    reference.child(String.valueOf(index)).child("description").setValue(description);
+                                } else {
+                                    new_description.setText("Invalid description entered");
+                                }
+                            }
+                            name_entry.setText("");
+                            code_entry.setText("");
+                            new_days.setText("");
+                            new_hours.setText("");
+                            new_capacity.setText("");
+                            new_description.setText("");
+                            error_display.setText("");
+                        } else {
+                            error_display.setText("You are not the instructor for this course");
                         }
                     }
+
                 }
                 reference.addValueEventListener(postListener);
             }
@@ -283,7 +283,8 @@ public class welcome_instructor extends AppCompatActivity {
                             } else {
                                 username = (String) savedInstanceState.getSerializable("USERNAME");
                             }
-                            if (newCourse.getInstructor().equals(username)) {
+                            if (/*newCourse.getInstructor().equals(username)*/
+                            reference.child(String.valueOf(newCourse.getIndex())).child("username").equals(username)) {
                                 newCourse = new Course(name, code);
                                 reference.child(name).removeValue();
                                 reference.child(name).setValue(newCourse);
@@ -345,6 +346,7 @@ public class welcome_instructor extends AppCompatActivity {
                 }
             }
         });
+
         displayCourses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -429,5 +431,14 @@ public class welcome_instructor extends AppCompatActivity {
 
     public boolean isValidDescription(String description) {
         return description instanceof String;
+    }
+
+    public int getIndex(Course course, ArrayList<Course> courseList) {
+        for (int i = 0; i < courseList.size(); i++) {
+            if (course.equals(courseList.get(i))) {
+                return courseList.get(i).getIndex();
+            }
+        }
+        return -1;
     }
 }

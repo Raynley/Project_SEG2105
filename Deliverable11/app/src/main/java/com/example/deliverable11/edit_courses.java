@@ -42,12 +42,12 @@ public class edit_courses extends AppCompatActivity {
         display = findViewById(R.id.displayCourse);
         database = FirebaseDatabase.getInstance();
         reference = database.getReference("Courses");
+        ArrayList<Course> courseList = new ArrayList<>();
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    Course course = snapshot.getValue(Course.class);
                     String textDisplay = "";
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         textDisplay = textDisplay + ds.getValue(Course.class).toString() + "\n";
@@ -60,11 +60,30 @@ public class edit_courses extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {}
         };
 
+        ValueEventListener initList = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    courseList.clear();
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        courseList.add(ds.getValue(Course.class));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
         reference.addValueEventListener(postListener);
+        reference.addValueEventListener(initList);
 
         edit_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                reference.addValueEventListener(initList);
                 String old_code = old_code_entry.getText().toString().trim();
                 String old_name = old_name_entry.getText().toString().trim();
                 String new_code = new_code_entry.getText().toString().trim();
@@ -92,27 +111,52 @@ public class edit_courses extends AppCompatActivity {
                     return;
                 } else if (TextUtils.isEmpty(new_code)) {
                     new_code = old_code;
-                    Course course = new Course(new_name, new_code);
-                    database.getReference("Courses").child(old_name).setValue(course);
-                    old_code_entry.setText("");
-                    old_name_entry.setText("");
-                    new_code_entry.setText("");
-                    new_name_entry.setText("");
+                    int index = getIndex(new Course(new_name, new_code), courseList);
+                    if (index < 0) {
+                        old_code_entry.setText("Course not found");
+                        old_name_entry.setText("");
+                        new_code_entry.setText("");
+                        new_name_entry.setText("");
+                        return;
+                    } else {
+                        reference.child(String.valueOf(index)).child("name").setValue(new_name);
+                        old_code_entry.setText("");
+                        old_name_entry.setText("");
+                        new_code_entry.setText("");
+                        new_name_entry.setText("");
+                    }
                 } else if (TextUtils.isEmpty(new_name)) {
                     new_name = old_name;
-                    Course course = new Course(new_name, new_code);
-                    database.getReference("Courses").child(old_name).setValue(course);
-                    old_code_entry.setText("");
-                    old_name_entry.setText("");
-                    new_code_entry.setText("");
-                    new_name_entry.setText("");
+                    int index = getIndex(new Course(new_name, new_code), courseList);
+                    if (index < 0) {
+                        old_code_entry.setText("Course not found");
+                        old_name_entry.setText("");
+                        new_code_entry.setText("");
+                        new_name_entry.setText("");
+                        return;
+                    } else {
+                        reference.child(String.valueOf(index)).child("code").setValue(new_code);
+                        old_code_entry.setText("");
+                        old_name_entry.setText("");
+                        new_code_entry.setText("");
+                        new_name_entry.setText("");
+                    }
                 } else {
-                    Course course = new Course(new_name, new_code);
-                    database.getReference("Courses").child(old_name).setValue(course);
-                    old_code_entry.setText("");
-                    old_name_entry.setText("");
-                    new_code_entry.setText("");
-                    new_name_entry.setText("");
+                    int index = getIndex(new Course(old_name, old_code), courseList);
+                    if (index < 0) {
+                        old_code_entry.setText("Course not found");
+                        old_name_entry.setText("");
+                        new_code_entry.setText("");
+                        new_name_entry.setText("");
+                        return;
+                    } else {
+                        reference.child(String.valueOf(index)).child("name").setValue(new_name);
+                        reference.child(String.valueOf(index)).child("code").setValue(new_code);
+                        old_code_entry.setText("");
+                        old_name_entry.setText("");
+                        new_code_entry.setText("");
+                        new_name_entry.setText("");
+                    }
                 }
                 reference.addValueEventListener(postListener);
             }
@@ -136,15 +180,31 @@ public class edit_courses extends AppCompatActivity {
                     return;
                 } else {
                     //REMOVE FROM DATABASE
-                    database.getReference("Courses").child(old_name).removeValue();
-                    old_code_entry.setText("");
-                    old_name_entry.setText("");
-                    new_code_entry.setText("");
-                    new_name_entry.setText("");
+                    int index = getIndex(new Course(old_name, old_code), courseList);
+                    if (index < 0) {
+                        old_code_entry.setText("Course not found");
+                        old_name_entry.setText("");
+                        new_code_entry.setText("");
+                        new_name_entry.setText("");
+                        return;
+                    } else {
+                        reference.child(String.valueOf(index)).removeValue();
+                        old_code_entry.setText("");
+                        old_name_entry.setText("");
+                        new_code_entry.setText("");
+                        new_name_entry.setText("");
+                    }
                 }
                 reference.addValueEventListener(postListener);
             }
         });
-
+    }
+    public int getIndex(Course course, ArrayList<Course> courseList) {
+        for (int i = 0; i < courseList.size(); i++) {
+            if (course.equals(courseList.get(i))) {
+                return courseList.get(i).getIndex();
+            }
+        }
+        return -1;
     }
 }

@@ -101,7 +101,7 @@
             <TextView
                 android:id="@+id/Error"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="70dp"
                 android:text="" />
 
             <TableRow
@@ -138,6 +138,24 @@
                     android:background="#cccc"
                     app:srcCompat="@android:drawable/ic_menu_search" />
             </TableRow>
+
+            <TextView
+                android:id="@+id/Enrol_Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Here are the courses you are enrolled in:" />
+
+            <TextView
+                android:id="@+id/Enrol_View"
+                android:layout_width="match_parent"
+                android:layout_height="235dp"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
 
         </LinearLayout>
     </LinearLayout>

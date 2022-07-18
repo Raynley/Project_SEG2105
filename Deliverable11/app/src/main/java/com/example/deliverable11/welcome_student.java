@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.renderscript.Sampler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 public class welcome_student extends AppCompatActivity {
     EditText name_entry, code_entry;
     ImageButton add_btn, remove_btn, search_btn;
-    TextView displayCourses, error_display;
+    TextView displayCourses, error_display, course_view;
     ArrayList<Course> courseList;
     FirebaseDatabase database;
     DatabaseReference reference;
@@ -38,9 +39,12 @@ public class welcome_student extends AppCompatActivity {
         search_btn = findViewById(R.id.search_btn);
         displayCourses = findViewById(R.id.displayCourse);
         error_display = findViewById(R.id.Error);
+        course_view = findViewById(R.id.Enrol_View);
         database = FirebaseDatabase.getInstance();
         reference = database.getReference("Courses");
         ArrayList<Course> courseList = new ArrayList<>();
+        ArrayList<Course> enrolled_courses = new ArrayList<>();
+        ArrayList<String> students = new ArrayList<>();
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
@@ -56,6 +60,61 @@ public class welcome_student extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
+        };
+
+        ValueEventListener init_students = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        students.add(ds.getValue(Student.class).getUsername());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        ValueEventListener init_enrolled_courses = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Course current;
+                    String textDisplay = "";
+                    String username;
+                    if (savedInstanceState == null) {
+                        Bundle b = getIntent().getExtras();
+                        if (b == null) {
+                            username = null;
+                        } else {
+                            username = b.getString("USERNAME");
+                        }
+                    } else {
+                        username = (String) savedInstanceState.getSerializable("USERNAME");
+                    }
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        current = ds.getValue(Course.class);
+                        for (DataSnapshot ds_student : ds.child("Students").getChildren()) {
+                            if (ds_student.getValue(Student.class).getUsername().equals(username)) {
+                                enrolled_courses.add(current);
+                                break;
+                            }
+                        }
+                    }
+                    for (int i = 0; i < enrolled_courses.size(); i++) {
+                        textDisplay = textDisplay + enrolled_courses.get(i).basicToString();
+                    }
+                    course_view.setText(textDisplay);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
         };
 
         ValueEventListener initList = new ValueEventListener() {
@@ -76,6 +135,7 @@ public class welcome_student extends AppCompatActivity {
         };
 
         reference.addValueEventListener(postListener);
+        reference.addValueEventListener(init_enrolled_courses);
         /*
         Having trouble adding student to database.
         Have to verify if you can add ArrayLists to databases.
@@ -86,6 +146,18 @@ public class welcome_student extends AppCompatActivity {
             public void onClick(View v) {
                 String name = name_entry.getText().toString();
                 String code = code_entry.getText().toString();
+                reference.addValueEventListener(initList);
+                String username;
+                if (savedInstanceState == null) {
+                    Bundle b = getIntent().getExtras();
+                    if (b == null) {
+                        username = null;
+                    } else {
+                        username = b.getString("USERNAME");
+                    }
+                } else {
+                    username = (String) savedInstanceState.getSerializable("USERNAME");
+                }
                 if (TextUtils.isEmpty(name) && TextUtils.isEmpty(code)) {
                     name_entry.setText("Name required");
                     code_entry.setText("Code required");
@@ -101,33 +173,26 @@ public class welcome_student extends AppCompatActivity {
                     return;
                 }
                 reference.addValueEventListener(initList);
-                Course newCourse = new Course(name, code);
-                for (int i = 0; i < courseList.size(); i++) {
-                    Course current = courseList.get(i);
-                    if (current.equals(newCourse)) {
-                        newCourse = current;
-                        String username;
-                        if (savedInstanceState == null) {
-                            Bundle b = getIntent().getExtras();
-                            if (b == null) {
-                                username = null;
-                            } else {
-                                username = b.getString("USERNAME");
-                            }
-                        } else {
-                            username = (String) savedInstanceState.getSerializable("USERNAME");
-                        }
-                        if (newCourse.addStudent(username)) {
-                            reference.child(name).removeValue();
-                            reference.child(name).setValue(newCourse);
+                int index = getIndex(new Course(name, code), courseList);
+                if (index < 0) {
+                    error_display.setText("Course not found");
+                    return;
+                } else {
+                    reference.child(String.valueOf(index)).addValueEventListener(init_students);
+                    boolean inCourse = inCourse(username, students);
+                    if (inCourse) {
+                        error_display.setText("You are already enrolled in this course");
+                        return;
+                    } else {
+                        Course current = findCourse(index, courseList);
+                        if (current.addStudent()) {
+                            reference.child(String.valueOf(index)).child("course_capacity").setValue(current.getCourse_capacity());
+                            reference.child(String.valueOf(index)).child("Students").child(String.valueOf(students.size())).setValue(username);
+                            error_display.setText("");
                             name_entry.setText("");
                             code_entry.setText("");
-                            break;
                         } else {
-                            error_display.setText("Course capacity full. Enrolment failed");
-                            name_entry.setText("");
-                            code_entry.setText("");
-                            break;
+                            error_display.setText("Course at capacity. Enrolment failed");
                         }
                     }
                 }
@@ -157,6 +222,7 @@ public class welcome_student extends AppCompatActivity {
                             display = display + current.toString() + "\n";
                         }
                     }
+                    error_display.setText("");
                     displayCourses.setText(display);
                 } else if (!TextUtils.isEmpty(name)) {
                     for (i = 0; i < courseList.size(); i++) {
@@ -165,6 +231,7 @@ public class welcome_student extends AppCompatActivity {
                             display = display + current.toString() + "\n";
                         }
                     }
+                    error_display.setText("");
                     displayCourses.setText(display);
                 } else {
                     for (i = 0; i < courseList.size(); i++) {
@@ -173,6 +240,7 @@ public class welcome_student extends AppCompatActivity {
                             display = display + current.toString() + "\n";
                         }
                     }
+                    error_display.setText("");
                     displayCourses.setText(display);
                 }
             }
@@ -184,5 +252,36 @@ public class welcome_student extends AppCompatActivity {
             }
         });
         reference.addValueEventListener(postListener);
+    }
+
+    public int getIndex(Course course, ArrayList<Course> courseList) {
+        for (int i = 0; i < courseList.size(); i++) {
+            if (course.equals(courseList.get(i))) {
+                return courseList.get(i).getIndex();
+            }
+        }
+        return -1;
+    }
+
+    public boolean inCourse(String username, ArrayList<String> studentList) {
+        for (int i = 0; i < studentList.size(); i++) {
+            if (username.equals(studentList.get(i))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Course findCourse(int index, ArrayList<Course> courseList) {
+        for (int i = 0; i < courseList.size(); i++) {
+            if (courseList.get(i).getIndex() == index) {
+                return courseList.get(i);
+            }
+        }
+        return null;
+    }
+
+    public String[] findDays(String days) {
+
     }
 }
