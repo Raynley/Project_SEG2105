@@ -38,7 +38,6 @@ public class add_course extends AppCompatActivity {
         rootCourse = FirebaseDatabase.getInstance();
         reference = rootCourse.getReference("Courses");
         ArrayList<Course> course_list = new ArrayList<>();
-        final int[] index = {1};
 
         ValueEventListener initList = new ValueEventListener() {
 
@@ -49,10 +48,8 @@ public class add_course extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     course_list.clear();
-                    index[0] = 1;
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         course_list.add(ds.getValue(Course.class));
-                        index[0]++;
                     }
                 }
             }
@@ -66,7 +63,7 @@ public class add_course extends AppCompatActivity {
 
         course_btn.setOnClickListener(new View.OnClickListener() {
             /**When the course button is clicked. A new course is created and added to the database
-             * @author tannergidding
+             * @author tannergiddings
              * @param v
              */
             @Override
@@ -89,16 +86,36 @@ public class add_course extends AppCompatActivity {
                     //ENTER THE NEW COURSE INTO THE DATABASE
                     String name = course_name.getEditableText().toString();
                     String code = course_code.getEditableText().toString();
-
-                    Course course = new Course(name, code);
-                    course.setIndex(index[0]);
-                    reference.child(String.valueOf(index[0])).setValue(course);
-                    course_name.setText("");
-                    course_code.setText("");
+                    int index = createIndexCourses(course_list);
+                    if (index >= 0) {
+                        Course course = new Course(name, code);
+                        course.setIndex(index);
+                        reference.child(String.valueOf(index)).setValue(course);
+                        course_name.setText("");
+                        course_code.setText("");
+                    }
                 }
             }
         });
 
+    }
+
+    /**Returns a valid index for Courses
+     * @author tannergiddings
+     * @param course_list arraylist of courses
+     * @return an index or -1 if error
+     */
+    public int createIndexCourses(ArrayList<Course> course_list) {
+        boolean found;
+        if (course_list.size() == 0) {
+            return 0;
+        } else {
+            int sum = 0;
+            for (int i = 0; i < course_list.size(); i++) {
+                sum += course_list.get(i).getIndex();
+            }
+            return sum;
+        }
     }
 
 

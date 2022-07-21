@@ -203,4 +203,21 @@ public class SignUp extends AppCompatActivity {
         }
         return true;
     }
+
+    /**Returns a valid index for user's lists
+     * @author tannergiddings
+     * @param user_list arraylist of users
+     * @return an index or -1 if error
+     */
+    public int createIndex(ArrayList<User> user_list) {
+        if (user_list.size() == 0) {
+            return 0;
+        } else {
+            int sum = 0;
+            for (int i = 0; i < user_list.size(); i++) {
+                sum += user_list.get(i).getIndex();
+            }
+            return sum;
+        }
+    }
 }
