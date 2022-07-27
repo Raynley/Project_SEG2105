@@ -148,7 +148,7 @@ public class SignUp extends AppCompatActivity {
                         reference = rootCourse.getReference("User").child("Student");
                         reference.addValueEventListener(initStudentList);
                         student.setIndex(studentList.size());
-                        reference.child(String.valueOf(studentList.size())).setValue(student);
+                        reference.child(String.valueOf(createIndexStudent(studentList))).setValue(student);
                         iname.setText("");
                         ipassword.setText("");
                         irepassword.setText("");
@@ -157,7 +157,7 @@ public class SignUp extends AppCompatActivity {
                         reference = rootCourse.getReference("User").child("Instructor");
                         reference.addValueEventListener(initInstructorList);
                         instructor.setIndex(instructorList.size());
-                        reference.child(String.valueOf(instructorList.size())).setValue(instructor);
+                        reference.child(String.valueOf(createIndexInstructor(instructorList))).setValue(instructor);
                         iname.setText("");
                         ipassword.setText("");
                         irepassword.setText("");
@@ -202,5 +202,39 @@ public class SignUp extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    /**Returns a valid index for student's lists
+     * @author tannergiddings
+     * @param student_list arraylist of users
+     * @return an index or -1 if error
+     */
+    public int createIndexStudent(ArrayList<Student> student_list) {
+        if (student_list.size() == 0) {
+            return 0;
+        } else {
+            int sum = 0;
+            for (int i = 0; i < student_list.size(); i++) {
+                sum += student_list.get(i).getIndex();
+            }
+            return sum;
+        }
+    }
+
+    /**Returns a valid index for instructor's lists
+     * @author tannergiddings
+     * @param instructor_list arraylist of users
+     * @return an index or -1 if error
+     */
+    public int createIndexInstructor(ArrayList<Instructor> instructor_list) {
+        if (instructor_list.size() == 0) {
+            return 0;
+        } else {
+            int sum = 0;
+            for (int i = 0; i < instructor_list.size(); i++) {
+                sum += instructor_list.get(i).getIndex();
+            }
+            return sum;
+        }
     }
 }

@@ -109,6 +109,12 @@
                 android:hint="Enter course date"
                 tools:ignore="TouchTargetSizeCheck"/>
 
+            <TextView
+                android:id="@+id/Error"
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:text="" />
+
             <TableRow
                 android:id="@+id/row_edit_delete_btn"
                 android:layout_width="match_parent"
@@ -153,7 +159,7 @@
             <TextView
                 android:id="@+id/Enrol_View"
                 android:layout_width="match_parent"
-                android:layout_height="235dp"
+                android:layout_height="224dp"
                 android:text="" />
 
         </LinearLayout>

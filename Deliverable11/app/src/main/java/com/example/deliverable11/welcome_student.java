@@ -28,7 +28,7 @@ public class welcome_student extends AppCompatActivity {
     TextView displayCourses, error_display, course_view;
     ArrayList<Course> courseList;
     FirebaseDatabase database;
-    DatabaseReference reference;
+    DatabaseReference reference, student_reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +46,10 @@ public class welcome_student extends AppCompatActivity {
         course_view = findViewById(R.id.Enrol_View);
         database = FirebaseDatabase.getInstance();
         reference = database.getReference("Courses");
+        student_reference = database.getReference("Students");
         ArrayList<Course> courseList = new ArrayList<>();
         ArrayList<Course> enrolled_courses = new ArrayList<>();
-        ArrayList<String> students = new ArrayList<>();
+        ArrayList<Student> students = new ArrayList<>();
 
         ValueEventListener postListener = new ValueEventListener() {
             /**Displays the course to the user
@@ -79,7 +80,7 @@ public class welcome_student extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     for (DataSnapshot ds : snapshot.getChildren()) {
-                        students.add(ds.getValue(Student.class).getUsername());
+                        students.add(ds.getValue(Student.class));
                     }
                 }
             }
@@ -211,7 +212,10 @@ public class welcome_student extends AppCompatActivity {
                         Course current = findCourse(index, courseList);
                         if (current.addStudent()) {
                             reference.child(String.valueOf(index)).child("course_capacity").setValue(current.getCourse_capacity());
-                            reference.child(String.valueOf(index)).child("Students").child(String.valueOf(students.size())).setValue(username);
+                            Student current_student = new Student();
+                            current_student.setUsername(username);
+                            current_student.setIndex(createIndexStudents(students));
+                            student_reference.child(String.valueOf(index)).child(String.valueOf(current_student.getIndex())).setValue(current_student);
                             error_display.setText("");
                             name_entry.setText("");
                             code_entry.setText("");
@@ -251,55 +255,6 @@ public class welcome_student extends AppCompatActivity {
 
                 displayCourses.setText(toStringList(courses_to_display));
             }
-            /*
-            @Override
-            public void onClick(View v) {
-                reference.addValueEventListener(initList);
-                String name = name_entry.getText().toString().trim();
-                String code = code_entry.getText().toString().trim();
-                String days = day_entry.getText().toString().trim();
-                int i;
-                String display = "";
-                Course current;
-                if (TextUtils.isEmpty(name) && TextUtils.isEmpty(code)) {
-                    name_entry.setText("A value is needed");
-                    return;
-                } else if (!TextUtils.isEmpty(code)) {
-                    for (i = 0; i < courseList.size(); i++) {
-                        current = courseList.get(i);
-                        if (current.getCode().equals(code)) {
-                            display = display + current.toString() + "\n";
-                        }
-                    }
-                    error_display.setText("");
-                    displayCourses.setText(display);
-                } else if (!TextUtils.isEmpty(name)) {
-                    for (i = 0; i < courseList.size(); i++) {
-                        current = courseList.get(i);
-                        if (current.getName().equals(name)) {
-                            display = display + current.toString() + "\n";
-                        }
-                    }
-                    error_display.setText("");
-                    displayCourses.setText(display);
-                } else if (!TextUtils.isEmpty(days)) {
-                    ArrayList<Course> matchCourses = findDaysAmongCourses(courseList, days);
-                    for (i = 0; i < courseList.size(); i++) {
-                        display = display + matchCourses.toString() + "\n";
-                    }
-                    error_display.setText("");
-                    displayCourses.setText(display);
-                } else {
-                    for (i = 0; i < courseList.size(); i++) {
-                        current = courseList.get(i);
-                        if (current.getName().equals(name) && current.getCode().equals(code)) {
-                            display = display + current.toString() + "\n";
-                        }
-                    }
-                    error_display.setText("");
-                    displayCourses.setText(display);
-                }
-            }*/
         });
         displayCourses.setOnClickListener(new View.OnClickListener() {
             /**displays courses
@@ -335,7 +290,7 @@ public class welcome_student extends AppCompatActivity {
      * @param studentList
      * @return
      */
-    public boolean inCourse(String username, ArrayList<String> studentList) {
+    public boolean inCourse(String username, ArrayList<Student> studentList) {
         for (int i = 0; i < studentList.size(); i++) {
             if (username.equals(studentList.get(i))) {
                 return true;
@@ -488,5 +443,22 @@ public class welcome_student extends AppCompatActivity {
             str = str + list.get(i).toString();
         }
         return str;
+    }
+
+    /**Returns a valid index for studentList
+     * @author tannergiddings
+     * @param student_list arraylist of studnets
+     * @return an index or -1 if error
+     */
+    public int createIndexStudents(ArrayList<Student> student_list) {
+        if (student_list.size() == 0) {
+            return 0;
+        } else {
+            int sum = 0;
+            for (int i = 0; i < student_list.size(); i++) {
+                sum += student_list.get(i).getIndex();
+            }
+            return sum;
+        }
     }
 }
