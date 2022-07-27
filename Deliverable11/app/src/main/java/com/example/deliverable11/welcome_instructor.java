@@ -3,9 +3,11 @@ package com.example.deliverable11;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -28,6 +30,7 @@ public class welcome_instructor extends AppCompatActivity {
     ImageButton add_btn, remove_btn, edit_btn, search_btn;
     FirebaseDatabase database;
     DatabaseReference reference;
+    Button viewStudentButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,7 @@ public class welcome_instructor extends AppCompatActivity {
         edit_btn = findViewById(R.id.edit_course_btn_inst);
         search_btn = findViewById(R.id.search_btn);
         error_display = findViewById(R.id.Error);
+        viewStudentButton = findViewById((R.id.view_student_btn));
         database = FirebaseDatabase.getInstance();
         reference = database.getReference("Courses");
         ArrayList<Course> courseList = new ArrayList<Course>();
@@ -156,6 +160,14 @@ public class welcome_instructor extends AppCompatActivity {
                     }
                 }
                 reference.addValueEventListener(postListener);
+            }
+        });
+
+        viewStudentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(welcome_instructor.this, ViewStudent.class);
+                startActivity(intent);
             }
         });
 

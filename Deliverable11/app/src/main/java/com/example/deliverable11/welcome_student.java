@@ -47,7 +47,7 @@ public class welcome_student extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         reference = database.getReference("Courses");
         student_reference = database.getReference("Students");
-        ArrayList<Course> courseList = new ArrayList<>();
+        courseList = new ArrayList<>();
         ArrayList<Course> enrolled_courses = new ArrayList<>();
         ArrayList<Student> students = new ArrayList<>();
 

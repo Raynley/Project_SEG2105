@@ -103,6 +103,12 @@
                 android:layout_height="wrap_content"
                 android:text="" />
 
+            <Button
+                android:id="@+id/view_student_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="View Students" />
+
             <TableRow
                 android:id="@+id/row_edit_delete_btns_inst"
                 android:layout_width="match_parent"
