@@ -3,6 +3,7 @@ package com.example.deliverable11;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 
 public class ViewStudent extends AppCompatActivity {
     EditText course_name, course_code;
-    Button find_students;
+    Button find_students, go_back;
     TextView view_students;
     ArrayList<Course> courseList;
     FirebaseDatabase database;
@@ -35,6 +36,7 @@ public class ViewStudent extends AppCompatActivity {
         course_code = findViewById(R.id.course_name);
         find_students = findViewById(R.id.find_students);
         view_students = findViewById(R.id.view_students);
+        go_back = findViewById(R.id.back_to_welcome_instructor);
         courseList = new ArrayList<>();
         database = FirebaseDatabase.getInstance();
         reference = database.getReference("Courses");
@@ -117,6 +119,14 @@ public class ViewStudent extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 view_students.setText("");
+            }
+        });
+
+        go_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ViewStudent.this, welcome_instructor.class);
+                startActivity(intent);
             }
         });
     }

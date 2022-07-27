@@ -75,4 +75,12 @@
         tools:layout_editor_absoluteY="476dp"
         tools:ignore="MissingConstraints" />
 
+    <Button
+        android:id="@+id/back_to_welcome_instructor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go back"
+        tools:layout_editor_absoluteX="154dp"
+        tools:layout_editor_absoluteY="343dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
