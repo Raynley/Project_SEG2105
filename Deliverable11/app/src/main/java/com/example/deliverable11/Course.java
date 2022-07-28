@@ -218,4 +218,8 @@ public class Course {
     public void setIndex(int index) {
         this.index = index;
     }
+
+    public int getNumber_of_students() {
+        return number_of_students;
+    }
 }

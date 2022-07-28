@@ -51,6 +51,27 @@ public class welcome_student extends AppCompatActivity {
         ArrayList<Course> enrolled_courses = new ArrayList<>();
         ArrayList<Student> students = new ArrayList<>();
 
+        ValueEventListener initList = new ValueEventListener() {
+            /**Initialises courseList
+             * @author tannergiddings
+             * @param snapshot
+             */
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    courseList.clear();
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        courseList.add(ds.getValue(Course.class));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
         ValueEventListener postListener = new ValueEventListener() {
             /**Displays the course to the user
              * @author tannergiddings
@@ -113,12 +134,20 @@ public class welcome_student extends AppCompatActivity {
                         username = (String) savedInstanceState.getSerializable("USERNAME");
                     }
                     for (DataSnapshot ds : snapshot.getChildren()) {
+                        reference.addValueEventListener(initList);
                         current = ds.getValue(Course.class);
+                        int index;
                         for (DataSnapshot ds_student : ds.child("Students").getChildren()) {
+                            if (ds_student.child("username").equals(username)) {
+                                index = ds_student.getValue(String);
+                            }
+                            /*
                             if (ds_student.getValue(Student.class).getUsername().equals(username)) {
                                 enrolled_courses.add(current);
                                 break;
                             }
+                            */
+                             */
                         }
                     }
                     for (int i = 0; i < enrolled_courses.size(); i++) {
@@ -211,7 +240,7 @@ public class welcome_student extends AppCompatActivity {
                     } else {
                         Course current = findCourse(index, courseList);
                         if (current.addStudent()) {
-                            reference.child(String.valueOf(index)).child("course_capacity").setValue(current.getCourse_capacity());
+                            reference.child(String.valueOf(index)).child("number_of_students").setValue(current.getNumber_of_students());
                             Student current_student = new Student();
                             current_student.setUsername(username);
                             current_student.setIndex(createIndexStudents(students));

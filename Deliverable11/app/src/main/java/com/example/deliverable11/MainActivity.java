@@ -131,7 +131,9 @@ public class MainActivity extends AppCompatActivity {
                     for (i = 0; i < studentList.size(); i++) {
                         if (studentList.get(i).getUsername().equals(name)) {
                             if (studentList.get(i).getPassword().equals(password)) {
-                                startActivity(new Intent(getApplicationContext(), welcome_student.class));
+                                intent = new Intent(getApplicationContext(), welcome_student.class);
+                                intent.putExtra("USERNAME", name);
+                                startActivity(intent);
                             } else {
                                 ipassword.setText("Username and password don't match");
                             }
