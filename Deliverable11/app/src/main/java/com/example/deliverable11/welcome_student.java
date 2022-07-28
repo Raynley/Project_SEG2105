@@ -384,6 +384,16 @@ public class welcome_student extends AppCompatActivity {
         return listDays;
     }
 
+    public boolean findDayAmongString(String string_of_days, String day) {
+        String[] days = string_of_days.split(",");
+        for (int i = 0; i < days.length; i++) {
+            if (day.equals(days[i].trim())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**Finds the courses which are offered on a specific day
      * @author tannergiddings
      * @param courses list of courses to be verified
@@ -393,7 +403,7 @@ public class welcome_student extends AppCompatActivity {
     public ArrayList<Course> findDaysAmongCourses(ArrayList<Course> courses, String day) {
         ArrayList<Course> courseList = new ArrayList<>();
         for (int i = 0; i < courses.size(); i++) {
-            if (courses.get(i).equals(day)) {
+            if (findDayAmongString(courseList.get(i).getDays(), day.trim())) {
                 courseList.add(courses.get(i));
             }
         }

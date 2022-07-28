@@ -4,9 +4,9 @@ package com.example.deliverable11;
  * @author tannergiddings
  */
 public class User {
-    private String username;
-    private String password;
-    private int index;
+    protected String username;
+    protected String password;
+    protected int index;
 
     /**Constructor for user
      * @author tannergiddings
