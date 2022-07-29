@@ -222,4 +222,8 @@ public class Course {
     public int getNumber_of_students() {
         return number_of_students;
     }
+
+    public void remove_number_of_students() {
+        number_of_students--;
+    }
 }
