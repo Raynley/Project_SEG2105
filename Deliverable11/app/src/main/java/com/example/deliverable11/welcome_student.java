@@ -141,6 +141,41 @@ public class welcome_student extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
+                    reference.addValueEventListener(initList);
+                    String username;
+                    ArrayList<Integer> key_list = new ArrayList<>();
+                    ArrayList<Course> course_list;
+
+                    if (savedInstanceState == null) {
+                        Bundle b = getIntent().getExtras();
+                        if (b == null) {
+                            username = null;
+                        } else {
+                            username = b.getString("USERNAME");
+                        }
+                    } else {
+                        username = (String) savedInstanceState.getSerializable("USERNAME");
+                    }
+
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        for (DataSnapshot ds_sub : ds.getChildren()) {
+                            if (ds_sub.child("username").getValue().equals(username)) {
+                                key_list.add(Integer.parseInt(ds.getKey()));
+                                break;
+                            }
+                        }
+                    }
+
+                    course_list = findCoursesByIds(key_list, courseList);
+                    String text = "";
+
+                    for (int i = 0; i < course_list.size(); i++) {
+                        text = text + course_list.get(i).basicToString() + "\n";
+                    }
+
+                    course_view.setText(text);
+
+                    /*
                     Course current;
                     String textDisplay = "";
                     String username;
@@ -175,6 +210,7 @@ public class welcome_student extends AppCompatActivity {
                         }
                     }
                     course_view.setText(textDisplay);
+                    */
                 }
             }
 
@@ -186,11 +222,6 @@ public class welcome_student extends AppCompatActivity {
 
         student_reference.addValueEventListener(init_enrolled_courses);
         reference.addValueEventListener(postListener);
-        /*
-        Having trouble adding student to database.
-        Have to verify if you can add ArrayLists to databases.
-        Possible changes required.
-         */
         add_btn.setOnClickListener(new View.OnClickListener() {
             /**Adds the student to the course
              * @author tannergiddings
@@ -238,20 +269,25 @@ public class welcome_student extends AppCompatActivity {
                         return;
                     } else {
                         Course current = findCourse(index, courseList);
-                        if (current.addStudent()) {
-                            reference.child(String.valueOf(index)).child("number_of_students").setValue(current.getNumber_of_students());
-                            Student current_student = new Student();
-                            current_student.setUsername(username);
-                            current_student.setIndex(createIndexStudents(students));
-                            student_reference.child(String.valueOf(index)).child(String.valueOf(current_student.getIndex())).setValue(current_student);
-                            error_display.setText("");
-                            name_entry.setText("");
-                            code_entry.setText("");
-                            reference.addValueEventListener(init_enrolled_courses);
-                            return;
+                        student_reference.child(String.valueOf(current.getIndex())).addValueEventListener(init_student_keys);
+                        if (!student_keys_list.containsKey(username)) {
+                            if (current.addStudent()) {
+                                reference.child(String.valueOf(index)).child("number_of_students").setValue(current.getNumber_of_students());
+                                Student current_student = new Student();
+                                current_student.setUsername(username);
+                                current_student.setIndex(createIndexStudents(students));
+                                student_reference.child(String.valueOf(index)).child(String.valueOf(current_student.getIndex())).setValue(current_student);
+                                error_display.setText("");
+                                name_entry.setText("");
+                                code_entry.setText("");
+                                reference.addValueEventListener(init_enrolled_courses);
+                                return;
+                            } else {
+                                error_display.setText("Course at capacity. Enrolment failed");
+                                return;
+                            }
                         } else {
-                            error_display.setText("Course at capacity. Enrolment failed");
-                            return;
+                            error_display.setText("You are already enrolled in this course");
                         }
                     }
                 }
