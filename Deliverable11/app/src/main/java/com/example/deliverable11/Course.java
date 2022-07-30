@@ -18,7 +18,7 @@ public class Course {
     private String days;
     private String hours;
      */
-    private Map<String, ArrayList<Integer>> times;
+    private String times;
     private boolean hasInstructor;
     private int index;
 
@@ -138,7 +138,7 @@ public class Course {
      */
     public String toString() {
         return name + ":" + code + " - Instructor: " + instructor + " - course capacity: " + course_capacity +
-                " - times: " + toStringMap(times) + " - description: " + description + " - number of students" + number_of_students;
+                " - times: " + times + " - description: " + description + " - number of students" + number_of_students;
     }
 
     /**setter for description
@@ -164,7 +164,7 @@ public class Course {
      */
     public String stud_toString() {
         return name + ":" + code + " - Instructor: " + instructor + " - course capacity: " + course_capacity +
-                " - times: " + toStringMap(times) + "- description: " + description +
+                " - times: " + times + "- description: " + description +
                 " - number of students: " + number_of_students;
     }
 
@@ -200,6 +200,7 @@ public class Course {
         number_of_students--;
     }
 
+    /*
     private String toStringMap(Map<String, ArrayList<Integer>> timeMap) {
         boolean isFirst = true;
         String time_string = "";
@@ -213,33 +214,50 @@ public class Course {
         }
         return time_string;
     }
+    */
+
 
     /**
      * toString() method for time
      */
+    /*
     public String toStringMap() {
         return toStringMap(times);
     }
+
+     */
 
     /**
      * setter for times
      * @param times new times
      */
-    public void setTimes(HashMap<String, ArrayList<Integer>> times) {
+    public void setTimes(String times) {
         this.times = times;
+    }
+
+    /**
+     * getter for times
+     * @return times
+     */
+    public String getTimes() {
+        return times;
     }
 
     /**
      * getter for times
      * @return times for this course
      */
+    /*
     public Map<String, ArrayList<Integer>> getTimes() {
         return times;
     }
 
+     */
+
     /**
      * Converts the days in the map of times into a List<String>
      */
+    /*
     public ArrayList<String> getDays() {
         ArrayList<String> days = new ArrayList<>();
         for (String day : times.keySet()) {
@@ -247,6 +265,7 @@ public class Course {
         }
         return days;
     }
+    */
 
     private String convertListToString(ArrayList<Integer> time) {
         return convertIntToTime(time.get(0)) + "-" + convertIntToTime(time.get(1));
@@ -266,5 +285,39 @@ public class Course {
         }
         minute = time_number;
         return hour + ":" + minute;
+    }
+
+
+    public ArrayList<String> getDays() {
+        String time = times;
+        String[] times_split = time.split(",");
+        String[] day_and_time;
+        ArrayList<String> days = new ArrayList<>();
+        for (int i = 0; i < times_split.length; i++) {
+            day_and_time = times_split[i].split(" ");
+            for (int j = 0; i < day_and_time.length; j++) {
+                if (isDay(day_and_time[j])) {
+                    days.add(day_and_time[j]);
+                }
+            }
+        }
+        return days;
+    }
+
+    /**
+     * Finds if a string is a day
+     */
+    private boolean isDay(String entry) {
+        entry = entry.trim();
+        if (entry.equals("Monday") || entry.equals("monday") || entry.equals("Mondays") || entry.equals("mondays")
+                || entry.equals("Tuesday") || entry.equals("tuesday") || entry.equals("Tuesdays") || entry.equals("tuesdays")
+                || entry.equals("Wednesday") || entry.equals("wednesday") || entry.equals("Wednesdays") || entry.equals("wednesdays")
+                || entry.equals("Thursday") || entry.equals("thursday") || entry.equals("Thursdays") || entry.equals("thursdays")
+                || entry.equals("Friday") || entry.equals("friday") || entry.equals("Fridays") || entry.equals("fridays")
+                || entry.equals("Saturday") || entry.equals("saturday") || entry.equals("Saturdays") || entry.equals("saturdays")
+                || entry.equals("Sunday") || entry.equals("sunday") || entry.equals("Sundays") || entry.equals("sundays")) {
+            return true;
+        }
+        return false;
     }
 }

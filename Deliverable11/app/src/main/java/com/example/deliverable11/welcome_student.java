@@ -53,6 +53,29 @@ public class welcome_student extends AppCompatActivity {
         ArrayList<Student> students = new ArrayList<>();
         ArrayList<Integer> enrolled_courses_id = new ArrayList<>();
         Map<String, Integer> student_keys_list = new HashMap<>();
+        Map<String, ArrayList<Integer>> schedule = new HashMap<>();
+
+        /**
+         * Use on student_reference
+         */
+        /*
+        ValueEventListener init_schedule = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    schedule.clear();
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        */
 
         ValueEventListener init_student_keys = new ValueEventListener() {
             @Override
@@ -419,13 +442,8 @@ public class welcome_student extends AppCompatActivity {
         }
     }
 
-    /**finds the days in which the course is offered
-     * @author tannergiddings
-     * @param course course who's days are to be returned
-     * @return the days in which this course is offered
-     */
     private ArrayList<String> findDays(Course course) {
-        ArrayList<String> currentCourse = course.getDays();
+        ArrayList<String> currentCourse = getDays(course);
         int length = 1;
         ArrayList<String> listDays = new ArrayList<>();
         for (int i = 0; i < currentCourse.size(); i++) {
@@ -466,7 +484,7 @@ public class welcome_student extends AppCompatActivity {
     public ArrayList<Course> findDaysAmongCourses(ArrayList<Course> courses, String day) {
         ArrayList<Course> courseList = new ArrayList<>();
         for (int i = 0; i < courses.size(); i++) {
-            if (findDayAmongString(courseList.get(i).getDays(), day.trim())) {
+            if (findDayAmongString(getDays(courseList.get(i)), day.trim())) {
                 courseList.add(courses.get(i));
             }
         }
@@ -596,5 +614,44 @@ public class welcome_student extends AppCompatActivity {
             }
         }
         return null;
+    }
+
+    /**
+     * Finds if a string is a day
+     */
+    private boolean isDay(String entry) {
+        entry = entry.trim();
+        if (entry.equals("Monday") || entry.equals("monday") || entry.equals("Mondays") || entry.equals("mondays")
+                || entry.equals("Tuesday") || entry.equals("tuesday") || entry.equals("Tuesdays") || entry.equals("tuesdays")
+                || entry.equals("Wednesday") || entry.equals("wednesday") || entry.equals("Wednesdays") || entry.equals("wednesdays")
+                || entry.equals("Thursday") || entry.equals("thursday") || entry.equals("Thursdays") || entry.equals("thursdays")
+                || entry.equals("Friday") || entry.equals("friday") || entry.equals("Fridays") || entry.equals("fridays")
+                || entry.equals("Saturday") || entry.equals("saturday") || entry.equals("Saturdays") || entry.equals("saturdays")
+                || entry.equals("Sunday") || entry.equals("sunday") || entry.equals("Sundays") || entry.equals("sundays")) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Finds days in string of times
+     * @author tannergiddings
+     * @param course entry of course
+     * @return days in time
+     */
+    private ArrayList<String> getDays(Course course) {
+        String time = course.getTimes();
+        String[] times_split = time.split(",");
+        String[] day_and_time;
+        ArrayList<String> days = new ArrayList<>();
+        for (int i = 0; i < times_split.length; i++) {
+            day_and_time = times_split[i].split(" ");
+            for (int j = 0; i < day_and_time.length; j++) {
+                if (isDay(day_and_time[j])) {
+                    days.add(day_and_time[j]);
+                }
+            }
+        }
+        return days;
     }
 }
