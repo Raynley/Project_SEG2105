@@ -43,7 +43,8 @@ public class manage_instructors extends AppCompatActivity {
         ArrayList<Instructor> instructorList = new ArrayList<>();
 
         ValueEventListener initList = new ValueEventListener() {
-            /**Initialises instructorList
+            /**
+             * Initialises instructorList
              * @author tannergiddings
              * @param snapshot snapshot of database
              */
@@ -64,14 +65,14 @@ public class manage_instructors extends AppCompatActivity {
         };
 
         ValueEventListener postListener = new ValueEventListener() {
-            /**Displays the courses to the admin
+            /**
+             * Displays the courses to the admin
              * @author tannergiddings
              * @param snapshot snapshot of database
              */
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    Instructor instructor = snapshot.getValue(Instructor.class);
                     String textDisplay = "";
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         textDisplay = textDisplay + ds.getValue(Instructor.class).toString() + "\n";
@@ -83,10 +84,12 @@ public class manage_instructors extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         };
+
         reference.addValueEventListener(postListener);
         
         del_ins.setOnClickListener(new View.OnClickListener() {
-            /**Removes instructor from database
+            /**
+             * Removes instructor from database
              * @author tannergiddings
              * @param v
              */
@@ -97,8 +100,8 @@ public class manage_instructors extends AppCompatActivity {
                 if (TextUtils.isEmpty(name)) {
                     name_entry.setError("Name required");
                 } else {
-                    //DELETE FROM DATABASE
                     int index = getIndex(name, instructorList);
+
                     if (index < 0) {
                         name_entry.setText("Instructor not found");
                         return;
@@ -106,12 +109,9 @@ public class manage_instructors extends AppCompatActivity {
                         reference.child(String.valueOf(index)).removeValue();
                         return;
                     }
-                    /*database.getReference("User").child("Instructor").child(name).removeValue();
-                    name_entry.setText("");*/
                 }
             }
         });
-        reference.addValueEventListener(postListener);
         
     }
 
