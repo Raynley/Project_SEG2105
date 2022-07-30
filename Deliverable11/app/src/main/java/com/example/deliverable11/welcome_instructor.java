@@ -154,8 +154,7 @@ public class welcome_instructor extends AppCompatActivity {
 
                     if (!newCourse.getHasInstructor()) {
                         newCourse.setInstructor(username);
-                        reference.child(String.valueOf(index)).child("instructor").setValue(newCourse.getInstructor());
-                        reference.child(String.valueOf(index)).child
+                        reference.child(String.valueOf(index)).setValue(newCourse);
                         name_entry.setText("");
                         code_entry.setText("");
                         new_days.setText("");

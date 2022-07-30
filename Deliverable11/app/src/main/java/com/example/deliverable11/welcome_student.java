@@ -607,7 +607,7 @@ public class welcome_student extends AppCompatActivity {
      * @param student_list list of courses
      * @param index index to find
      */
-    private boolean containsIndex(ArrayList<Student> student_list, int index) {
+    private static boolean containsIndex(ArrayList<Student> student_list, int index) {
         for (int i = 0; i < student_list.size(); i++) {
             if (student_list.get(i).getIndex() == index) {
                 return true;
