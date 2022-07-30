@@ -34,6 +34,7 @@ public class manage_instructors extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_instructors);
+        this.setTitle("Manage instructors");
         
         name_entry = findViewById(R.id.enter_instruc_name);
         del_ins = findViewById(R.id.delete_instruc_btn);
