@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
                     for (i = 0; i < instructorList.size(); i++) {
                         if (instructorList.get(i).getUsername().equals(name)) {
                             if (instructorList.get(i).getPassword().equals(password)) {
-                                intent = new Intent(getApplicationContext(),welcome_instructor.class);
+                                intent = new Intent(getApplicationContext(), welcome_instructor.class);
                                 intent.putExtra("USERNAME", name);
                                 startActivity(intent);
                             } else {

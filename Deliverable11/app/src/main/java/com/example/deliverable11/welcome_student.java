@@ -31,7 +31,6 @@ public class welcome_student extends AppCompatActivity {
     ArrayList<Course> courseList;
     FirebaseDatabase database;
     DatabaseReference reference, student_reference;
-    Map<Integer, List<String>> all_enrolled_students;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,43 +173,6 @@ public class welcome_student extends AppCompatActivity {
                     }
 
                     course_view.setText(text);
-
-                    /*
-                    Course current;
-                    String textDisplay = "";
-                    String username;
-                    String current_student;
-                    all_enrolled_students = new HashMap<>();
-
-                    if (savedInstanceState == null) {
-                        Bundle b = getIntent().getExtras();
-                        if (b == null) {
-                            username = null;
-                        } else {
-                            username = b.getString("USERNAME");
-                        }
-                    } else {
-                        username = (String) savedInstanceState.getSerializable("USERNAME");
-                    }
-
-                    for (DataSnapshot ds : snapshot.getChildren()) {
-                        reference.addValueEventListener(initList);
-                        enrolled_courses_id.clear();
-                        int index;
-                        for (DataSnapshot ds_student : ds.child("Students").getChildren()) {
-                            current_student = ds_student.child("username").getValue(String.class);
-                            if (current_student.equals(username)) {
-                                index = Integer.parseInt(ds_student.getKey());
-                                current = findCourse(index, courseList);
-                                if (current != null) {
-                                    textDisplay = textDisplay + current.stud_toString() + "\n";
-                                    enrolled_courses_id.add(index);
-                                }
-                            }
-                        }
-                    }
-                    course_view.setText(textDisplay);
-                    */
                 }
             }
 
@@ -368,7 +330,7 @@ public class welcome_student extends AppCompatActivity {
                     if (student_keys_list.containsKey(username)) {
                         int current_student_index = student_keys_list.get(username);
                         student_reference.child(String.valueOf(index)).child(String.valueOf(current_student_index)).removeValue();
-                        current.remove_number_of_students();
+                        current.remove_student();
                         reference.child(String.valueOf(index)).child("number_of_students").setValue(current.getNumber_of_students());
                         return;
                     } else {
@@ -462,64 +424,33 @@ public class welcome_student extends AppCompatActivity {
      * @param course course who's days are to be returned
      * @return the days in which this course is offered
      */
-    private String[] findDays(Course course) {
-        String[] splitCourses = course.getDays().split(",");
+    private ArrayList<String> findDays(Course course) {
+        ArrayList<String> currentCourse = course.getDays();
         int length = 1;
-        String[] listDays = new String[0];
-        String[] swap;
-        for (int i = 0; i < splitCourses.length; i++) {
-            String currentCourse = splitCourses[i].trim();
-            if (currentCourse.equals("Monday") || currentCourse.equals("monday") || currentCourse.equals("Mondays") || currentCourse.equals("mondays")) {
-                swap = new String[length + 1];
-                enterDays(listDays, swap);
-                swap[length] = "monday";
-                listDays = swap;
-                length++;
-            } else if (currentCourse.equals("Tuesday") || currentCourse.equals("tuesday") || currentCourse.equals("Tuesdays") || currentCourse.equals("tuesdays")) {
-                swap = new String[length + 1];
-                enterDays(listDays, swap);
-                swap[length] = "tuesday";
-                listDays = swap;
-                length++;
-            } else if (currentCourse.equals("Wednesday") || currentCourse.equals("wednesday") || currentCourse.equals("Wednesdays") || currentCourse.equals("wednesdays")) {
-                swap = new String[length + 1];
-                enterDays(listDays, swap);
-                swap[length] = "wednesday";
-                listDays = swap;
-                length++;
-            } else if (currentCourse.equals("Thurday") || currentCourse.equals("thursday") || currentCourse.equals("Thursdays") || currentCourse.equals("thursdays")) {
-                swap = new String[length + 1];
-                enterDays(listDays, swap);
-                swap[length] = "thursday";
-                listDays = swap;
-                length++;
-            } else if (currentCourse.equals("Friday") || currentCourse.equals("friday") || currentCourse.equals("Fridays") || currentCourse.equals("fridays")) {
-                swap = new String[length + 1];
-                enterDays(listDays, swap);
-                swap[length] = "friday";
-                listDays = swap;
-                length++;
-            } else if (currentCourse.equals("Saturday") || currentCourse.equals("saturday") || currentCourse.equals("Saturdays") || currentCourse.equals("saturdays")) {
-                swap = new String[length + 1];
-                enterDays(listDays, swap);
-                swap[length] = "saturday";
-                listDays = swap;
-                length++;
-            } else if (currentCourse.equals("Sunday") || currentCourse.equals("sunday") || currentCourse.equals("Sundays") || currentCourse.equals("sundays")) {
-                swap = new String[length + 1];
-                enterDays(listDays, swap);
-                swap[length] = "saturday";
-                listDays = swap;
-                length++;
+        ArrayList<String> listDays = new ArrayList<>();
+        for (int i = 0; i < currentCourse.size(); i++) {
+            if (currentCourse.get(i).equals("Monday") || currentCourse.get(i).equals("monday") || currentCourse.get(i).equals("Mondays") || currentCourse.get(i).equals("mondays")) {
+                listDays.add("monday");
+            } else if (currentCourse.get(i).equals("Tuesday") || currentCourse.get(i).equals("tuesday") || currentCourse.get(i).equals("Tuesdays") || currentCourse.get(i).equals("tuesdays")) {
+                listDays.add("tuesday");
+            } else if (currentCourse.get(i).equals("Wednesday") || currentCourse.get(i).equals("wednesday") || currentCourse.get(i).equals("Wednesdays") || currentCourse.get(i).equals("wednesdays")) {
+                listDays.add("wednesday");
+            } else if (currentCourse.get(i).equals("Thurday") || currentCourse.get(i).equals("thursday") || currentCourse.get(i).equals("Thursdays") || currentCourse.get(i).equals("thursdays")) {
+                listDays.add("thursday");
+            } else if (currentCourse.get(i).equals("Friday") || currentCourse.get(i).equals("friday") || currentCourse.get(i).equals("Fridays") || currentCourse.get(i).equals("fridays")) {
+                listDays.add("friday");
+            } else if (currentCourse.get(i).equals("Saturday") || currentCourse.get(i).equals("saturday") || currentCourse.get(i).equals("Saturdays") || currentCourse.get(i).equals("saturdays")) {
+                listDays.add("saturday");
+            } else if (currentCourse.get(i).equals("Sunday") || currentCourse.get(i).equals("sunday") || currentCourse.get(i).equals("Sundays") || currentCourse.get(i).equals("sundays")) {
+                listDays.add("sunday");
             }
         }
         return listDays;
     }
 
-    public boolean findDayAmongString(String string_of_days, String day) {
-        String[] days = string_of_days.split(",");
-        for (int i = 0; i < days.length; i++) {
-            if (day.equals(days[i].trim())) {
+    public boolean findDayAmongString(ArrayList<String> days, String day) {
+        for (int i = 0; i < days.size(); i++) {
+            if (day.equals(days.get(i).trim())) {
                 return true;
             }
         }

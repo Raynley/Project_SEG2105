@@ -1,6 +1,8 @@
 package com.example.deliverable11;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**Creates course and allows interaction with them
  * @author tannergiddings
@@ -12,8 +14,11 @@ public class Course {
     private int course_capacity;
     private int number_of_students;
     private String description;
+    /*
     private String days;
     private String hours;
+     */
+    private Map<String, ArrayList<Integer>> times;
     private boolean hasInstructor;
     private int index;
 
@@ -89,38 +94,6 @@ public class Course {
         hasInstructor = true;
     }
 
-    /**'getter' for days
-     * @author tannergiddings
-     * @return days of course
-     */
-    public String getDays() {
-        return days;
-    }
-
-    /**'setter' for days
-     * @author tannergiddings
-     * @param days new days for course
-     */
-    public void setDays(String days) {
-        this.days = days;
-    }
-
-    /**'getter for hours
-     * @author tannergiddings
-     * @return hours for course
-     */
-    public String getHours() {
-        return hours;
-    }
-
-    /**'setter' for hours
-     * @author tannergiddings
-     * @param hours new hours for course
-     */
-    public void setHours(String hours) {
-        this.hours = hours;
-    }
-
     /**getter for instructor
      * @author tannergiddings
      * @return username of instructor
@@ -165,7 +138,7 @@ public class Course {
      */
     public String toString() {
         return name + ":" + code + " - Instructor: " + instructor + " - course capacity: " + course_capacity +
-                " - days:" + days +  " - hours:" + hours + " - description: " + description + " - number of students" + number_of_students;
+                " - times: " + toStringMap(times) + " - description: " + description + " - number of students" + number_of_students;
     }
 
     /**setter for description
@@ -191,7 +164,7 @@ public class Course {
      */
     public String stud_toString() {
         return name + ":" + code + " - Instructor: " + instructor + " - course capacity: " + course_capacity +
-                " - days:" + days +  " - hours:" + hours + "- description: " + description +
+                " - times: " + toStringMap(times) + "- description: " + description +
                 " - number of students: " + number_of_students;
     }
 
@@ -223,7 +196,75 @@ public class Course {
         return number_of_students;
     }
 
-    public void remove_number_of_students() {
+    public void remove_student() {
         number_of_students--;
+    }
+
+    private String toStringMap(Map<String, ArrayList<Integer>> timeMap) {
+        boolean isFirst = true;
+        String time_string = "";
+        for (String day : times.keySet()) {
+            if (!isFirst) {
+                time_string += ",";
+            } else {
+                isFirst = false;
+            }
+            time_string += day + " " + convertListToString(times.get(day));
+        }
+        return time_string;
+    }
+
+    /**
+     * toString() method for time
+     */
+    public String toStringMap() {
+        return toStringMap(times);
+    }
+
+    /**
+     * setter for times
+     * @param times new times
+     */
+    public void setTimes(HashMap<String, ArrayList<Integer>> times) {
+        this.times = times;
+    }
+
+    /**
+     * getter for times
+     * @return times for this course
+     */
+    public Map<String, ArrayList<Integer>> getTimes() {
+        return times;
+    }
+
+    /**
+     * Converts the days in the map of times into a List<String>
+     */
+    public ArrayList<String> getDays() {
+        ArrayList<String> days = new ArrayList<>();
+        for (String day : times.keySet()) {
+            days.add(day);
+        }
+        return days;
+    }
+
+    private String convertListToString(ArrayList<Integer> time) {
+        return convertIntToTime(time.get(0)) + "-" + convertIntToTime(time.get(1));
+    }
+
+    /**
+     * Converts number to time
+     * @param time_number number for time
+     * @return String value of time
+     */
+    private String convertIntToTime(int time_number) {
+        int hour = 0;
+        int minute;
+        while (time_number > 60) {
+            time_number = time_number - 60;
+            hour++;
+        }
+        minute = time_number;
+        return hour + ":" + minute;
     }
 }
