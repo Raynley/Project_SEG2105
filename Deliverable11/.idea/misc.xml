@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../../layout/custom_preview.xml" value="0.1" />
         <entry key="..\:/Users/laure/OneDrive - University of Ottawa/Summer 2022/SEG 2205/Project/Project_SEG2105/Deliverable11/app/src/main/res/layout/activity_add_course.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/laure/OneDrive - University of Ottawa/Summer 2022/SEG 2205/Project/Project_SEG2105/Deliverable11/app/src/main/res/layout/activity_edit_courses.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/laure/OneDrive - University of Ottawa/Summer 2022/SEG 2205/Project/Project_SEG2105/Deliverable11/app/src/main/res/layout/activity_main.xml" value="0.18885869565217392" />
@@ -32,6 +33,17 @@
         <entry key="..\:/Users/yfmad/Project_SEG2105/Deliverable11/app/src/main/res/layout/activity_sign_up_page.xml" value="0.1" />
         <entry key="..\:/Users/yfmad/Project_SEG2105/Deliverable11/app/src/main/res/layout/activity_welcome.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/yfmad/Project_SEG2105/Deliverable11/app/src/main/res/layout/activity_welcome_admin.xml" value="0.22826086956521738" />
+        <entry key="app/src/main/res/layout/activity_add_course.xml" value="0.22010869565217392" />
+        <entry key="app/src/main/res/layout/activity_edit_courses.xml" value="0.22010869565217392" />
+        <entry key="app/src/main/res/layout/activity_instructor_editcourse.xml" value="0.3015479046365489" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.22010869565217392" />
+        <entry key="app/src/main/res/layout/activity_manage_instructors.xml" value="0.22010869565217392" />
+        <entry key="app/src/main/res/layout/activity_manage_students.xml" value="0.22010869565217392" />
+        <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.22010869565217392" />
+        <entry key="app/src/main/res/layout/activity_view_student.xml" value="0.22010869565217392" />
+        <entry key="app/src/main/res/layout/activity_welcome_admin.xml" value="0.23822463768115942" />
+        <entry key="app/src/main/res/layout/activity_welcome_instructor.xml" value="0.3421356201171875" />
+        <entry key="app/src/main/res/layout/activity_welcome_student.xml" value="0.26772918701171877" />
       </map>
     </option>
   </component>

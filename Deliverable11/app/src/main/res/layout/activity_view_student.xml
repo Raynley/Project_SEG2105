@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ViewStudent">
+
+    <TextView
+        android:id="@+id/enter_course_info"
+        android:layout_width="411dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:text="Enter the course information to find the students registered for the course."
+        android:textColor="@color/black"
+
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/course_name"
+        android:layout_width="0dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="56dp"
+        android:ems="10"
+        android:hint="@string/enter_course_name"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enter_course_info" />
+
+    <EditText
+        android:id="@+id/course_code_info"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:hint="@string/enter_course_code"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/course_name" />
+
+    <Button
+        android:id="@+id/find_students"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="84dp"
+        android:text="Find students"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/course_code_info" />
+
+    <TextView
+        android:id="@+id/view_students"
+        android:layout_width="410dp"
+        android:layout_height="219dp"
+        android:text=""
+        android:clickable="true"
+        tools:layout_editor_absoluteX="-2dp"
+        tools:layout_editor_absoluteY="510dp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="406dp"
+        android:layout_height="31dp"
+        android:text="Students registered in the course"
+        tools:layout_editor_absoluteX="2dp"
+        tools:layout_editor_absoluteY="476dp"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/back_to_welcome_instructor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go back"
+        tools:layout_editor_absoluteX="154dp"
+        tools:layout_editor_absoluteY="343dp"
+        tools:ignore="MissingConstraints" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

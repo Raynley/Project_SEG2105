@@ -140,52 +140,15 @@
         android:id="@+id/create_the_account"
         android:layout_width="204dp"
         android:layout_height="48dp"
+        android:layout_marginBottom="128dp"
         android:text="@string/create_account"
-        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableRow"
-        tools:ignore="MissingConstraints"
-        tools:visibility="visible" />
-
-    <TableRow
-        android:id="@+id/tableRow"
-        android:layout_width="405dp"
-        android:layout_height="59dp"
-        android:layout_marginTop="72dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout2">
-
-        <RadioButton
-            android:id="@+id/checkbox_admin"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="25dp"
-            android:text="@string/create_admin"
-            tools:ignore="MissingConstraints" />
-
-        <RadioButton
-            android:id="@+id/checkbox_student"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="25dp"
-            android:text="@string/create_student"
-            tools:ignore="MissingConstraints" />
-
-        <RadioButton
-            android:id="@+id/checkbox_instructor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="44dp"
-            android:text="@string/create_instructor"
-            tools:ignore="MissingConstraints" />
-    </TableRow>
+        app:layout_constraintVertical_bias="0.296"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/login"
@@ -193,10 +156,12 @@
         android:layout_height="wrap_content"
         android:text="Already have an account? Log in here"
         android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_the_account" />
+        app:layout_constraintTop_toBottomOf="@+id/create_the_account"
+        app:layout_constraintVertical_bias="0.431" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -206,9 +171,34 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login"
-        app:layout_constraintVertical_bias="0.48" />
+        app:layout_constraintTop_toBottomOf="@+id/login" />
+
+    <RadioGroup
+        android:layout_width="389dp"
+        android:layout_height="103dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="7dp"
+        android:layout_marginBottom="122dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/create_the_account"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout2">
+
+        <RadioButton
+            android:id="@+id/instructor_button"
+            android:layout_width="208dp"
+            android:layout_height="match_parent"
+            android:text="Instructor     " />
+
+        <RadioButton
+            android:id="@+id/student_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Student" />
+    </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

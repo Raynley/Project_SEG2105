@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".edit_courses">
-
+    tools:context=".welcome_instructor">
     <TextView
-        android:id="@+id/display_list_courses"
+        android:id="@+id/display_list_courses_inst"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/list_courses"
+        android:text="Here is a list of the courses. You can add yourself or remove yourself from a course. You cannot add yourself to a course which already has an instructor. You can edit the course days, course hours, course description and student course capacity."
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
 
@@ -19,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/edit_course_container"
+        android:id="@+id/edit_course_containe_inst"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
@@ -28,24 +27,25 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/display_list_courses">
+        app:layout_constraintTop_toBottomOf="@+id/display_list_courses_inst">
 
         <LinearLayout
-            android:id="@+id/list_of_class_container"
+            android:id="@+id/list_of_class_container_inst"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/displayCourse"
+                android:id="@+id/displayCourse_inst"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:clickable="true"
                 android:text="" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/edit_course_option_container"
+            android:id="@+id/edit_course_option_container_inst"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="7"
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/enter_course_to_edit"
+                    android:id="@+id/enter_course_to_edit_inst"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="50dp"
@@ -66,12 +66,12 @@
             </TableRow>
 
             <TableRow
-                android:id="@+id/row_enter_course_code"
+                android:id="@+id/row_enter_course_code_inst"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/course_code_to_edit"
+                    android:id="@+id/course_code_to_edit_inst"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -82,12 +82,12 @@
             </TableRow>
 
             <TableRow
-                android:id="@+id/row_enter_course_name"
+                android:id="@+id/row_enter_course_name_inst"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/course_name_to_edit"
+                    android:id="@+id/course_name_to_edit_inst"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -97,8 +97,20 @@
                     tools:ignore="TouchTargetSizeCheck" />
             </TableRow>
 
+            <TextView
+                android:id="@+id/Error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+            <Button
+                android:id="@+id/view_student_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="View Students" />
+
             <TableRow
-                android:id="@+id/row_edit_delete_btns"
+                android:id="@+id/row_edit_delete_btns_inst"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
@@ -107,7 +119,7 @@
 
 
                 <ImageButton
-                    android:id="@+id/delete_course_btn"
+                    android:id="@+id/delete_course_btn_inst"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
@@ -117,22 +129,37 @@
                     tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
                 <ImageButton
-                    android:id="@+id/edit_course_btn"
+                    android:id="@+id/edit_course_btn_inst"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
                     android:background="#cccc"
                     app:srcCompat="@android:drawable/ic_menu_edit"
                     tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+                <ImageButton
+                    android:id="@+id/add_btn"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:background="#cccc"
+                    app:srcCompat="@android:drawable/ic_menu_add"
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+                <ImageButton
+                    android:id="@+id/search_btn"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:background="#cccc"
+                    app:srcCompat="@android:drawable/ic_menu_search" />
             </TableRow>
 
             <TableRow
-                android:id="@+id/row_textview_2"
+                android:id="@+id/row_textview_2_inst"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/enter_replacement_infos"
+                    android:id="@+id/enter_replacement_infos_inst"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/enter_new_course_infos"
@@ -140,33 +167,47 @@
             </TableRow>
 
             <TableRow
-                android:id="@+id/row_new_course_code"
+                android:id="@+id/row_new_course_code_inst"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp">
 
                 <EditText
-                    android:id="@+id/new_course_code"
+                    android:id="@+id/course_days"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="@string/enter_course_code"
+                    android:hint="Enter times offered"
                     android:inputType="textNoSuggestions"
                     android:textSize="15dp"
                     tools:ignore="TouchTargetSizeCheck" />
             </TableRow>
-
             <TableRow
-                android:id="@+id/row_new_course_name"
+                android:id="@+id/row_course_capacity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/new_course_name"
+                    android:id="@+id/course_capacity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="@string/enter_course_name"
+                    android:hint="Enter course capacity"
+                    android:inputType="textPersonName"
+                    android:textSize="15dp"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </TableRow>
+            <TableRow
+                android:id="@+id/row_course_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/course_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Enter course description"
                     android:inputType="textPersonName"
                     android:textSize="15dp"
                     tools:ignore="TouchTargetSizeCheck" />
@@ -174,4 +215,5 @@
 
         </LinearLayout>
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
