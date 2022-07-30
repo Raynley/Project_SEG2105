@@ -747,7 +747,7 @@ public class welcome_student extends AppCompatActivity {
         }
     }
 
-    public void verify_schedule(Map<String, ArrayList<Integer>> schedule, Course course) {
+    public boolean verify_schedule(Map<String, ArrayList<Integer>> schedule, Course course) {
         String time = course.getTimes();
         HashMap<String, ArrayList<Integer>> new_times = new HashMap<>();
         ArrayList<Integer> new_hours;
@@ -783,44 +783,37 @@ public class welcome_student extends AppCompatActivity {
                 new_times.put(day,new_hours);
             }
         }
-        
-        /*
-        String day;
-                    int start_time;
-                    int end_time;
-                    String beginning;
-                    String end;
-                    String time;
-                    String[] times_split;
-                    String[] days_and_time;
-                    String[] times_only;
-                    int swap;
-                    ArrayList<Integer> times_list = new ArrayList<>();
-
-                    for (int i = 0; i < courses.size(); i++) {
-                        time = courses.get(i).getTimes();
-                        times_split = time.split(",");
-                        for (int j = 0; j < times_split.length; i++) {
-                            days_and_time = times_split[j].split(" ");
-                            day = days_and_time[0];
-                            times_only = days_and_time[1].split("-");
-                            start_time = convertToInt(times_only[0]);
-                            end_time = convertToInt(times_only[1]);
-                            if (end_time < start_time) {
-                                swap = end_time;
-                                end_time = start_time;
-                                start_time = swap;
-                            }
-
-                            if (day != null && start_time >= 0 && end_time >= 0) {
-                                times_list.add(start_time);
-                                times_list.add(end_time);
-                                schedule.put(day, times_list);
-                            }
-                        }
+        ArrayList<Integer> hours1;
+        ArrayList<Integer> hours2;
+        HashMap<String, ArrayList<Integer>> new_schedule = new HashMap<>();
+        for (String current_day : new_times.keySet()) {
+            if (!schedule.containsKey(current_day)) {
+                new_schedule.put(current_day,new_times.get(current_day));
+            } else {
+                hours1 = new_times.get(current_day);
+                hours2 = schedule.get(current_day);
+                if (hours1.get(0) != null && hours1.get(1) != null && hours2.get(0) != null && hours2.get(1) != null) {
+                    if (isOut(hours1.get(0), hours1.get(1), hours2.get(0), hours2.get(1))) {
+                        new_schedule.put(current_day, hours1);
+                    } else {
+                        return false;
                     }
-         */
+                } else {
+                    return false;
+                }
+            }
+        }
+        for (String day_to_be_added : new_schedule.keySet()) {
+            schedule.put(day_to_be_added, new_schedule.get(day_to_be_added));
+        }
+        return true;
+    }
 
+    //time1 = start_time1, time2 = end_time1, new_time1 = start_time2, new_time2 = end_time2
+    public boolean isOut(int start_time1, int end_time1, int start_time2, int end_time2) {
+        if (start_time1 < start_time2 && start_time1 < end_time2 && end_time1 <= start_time2 && end_time1 < end_time2) {
+            return true;
+        } else return start_time1 > start_time2 && start_time1 >= end_time2 && end_time1 > start_time2 && end_time1 > end_time2;
     }
 
 }
