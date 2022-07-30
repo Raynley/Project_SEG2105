@@ -32,6 +32,7 @@ public class manage_students extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_students);
+        this.setTitle("Manage students");
 
         name_entry = findViewById(R.id.enter_stud_name_editText);
         del_btn = findViewById(R.id.delete_stud_btn);
