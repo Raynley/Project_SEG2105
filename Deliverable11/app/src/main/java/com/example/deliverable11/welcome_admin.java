@@ -27,6 +27,7 @@ public class welcome_admin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_admin);
+        this.setTitle("Welcome admin");
         
         welcome_message =  findViewById(R.id.welcome_message);
         Intent intent = getIntent();

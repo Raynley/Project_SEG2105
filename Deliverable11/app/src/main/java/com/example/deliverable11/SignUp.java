@@ -32,17 +32,16 @@ public class SignUp extends AppCompatActivity {
     EditText iname, ipassword, irepassword;
     Button iregister;
     TextView ilogin;
-    //FirebaseAuth fAuth;
     FirebaseDatabase rootCourse;
     DatabaseReference reference;
     RadioButton instructorBtn, studentBtn;
-    //ProgressBar iprogressbar;
     String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        this.setTitle("Sign up");
 
         iname = findViewById(R.id.userName);
         rootCourse = FirebaseDatabase.getInstance();

@@ -34,6 +34,7 @@ public class ViewStudent extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_student);
+        this.setTitle("View Students");
 
         course_name = findViewById(R.id.course_code_info);
         course_code = findViewById(R.id.course_name);

@@ -14,10 +14,6 @@ public class Course {
     private int course_capacity;
     private int number_of_students;
     private String description;
-    /*
-    private String days;
-    private String hours;
-     */
     private String times;
     private boolean hasInstructor;
     private int index;

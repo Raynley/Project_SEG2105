@@ -36,6 +36,7 @@ public class welcome_student extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_student);
+        this.setTitle("Welcome student");
 
         name_entry = findViewById(R.id.course_name_to_edit);
         code_entry = findViewById(R.id.course_code_to_edit);
@@ -53,46 +54,8 @@ public class welcome_student extends AppCompatActivity {
         ArrayList<Student> students = new ArrayList<>();
         ArrayList<Integer> enrolled_courses_id = new ArrayList<>();
         Map<String, Integer> student_keys_list = new HashMap<>();
+        //Day, then hours
         Map<String, ArrayList<Integer>> schedule = new HashMap<>();
-
-        /**
-         * Use on student_reference
-         */
-        /*
-        ValueEventListener init_schedule = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    schedule.clear();
-                    for (DataSnapshot ds : snapshot.getChildren()) {
-
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-        */
-
-        ValueEventListener init_student_keys = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    student_keys_list.clear();
-                    for (DataSnapshot ds : snapshot.getChildren()) {
-                        student_keys_list.put(ds.child("username").getValue(String.class), ds.child("index").getValue(Integer.class));
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
 
         ValueEventListener initList = new ValueEventListener() {
             /**Initialises courseList
@@ -105,6 +68,98 @@ public class welcome_student extends AppCompatActivity {
                     courseList.clear();
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         courseList.add(ds.getValue(Course.class));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        /**
+         * Use on student_reference
+         */
+        ValueEventListener init_schedule = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String username;
+                    ArrayList<Integer> course_indices = new ArrayList<>();
+                    if (savedInstanceState == null) {
+                        Bundle b = getIntent().getExtras();
+                        if (b == null) {
+                            username = null;
+                        } else {
+                            username = b.getString("USERNAME");
+                        }
+                    } else {
+                        username = (String) savedInstanceState.getSerializable("USERNAME");
+                    }
+
+                    schedule.clear();
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        for (DataSnapshot ds_2 : ds.getChildren()) {
+                            if (ds_2.child("username").getValue(String.class).equals(username)) {
+                                course_indices.add(Integer.parseInt(ds.getKey()));
+                                break;
+                            }
+                        }
+                    }
+                    reference.addValueEventListener(initList);
+                    ArrayList<Course> courses = findCoursesByIds(course_indices, courseList);
+                    String day;
+                    int start_time;
+                    int end_time;
+                    String beginning;
+                    String end;
+                    String time;
+                    String[] times_split;
+                    String[] days_and_time;
+                    String[] times_only;
+                    int swap;
+                    ArrayList<Integer> times_list = new ArrayList<>();
+
+                    for (int i = 0; i < courses.size(); i++) {
+                        time = courses.get(i).getTimes();
+                        times_split = time.split(",");
+                        for (int j = 0; j < times_split.length; i++) {
+                            days_and_time = times_split[j].split(" ");
+                            day = days_and_time[0];
+                            times_only = days_and_time[1].split("-");
+                            start_time = convertToInt(times_only[0]);
+                            end_time = convertToInt(times_only[1]);
+                            if (end_time < start_time) {
+                                swap = end_time;
+                                end_time = start_time;
+                                start_time = swap;
+                            }
+
+                            if (day != null && start_time >= 0 && end_time >= 0) {
+                                times_list.add(start_time);
+                                times_list.add(end_time);
+                                schedule.put(day, times_list);
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+
+        ValueEventListener init_student_keys = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    student_keys_list.clear();
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        student_keys_list.put(ds.child("username").getValue(String.class), ds.child("index").getValue(Integer.class));
                     }
                 }
             }
@@ -247,7 +302,7 @@ public class welcome_student extends AppCompatActivity {
                     error_display.setText("Course not found");
                     return;
                 } else {
-                    reference.child(String.valueOf(index)).addValueEventListener(init_students);
+                    student_reference.child(String.valueOf(index)).addValueEventListener(init_students);
                     boolean inCourse = inCourse(username, students);
                     if (inCourse) {
                         error_display.setText("You are already enrolled in this course");
@@ -361,7 +416,6 @@ public class welcome_student extends AppCompatActivity {
                         return;
                     }
                 }
-
 
             }
         });
@@ -538,7 +592,7 @@ public class welcome_student extends AppCompatActivity {
 
     /**Returns a valid index for studentList
      * @author tannergiddings
-     * @param student_list arraylist of studnets
+     * @param student_list arraylist of students
      * @return an index or -1 if error
      */
     public int createIndexStudents(ArrayList<Student> student_list) {
@@ -654,4 +708,112 @@ public class welcome_student extends AppCompatActivity {
         }
         return days;
     }
+
+    private int convertToInt(String entry) {
+        String[] entry_splits = entry.split(":");
+        int[] int_entry_splits = new int[2];
+        for (int i = 0; i < 2; i++) {
+            int_entry_splits[i] = convertStringToInt(entry_splits[i]);
+            if (int_entry_splits[i] == -1) {
+                return -1;
+            }
+        }
+        return int_entry_splits[0]*60 + int_entry_splits[1];
+
+    }
+
+    /**
+     * Converts String to int
+     * @param entry String entry to convert to int
+     * @return int value of entry
+     */
+    public int convertStringToInt(String entry) {
+        try {
+            return Integer.parseInt(entry.trim());
+        } catch(NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    /**
+     * swaps integers if one is greater than the other
+     */
+    public void swap(int smaller, int greater) {
+        int swap;
+        if (greater < smaller) {
+            swap = greater;
+            greater = smaller;
+            smaller = swap;
+        }
+    }
+
+    public boolean verify_schedule(Map<String, ArrayList<Integer>> schedule, Course course) {
+        String time = course.getTimes();
+        HashMap<String, ArrayList<Integer>> new_times = new HashMap<>();
+        ArrayList<Integer> new_hours;
+        String[] time_split = time.split(",");
+        String[] days_and_time;
+        String day;
+        String[] times;
+        String[] hours;
+        int start_time = -1;
+        int end_time = -1;
+
+        for (int i = 0; i < time_split.length; i++) {
+            new_hours = new ArrayList<>();
+            days_and_time = time_split[i].split(" ");
+            day = days_and_time[0];
+            times = days_and_time[1].split("-");
+            hours = times[0].split(":");
+            if (convertToInt(hours[0]) >= 0 && convertToInt(hours[1]) >= 0) {
+                start_time = convertToInt(hours[0]) * 60 + convertToInt(hours[1]);
+            }
+            hours = times[1].split(":");
+            if (convertToInt(hours[0]) >= 0 && convertToInt(hours[1]) >= 0) {
+                end_time = convertToInt(hours[0]) * 60 + convertToInt(hours[1]);
+            }
+            if (end_time > 0 && start_time > 0) {
+                if (end_time >= start_time) {
+                    new_hours.add(start_time);
+                    new_hours.add(end_time);
+                } else {
+                    new_hours.add(end_time);
+                    new_hours.add(start_time);
+                }
+                new_times.put(day,new_hours);
+            }
+        }
+        ArrayList<Integer> hours1;
+        ArrayList<Integer> hours2;
+        HashMap<String, ArrayList<Integer>> new_schedule = new HashMap<>();
+        for (String current_day : new_times.keySet()) {
+            if (!schedule.containsKey(current_day)) {
+                new_schedule.put(current_day,new_times.get(current_day));
+            } else {
+                hours1 = new_times.get(current_day);
+                hours2 = schedule.get(current_day);
+                if (hours1.get(0) != null && hours1.get(1) != null && hours2.get(0) != null && hours2.get(1) != null) {
+                    if (isOut(hours1.get(0), hours1.get(1), hours2.get(0), hours2.get(1))) {
+                        new_schedule.put(current_day, hours1);
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        }
+        for (String day_to_be_added : new_schedule.keySet()) {
+            schedule.put(day_to_be_added, new_schedule.get(day_to_be_added));
+        }
+        return true;
+    }
+
+    //time1 = start_time1, time2 = end_time1, new_time1 = start_time2, new_time2 = end_time2
+    public boolean isOut(int start_time1, int end_time1, int start_time2, int end_time2) {
+        if (start_time1 < start_time2 && start_time1 < end_time2 && end_time1 <= start_time2 && end_time1 < end_time2) {
+            return true;
+        } else return start_time1 > start_time2 && start_time1 >= end_time2 && end_time1 > start_time2 && end_time1 > end_time2;
+    }
+
 }

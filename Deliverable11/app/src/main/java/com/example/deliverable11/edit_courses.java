@@ -35,6 +35,7 @@ public class edit_courses extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_courses);
+        this.setTitle("Edit courses");
 
         old_code_entry = findViewById(R.id.course_code_to_edit);
         old_name_entry = findViewById(R.id.course_name_to_edit);

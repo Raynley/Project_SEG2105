@@ -38,6 +38,7 @@ public class welcome_instructor extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_instructor);
+        this.setTitle("Welcome Instructor");
 
         name_entry = findViewById(R.id.course_name_to_edit_inst);
         code_entry = findViewById(R.id.course_code_to_edit_inst);

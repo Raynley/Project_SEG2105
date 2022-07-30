@@ -31,6 +31,7 @@ public class add_course extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_course);
+        this.setTitle("Add course");
 
         course_name = findViewById(R.id.create_course_name);
         course_code = findViewById(R.id.create_course_code);
