@@ -19,13 +19,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**Allows instructor to add themselves to a course. Change the details of it and remove
  * themselves from a course
  * @author tannergiddings
  */
 public class welcome_instructor extends AppCompatActivity {
-    EditText name_entry, code_entry, new_days, new_hours, new_capacity, new_description;
+    EditText name_entry, code_entry, new_days, new_capacity, new_description;
     TextView displayCourses, error_display;
     ImageButton add_btn, remove_btn, edit_btn, search_btn;
     FirebaseDatabase database;
@@ -40,7 +41,6 @@ public class welcome_instructor extends AppCompatActivity {
         name_entry = findViewById(R.id.course_name_to_edit_inst);
         code_entry = findViewById(R.id.course_code_to_edit_inst);
         new_days = findViewById(R.id.course_days);
-        new_hours = findViewById(R.id.course_hours);
         new_capacity = findViewById(R.id.course_capacity);
         new_description = findViewById(R.id.course_description);
         displayCourses = findViewById(R.id.displayCourse_inst);
@@ -128,12 +128,11 @@ public class welcome_instructor extends AppCompatActivity {
                     name_entry.setText("");
                     code_entry.setText("");
                     new_days.setText("");
-                    new_hours.setText("");
                     new_capacity.setText("");
                     new_description.setText("");
                 } else {
                     String username;
-                    newCourse = courseList.get(index);
+                    newCourse = findCourse(index, courseList);
                     if (savedInstanceState == null) {
                         Bundle b = getIntent().getExtras();
                         if (b == null) {
@@ -145,11 +144,11 @@ public class welcome_instructor extends AppCompatActivity {
                         username = (String) savedInstanceState.getSerializable("USERNAME");
                     }
                     if (!newCourse.getHasInstructor()) {
-                        reference.child(String.valueOf(index)).child("instructor").setValue(username);
+                        newCourse.setInstructor(username);
+                        reference.child(String.valueOf(index)).setValue(newCourse);
                         name_entry.setText("");
                         code_entry.setText("");
                         new_days.setText("");
-                        new_hours.setText("");
                         new_capacity.setText("");
                         new_description.setText("");
                         error_display.setText("");
@@ -166,7 +165,22 @@ public class welcome_instructor extends AppCompatActivity {
         viewStudentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(welcome_instructor.this, ViewStudent.class);
+                String username;
+
+                if (savedInstanceState == null) {
+                    Bundle b = getIntent().getExtras();
+                    if (b == null) {
+                        username = null;
+                    } else {
+                        username = b.getString("USERNAME");
+                    }
+                } else {
+                    username = (String) savedInstanceState.getSerializable("USERNAME");
+                }
+
+
+                Intent intent = new Intent(getApplicationContext(), ViewStudent.class);
+                intent.putExtra("USERNAME", username);
                 startActivity(intent);
             }
         });
@@ -181,8 +195,7 @@ public class welcome_instructor extends AppCompatActivity {
                 error_display.setText("");
                 String name = name_entry.getText().toString();
                 String code = code_entry.getText().toString();
-                String days = new_days.getText().toString();
-                String hours = new_hours.getText().toString();
+                String times = new_days.getText().toString();
                 String capacityString = new_capacity.getText().toString();
                 String description = new_description.getText().toString();
                 String username;
@@ -218,38 +231,32 @@ public class welcome_instructor extends AppCompatActivity {
                     code_entry.setText("Code required");
                     error_display.setText("");
                     return;
-                } else if (TextUtils.isEmpty(days) && TextUtils.isEmpty(hours) && TextUtils.isEmpty(capacityString)
+                } else if (TextUtils.isEmpty(times) && TextUtils.isEmpty(capacityString)
                         && TextUtils.isEmpty(description)) {
                     error_display.setText("Information to edit missing");
                 } else {
                     reference.addValueEventListener(initList);
                     Course newCourse = new Course(name, code);
                     int index = getIndex(newCourse, courseList);
+
                     if (index < 0) {
                         error_display.setText("Course was not found");
                         name_entry.setText("");
                         code_entry.setText("");
                         new_days.setText("");
-                        new_hours.setText("");
                         new_capacity.setText("");
                         new_description.setText("");
                     } else {
                         newCourse = findCourse(index, courseList);
                         if (newCourse.getInstructor().equals(username)) {
-                            if (!TextUtils.isEmpty(days)) {
-                                if (isValidDays(days)) {
-                                    reference.child(String.valueOf(index)).child("days").setValue(days);
+                            if (!TextUtils.isEmpty(times)) {
+                                if (valid_time_entry(times)) {
+                                    reference.child(String.valueOf(index)).child("times").setValue(times);
                                 } else {
                                     new_days.setText("Invalid days entered");
                                 }
                             }
-                            if (!TextUtils.isEmpty(hours)) {
-                                if (isValidHours(hours)) {
-                                    reference.child(String.valueOf(index)).child("hours").setValue(hours);
-                                } else {
-                                    new_hours.setText("Invalid hours entered");
-                                }
-                            }
+
                             if (!TextUtils.isEmpty(capacityString)) {
                                 if (isValidCapacity(capacityString)) {
                                     reference.child(String.valueOf(index)).child("course_capacity").setValue(capacity);
@@ -267,7 +274,6 @@ public class welcome_instructor extends AppCompatActivity {
                             name_entry.setText("");
                             code_entry.setText("");
                             new_days.setText("");
-                            new_hours.setText("");
                             new_capacity.setText("");
                             new_description.setText("");
                             error_display.setText("");
@@ -320,15 +326,13 @@ public class welcome_instructor extends AppCompatActivity {
                             } else {
                                 username = (String) savedInstanceState.getSerializable("USERNAME");
                             }
-                            if (/*newCourse.getInstructor().equals(username)*/
-                            reference.child(String.valueOf(newCourse.getIndex())).child("username").equals(username)) {
+                            if (reference.child(String.valueOf(newCourse.getIndex())).child("username").equals(username)) {
                                 newCourse = new Course(name, code);
                                 reference.child(name).removeValue();
                                 reference.child(name).setValue(newCourse);
                                 name_entry.setText("");
                                 code_entry.setText("");
                                 new_days.setText("");
-                                new_hours.setText("");
                                 new_capacity.setText("");
                                 new_description.setText("");
                                 error_display.setText("");
@@ -554,5 +558,66 @@ public class welcome_instructor extends AppCompatActivity {
             }
         }
         return null;
+    }
+
+    /**
+     * Verifies if it is a valid time entry
+     * @param entry entry to be verified
+     * @return if it is valid
+     */
+    public boolean valid_time_entry(String entry) {
+        String[] split_entry = entry.split("-");
+        for (int i = 0; i < split_entry.length; i++) {
+            if (!isValidHours(split_entry[i]) && isValidDays(split_entry[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Converts time entry to a map
+     * @param entry String entry of time
+     * @return map of the times
+     */
+    public Map<String, ArrayList<Integer>> convertToMap(String entry) {
+        String[] entry_splits = entry.split(" ");
+        String[] current_split;
+        ArrayList<Integer> new_times;
+        int time1 = -1;
+        int time2 = -1;
+        for (int i = 0; i < entry_splits.length; i++) {
+            current_split = entry_splits[i].split("-");
+            new_times = new ArrayList<>();
+            for (int j = 0; j < current_split.length; j++) {
+                if ()
+            }
+        }
+    }
+
+    private int convertToInt(String entry) {
+        String[] entry_splits = entry.split(":");
+        int[] int_entry_splits = new int[2];
+        for (int i = 0; i < 2; i++) {
+            int_entry_splits[i] = convertStringToInt(entry_splits[i]);
+            if (int_entry_splits[i] == -1) {
+                return -1;
+            }
+        }
+        return int_entry_splits[0]*60 + int_entry_splits[1];
+
+    }
+
+    /**
+     * Converts String to int
+     * @param entry String entry to convert to int
+     * @return int value of entry
+     */
+    public int convertStringToInt(String entry) {
+        try {
+            return Integer.parseInt(entry.trim());
+        } catch(NumberFormatException e) {
+            return -1;
+        }
     }
 }

@@ -177,24 +177,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Enter course days"
+                    android:hint="Enter times offered"
                     android:inputType="textNoSuggestions"
-                    android:textSize="15dp"
-                    tools:ignore="TouchTargetSizeCheck" />
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/row_new_course_name_inst"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/course_hours"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Enter course hours"
-                    android:inputType="textPersonName"
                     android:textSize="15dp"
                     tools:ignore="TouchTargetSizeCheck" />
             </TableRow>
