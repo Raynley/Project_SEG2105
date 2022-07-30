@@ -589,7 +589,7 @@ public class welcome_student extends AppCompatActivity {
      * @param student_list arraylist of students
      * @return an index or -1 if error
      */
-    public int createIndexStudents(ArrayList<Student> student_list) {
+    public static int createIndexStudents(ArrayList<Student> student_list) {
         if (student_list.size() == 0) {
             return 0;
         } else {
@@ -637,7 +637,7 @@ public class welcome_student extends AppCompatActivity {
      * @param integer_list list of indices for which we want the courses
      * @return returns the courses who's indices are in integer_list
      */
-    public ArrayList<Course> findCoursesByIds(ArrayList<Integer> integer_list, ArrayList<Course> courseList) {
+    public static ArrayList<Course> findCoursesByIds(ArrayList<Integer> integer_list, ArrayList<Course> courseList) {
         ArrayList<Course> new_course_list = new ArrayList<>();
         for (int i = 0; i < courseList.size(); i++) {
             if (integer_list.contains(courseList.get(i).getIndex())) {
@@ -654,7 +654,7 @@ public class welcome_student extends AppCompatActivity {
      * @param course course to find
      * @return index of course
      */
-    public int findCourseIndex(ArrayList<Course> courseList, Course course) {
+    public static int findCourseIndex(ArrayList<Course> courseList, Course course) {
         for (int i = 0; i < courseList.size(); i++) {
             if (course.equals(courseList.get(i))) {
                 return courseList.get(i).getIndex();
@@ -736,7 +736,7 @@ public class welcome_student extends AppCompatActivity {
      * @param entry String entry to convert to int
      * @return int value of entry
      */
-    public int convertStringToInt(String entry) {
+    public static int convertStringToInt(String entry) {
         try {
             return Integer.parseInt(entry.trim());
         } catch(NumberFormatException e) {
@@ -818,7 +818,7 @@ public class welcome_student extends AppCompatActivity {
         return true;
     }
 
-    public boolean isOut(int start_time1, int end_time1, int start_time2, int end_time2) {
+    public static boolean isOut(int start_time1, int end_time1, int start_time2, int end_time2) {
         if (start_time1 < start_time2 && start_time1 < end_time2 && end_time1 <= start_time2 && end_time1 < end_time2) {
             return true;
         } else return start_time1 > start_time2 && start_time1 >= end_time2 && end_time1 > start_time2 && end_time1 > end_time2;
