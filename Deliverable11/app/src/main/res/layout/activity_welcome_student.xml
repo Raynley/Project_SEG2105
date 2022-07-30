@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".welcome_instructor">
+    <TextView
+        android:id="@+id/display_list_courses"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Welcome student. Here is the list of the available courses.
+        You can add yourself to a class as long as there's enough room."
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/edit_course_contain"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:weightSum="10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/display_list_courses">
+
+        <LinearLayout
+            android:id="@+id/list_of_class_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/displayCourse"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:text="" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/edit_course_option_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:orientation="vertical">
+
+            <TableRow
+                android:id="@+id/row_textview1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/enter_course_to_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:text="Enter course infos"
+                    android:textColor="@color/black" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/row_enter_course_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/course_code_to_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="@string/enter_course_code"
+                    android:inputType="textPersonName"
+                    android:textSize="15dp"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/row_enter_course_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/course_name_to_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/enter_course_name"
+                    android:inputType="textPersonName"
+                    android:textSize="15dp"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+            </TableRow>
+
+            <EditText
+                android:id="@+id/daySearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textSize="15dp"
+                android:hint="Enter course date"
+                tools:ignore="TouchTargetSizeCheck"/>
+
+            <TextView
+                android:id="@+id/Error"
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:text="" />
+
+            <TableRow
+                android:id="@+id/row_edit_delete_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="50dp"
+                android:weightSum="10">
+
+
+                <ImageButton
+                    android:id="@+id/delete_course_btn"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:background="@color/white"
+                    android:backgroundTint="#d8e5f2"
+                    app:srcCompat="@android:drawable/ic_menu_delete"
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+                <ImageButton
+                    android:id="@+id/add_btn"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:background="#cccc"
+                    app:srcCompat="@android:drawable/ic_menu_add"
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+                <ImageButton
+                    android:id="@+id/search_btn"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:background="#cccc"
+                    app:srcCompat="@android:drawable/ic_menu_search" />
+            </TableRow>
+
+            <TextView
+                android:id="@+id/Enrol_Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Here are the courses you are enrolled in:" />
+
+            <TextView
+                android:id="@+id/Enrol_View"
+                android:layout_width="match_parent"
+                android:layout_height="224dp"
+                android:clickable="true"
+                android:text="" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

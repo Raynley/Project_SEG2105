@@ -7,37 +7,142 @@
     tools:context=".welcome_admin">
 
 
-    <TableLayout
-        android:id="@+id/tableLayout"
-        android:layout_width="409dp"
-        android:layout_height="400dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </TableLayout>
-
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/welcome_message"
         android:layout_width="417dp"
         android:layout_height="78dp"
         android:fontFamily="sans-serif-medium"
-        android:text="TextView"
+        android:gravity="center"
+        android:text="@string/welcome_msg"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/row_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/welcome_message">
+
+        <TableRow
+            android:id="@+id/add_course_row"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:weightSum="10">
+
+            <TextView
+                android:id="@+id/add_course_explain"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="7.5"
+                android:background="#d8e5f2"
+                android:gravity="center"
+                android:singleLine="false"
+                android:text="@string/add_course"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/add_course_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2.5"
+                android:background="#d8e5f2"
+                app:srcCompat="@android:drawable/ic_menu_add" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/Edit_course_row"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:weightSum="10">
+
+            <TextView
+                android:id="@+id/edit_course_explain"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="7.5"
+                android:background="#ebf2f8"
+                android:gravity="center"
+                android:text="@string/edit_course_explain"
+                android:textSize="22sp" />
+
+            <ImageView
+                android:id="@+id/edit_course_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2.5"
+                android:background="#ebf2f8"
+                app:srcCompat="@android:drawable/ic_menu_edit" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/manage_instruc_row"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+
+            android:weightSum="10">
+
+            <TextView
+                android:id="@+id/manage_instruct_explain"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="7.5"
+                android:background="#d8e5f2"
+                android:gravity="center"
+                android:text="@string/manage_instruc"
+                android:textSize="22sp" />
+
+            <ImageView
+                android:id="@+id/delete_instruc_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2.5"
+                android:background="#d8e5f2"
+                app:srcCompat="@android:drawable/ic_menu_delete" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/manage_stu_row"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:weightSum="10">
+
+            <TextView
+                android:id="@+id/manage_stud_explain"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="7.5"
+                android:background="#ebf2f8"
+                android:gravity="center"
+                android:text="@string/Manage_students"
+                android:textSize="20dp" />
+
+            <ImageView
+                android:id="@+id/manage_stud_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2.5"
+                android:background="#ebf2f8"
+
+                app:srcCompat="@android:drawable/ic_menu_edit" />
+
+        </TableRow>
+
+        <Button
+            android:id="@+id/log_out"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Log out" />
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

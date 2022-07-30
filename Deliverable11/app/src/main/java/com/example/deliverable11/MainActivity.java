@@ -1,451 +1,169 @@
 package com.example.deliverable11;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+
+/**Class for functionnalities of MainActivity.xml. Allows users to log in.
+ * @author Moumin Farah
+ */
 public class MainActivity extends AppCompatActivity {
+    EditText iname, ipassword;
+    Button ilogin;
+    TextView icreate;
+    FirebaseDatabase database;
+    DatabaseReference reference;
+    ArrayList<Admin> adminList;
+    ArrayList<Student> studentList;
+    ArrayList<Instructor> instructorList;
 
     @Override
+    /**OnCreate method
+     * @author Moumin Farah
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
-    
-    public class User {
-        private String username;
-        private String password;
-        private boolean access;
 
-        public User(String username, String password) {
-            this.username = username;
-            this.password = password;
-        }
+        iname = findViewById(R.id.userName);
+        ipassword = findViewById(R.id.password);
+        ilogin = findViewById(R.id.btn_login);
+        icreate = findViewById(R.id.textView2);
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference("User");
+        adminList = new ArrayList<>();
+        studentList = new ArrayList<>();
+        instructorList = new ArrayList<>();
+        String name = iname.getText().toString();
+        String password = ipassword.getText().toString();
 
-        public boolean verify_password(String entry) {
-            if (password.equals(entry)) {
-                access = true;
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        public boolean getAccess(){
-            return access;
-        }
-
-        public boolean compare(User other) {
-            return username.equals(other.username);
-        }
-    }
-
-    public class Instructor extends User {
-        public Instructor(String username, String password) {
-            super(username, password);
-        }
-    }
-
-    public class Instructor_Database {
-        public class I_ListNode {
-            public class I_Node {
-                private Instructor instructor;
-                private I_Node next;
-                private I_Node prev;
-
-                public I_Node(Instructor instructor) {
-                    this.instructor = instructor;
+        ValueEventListener initLists = new ValueEventListener() {
+            @Override
+            /**Initialises adminList, instructorList and studentList with the admins, instructors
+             * and students in the database
+             * @author tannergiddings
+             */
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    adminList.clear();
+                    for (DataSnapshot ds : snapshot.child("Admin").getChildren()) {
+                        adminList.add(ds.getValue(Admin.class));
+                    }
+                    instructorList.clear();
+                    for (DataSnapshot ds : snapshot.child("Instructor").getChildren()) {
+                        instructorList.add(ds.getValue(Instructor.class));
+                    }
+                    studentList.clear();
+                    for (DataSnapshot ds : snapshot.child("Student").getChildren()) {
+                        studentList.add(ds.getValue(Student.class));
+                    }
                 }
             }
-            //Instance variables
-            private I_Node head;
-            private I_Node tail;
 
-            public I_ListNode(){}
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-            public void add(Instructor newinstructor) {
-                I_Node newNode = new I_Node(newinstructor);
-                if (head.next == null) {
-                    head.next = newNode;
-                    head.prev = tail;
-                    newNode.prev = head;
-                    newNode.next = tail;
-                    tail.next = head;
-                    tail.prev = newNode;
+            }
+        };
+
+        ilogin.setOnClickListener(new View.OnClickListener() {
+            /**Logs the user in based on their role
+             * @author tannergiddings
+             * @param v
+             */
+            @Override
+            public void onClick(View v) {
+                String name = iname.getText().toString();
+                String password = ipassword.getText().toString();
+                int i;
+                Intent intent;
+                reference.addValueEventListener(initLists);
+                if(nameEmpty( name)){
+                    iname.setError("name is required");
+                    return;
+                } else if(nameEmpty(password)){
+                    ipassword.setError("Password is required");
+                    return;
                 } else {
-                    I_Node swap = head.next;
-                    head.next = newNode;
-                    newNode.prev = head;
-                    swap.prev = newNode;
-                    newNode.next = swap;
-                }
-            }
-
-            public boolean contain(Instructor ins) {
-                boolean b = false;
-                I_Node newNode = head.next;
-                while (newNode != tail) {
-                    b = newNode.instructor.compare(ins);
-                    if (b == true) {
-                        break;
-                    }
-                    newNode = newNode.next;
-                }
-                return b;
-            }
-
-            public boolean remove(Instructor ins) {
-                boolean b = false;
-                I_Node newNode = head.next;
-                while (newNode != tail) {
-                    b = newNode.instructor.compare(ins);
-                    if (b == true) {
-                        I_Node previous = newNode.prev;
-                        I_Node following = newNode.next;
-                        previous.next = following;
-                        following.prev = previous;
-                        newNode = following;
-                        while (newNode != tail) {
-                            newNode = newNode.next;
+                    for (i = 0; i < adminList.size(); i++) {
+                        if (adminList.get(i).getUsername().equals(name)) {
+                            if (adminList.get(i).getPassword().equals(password)) {
+                                intent = new Intent(getApplicationContext(),welcome_admin.class);
+                                intent.putExtra("USERNAME", name);
+                                startActivity(intent);
+                            } else {
+                                ipassword.setText("Username and password don't match");
+                            }
                         }
-                        tail = newNode;
-                        head = newNode.next;
-                        break;
                     }
-                    newNode = newNode.next;
-                }
-                return b;
-            }
-        }
-        protected I_ListNode instructor_database = new I_ListNode();
-
-        //Constructor
-        public Instructor_Database(){};
-
-        //Method to add an instructor to the list
-        public boolean add(String username, String password) {
-            Instructor new_instructor = new Instructor(username, password);
-            boolean b = instructor_database.contains(new_instructor);
-            if (b == false) {
-                instructor_database.add(new_instructor);
-            }
-            return b;
-        }
-
-        //Method to remove a course from the database
-        public boolean remove(Instructor instructor) {
-            return course_database.remove(instructor);
-        }
-    }
-
-    public class Student extends User{
-        public Student(String username, String password) {
-            super(username, password);
-        }
-    }
-
-    public class Student_Database {
-        public class S_ListNode {
-            public class S_Node {
-                private Student student;
-                private S_Node next;
-                private S_Node prev;
-
-                public S_Node(Student student) {
-                    this.student = student;
-                }
-            }
-            //Instance variables
-            private S_Node head;
-            private S_Node tail;
-
-            public S_ListNode(){}
-
-            public void add(Student newstudent) {
-                S_Node newNode = new S_Node(newstudent);
-                if (head.next == null) {
-                    head.next = newNode;
-                    head.prev = tail;
-                    newNode.prev = head;
-                    newNode.next = tail;
-                    tail.next = head;
-                    tail.prev = newNode;
-                } else {
-                    S_Node swap = head.next;
-                    head.next = newNode;
-                    newNode.prev = head;
-                    swap.prev = newNode;
-                    newNode.next = swap;
-                }
-            }
-
-            public boolean contain(Student stud) {
-                boolean b = false;
-                S_Node newNode = head.next;
-                while (newNode != tail) {
-                    b = newNode.student.compare(stud);
-                    if (b == true) {
-                        break;
-                    }
-                    newNode = newNode.next;
-                }
-                return b;
-            }
-
-            public boolean remove(Student stud) {
-                boolean b = false;
-                S_Node newNode = head.next;
-                while (newNode != tail) {
-                    b = newNode.student.compare(stud);
-                    if (b == true) {
-                        S_Node previous = newNode.prev;
-                        S_Node following = newNode.next;
-                        previous.next = following;
-                        following.prev = previous;
-                        newNode = following;
-                        while (newNode != tail) {
-                            newNode = newNode.next;
+                    for (i = 0; i < instructorList.size(); i++) {
+                        if (instructorList.get(i).getUsername().equals(name)) {
+                            if (instructorList.get(i).getPassword().equals(password)) {
+                                intent = new Intent(getApplicationContext(),welcome_instructor.class);
+                                intent.putExtra("USERNAME", name);
+                                startActivity(intent);
+                            } else {
+                                ipassword.setText("Username and password don't match");
+                            }
                         }
-                        tail = newNode;
-                        head = newNode.next;
-                        break;
                     }
-                    newNode = newNode.next;
-                }
-                return b;
-            }
-        }
-        protected S_ListNode student_database = new S_ListNode();
-
-        //Constructor
-        public Student_Database(){};
-
-        public boolean add(String username, String password) {
-            Student new_student = new Student(username, password);
-            boolean b = student_database.contains(new_student);
-            if (b == false) {
-                student_database.add(new_student);
-            }
-            return b;
-        }
-
-        public boolean remove(Student student) {
-            return student_database.remove(student);
-        }
-    }
-
-    public class Course {
-        //Instance variables
-        private String name;
-        private String code;
-        private String date;
-        private Instructor teacher;
-
-        //Constructor
-        public Course(String name, String code) {
-            this.name = name;
-            this.code = code;
-        }
-
-        //Method to edit name of course
-        public void edit_name(String name) {
-            this.name = name;
-        }
-
-        //Method to edit code of course
-        public void edit_code(String code) {
-            this.code = code;
-        }
-
-        //Method to edit the date of a course
-        public void edit_date(String date) {
-            this.date = date;
-        }
-
-        public boolean compare(Course newcourse) {
-            return name.equals(newcourse.name) && code.equals(newcourse.code);
-        }
-    }
-
-    public class Course_Database {
-        public class C_ListNode {
-            public class C_Node {
-                private Course course;
-                private C_Node next;
-                private C_Node prev;
-
-                public C_Node(Course course) {
-                    this.course = course;
-                }
-            }
-            //Instance variables
-            private C_Node head;
-            private C_Node tail;
-
-            public C_ListNode(){}
-
-            public void add(Course newcourse) {
-                C_Node newNode = new C_Node(newcourse);
-                if (head.next == null) {
-                    head.next = newNode;
-                    head.prev = tail;
-                    newNode.prev = head;
-                    newNode.next = tail;
-                    tail.next = head;
-                    tail.prev = newNode;
-                } else {
-                    C_Node swap = head.next;
-                    head.next = newNode;
-                    newNode.prev = head;
-                    swap.prev = newNode;
-                    newNode.next = swap;
-                }
-            }
-
-            public boolean contain(Course cou) {
-                boolean b = false;
-                C_Node newNode = head.next;
-                while (newNode != tail) {
-                    b = newNode.course.compare(cou);
-                    if (b == true) {
-                        break;
-                    }
-                    newNode = newNode.next;
-                }
-                return b;
-            }
-
-            public boolean remove(Course cou) {
-                boolean b = false;
-                C_Node newNode = head.next;
-                while (newNode != tail) {
-                    b = newNode.course.compare(cou);
-                    if (b == true) {
-                        C_Node previous = newNode.prev;
-                        C_Node following = newNode.next;
-                        previous.next = following;
-                        following.prev = previous;
-                        newNode = following;
-                        while (newNode != tail) {
-                            newNode = newNode.next;
+                    for (i = 0; i < studentList.size(); i++) {
+                        if (studentList.get(i).getUsername().equals(name)) {
+                            if (studentList.get(i).getPassword().equals(password)) {
+                                intent = new Intent(getApplicationContext(), welcome_student.class);
+                                intent.putExtra("USERNAME", name);
+                                startActivity(intent);
+                            } else {
+                                ipassword.setText("Username and password don't match");
+                            }
                         }
-                        tail = newNode;
-                        head = newNode.next;
-                        break;
                     }
-                    newNode = newNode.next;
                 }
-                return b;
             }
-        }
-        //Database as a linked list
-        protected C_ListNode course_database = new C_ListNode();
+        });
 
-        //Constructor
-        public Course_Database(){};
-
-        //Method to add a course to the list
-        public boolean add(String name, String code) {
-            Course new_course = new Course(name, code);
-            boolean b = course_database.contains(new_course);
-            if (b == false) {
-                course_database.add(new_course);
+        icreate.setOnClickListener(new View.OnClickListener() {
+            /**Brings User to SingUp page
+             * @author Moumin Farah
+             * @param v
+             */
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),SignUp.class));
             }
-            return b;
-        }
-
-        //Method to remove a course from the database
-        public boolean remove(Course course) {
-            return course_database.remove(course);
-        }
-
-        //Method to edit the name and/or the code of a course
-        public boolean edit_course(Course course, String name, String code) {
-            int location = course_database.indexOf(course);
-            if (location >= 0) {
-                Course newcourse = new Course(name, code);
-                course_database.add(location, newcourse);
-            }
-            return location >= 0;
-        }
-
-        //Method to edit the date of a course
-        public boolean edit_date(Course course, String date) {
-            int location = course_database.indexOf(course);
-            if (location >= 0) {
-                Course newcourse = course.edit_name(date);
-                course_database.add(location,newcourse);
-            }
-            return location >= 0;
-        }
+        });
     }
 
-    public class Admin extends User {
-        //Constructor
-        public Admin(String username, String password) {
-            super(username, password);
+    /**Verifies if entry is null
+     * @author Laure
+     * @param name String to be verified
+     * @return if the name is empty or not
+     */
+    public static boolean nameEmpty(String name){
+        if(name.length()==0){
+            return true;
         }
-
-    }
-
-    public interface Databases {
-        protected static Course_Database coursedata = new CourseDatabase();
-        protected static Instructor_Database instructordata = new InstructorDatabase();
-        protected static Student_Database studentdata = new Student_Database();
-    }
-
-    public class Admin_Interface extends Admin implements Databases {
-        Admin main_admin = new Admin("admin", "admin123");
-
-        public boolean addCourse(String name, String code) {
-            if (main_admin.getAccess() == true) {
-                return coursedata.add(name, course);
-            } else {
-                return false;
-            }
-        }
-
-        public boolean editCourse(String init_name, String init_code, String name, String code) {
-            if (main_admin.getAccess() == true) {
-                Course initcourse = new Course(init_name, init_code);
-                return coursedata.edit_course(initcourse, name, course);
-            } else {
-                return false;
-            }
-        }
-
-        public boolean editDate(String name, String code, String date) {
-            if (main_admin.getAccess() == true) {
-                Course initcourse = new Course(name, code);
-                return coursedata.edit_date(initcourse, date);
-            } else {
-                return false;
-            }
-        }
-
-        public boolean removeCourse(String name, String code) {
-            if (main_admin.getAccess() == true) {
-                Course initcourse = new Course(name, code);
-                return coursedata.remove(initcourse);
-            } else {
-                return false;
-            }
-        }
-
-        public boolean removeInstructor(Instructor instructor) {
-            if (main_admin.getAccess() == true) {
-                return instructordata.remove(instructor);
-            } else {
-                return false;
-            }
-        }
-
-        public boolean removeStudent(Student student) {
-            if (main_admin.getAccess() == true) {
-                return studentdata.remove(student);
-            } else {
-                return false;
-            }
-        }
+        return false;
     }
 }

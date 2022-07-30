@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Deliverable11</string>
     <string name="btn_login">Login</string>
-    <string name="enter_email">Enter your email adress</string>
+    <string name="enter_username">Enter your username</string>
     <string name="enter_password">Enter your password</string>
     <string name="login_msg1">Please login to your account</string>
     <string name="create_account">Create an account</string>
@@ -14,4 +14,30 @@
     <string name="create_admin">Admin</string>
     <string name="create_instructor">Instructor</string>
     <string name="create_student">Student</string>
+    <string name="add_course">Add a new course by entering the course code and title</string>
+    <string name="welcome_msg">Welcome admin123, you are logged in as an admin</string>
+    <string name="edit_course_explain">Edit or delete course information</string>
+    <string name="manage_instruc">Manage, delete or remove instructors</string>
+    <string name="Manage_students">Manage students, assign classes or delete students accounts</string>
+    <string name="enter_course_info">Enter course information</string>
+    <string name="enter_course_name">Enter course name</string>
+    <string name="enter_course_code">Enter course code</string>
+    <string name="create_course_btn">Create course</string>
+    <string name="list_courses">Here are all available courses. Enter a course  name and code, click on the icon delete to remove a course. To edit a course, enter new course infos then click edit</string>
+    <string name="enter_new_course_infos">Enter new course infos</string>
+    <string name="create_instructor_name">Instructor\'s name</string>
+    <string name="manage_instruc_textview">Enter the name of the instructor you want to add or remove then click on the appropriate icon</string>
+    <string name="manage_stud_textview">Enter the name of the student to remove or add to the database, then click on the appropriate icon</string>
+    <string name="enter_student_name">Student\'s name</string>
+    <string name="logout_btn">LOGOUT</string>
+    <string name="enter_email_address">Enter your email adress</string>
+    <string name="title_activity_view_students">ViewStudents</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>
