@@ -308,26 +308,31 @@ public class welcome_student extends AppCompatActivity {
                         error_display.setText("You are already enrolled in this course");
                         return;
                     } else {
+                        student_reference.addValueEventListener(init_schedule);
                         Course current = findCourse(index, courseList);
-                        student_reference.child(String.valueOf(current.getIndex())).addValueEventListener(init_student_keys);
-                        if (!student_keys_list.containsKey(username)) {
-                            if (current.addStudent()) {
-                                reference.child(String.valueOf(index)).child("number_of_students").setValue(current.getNumber_of_students());
-                                Student current_student = new Student();
-                                current_student.setUsername(username);
-                                current_student.setIndex(createIndexStudents(students));
-                                student_reference.child(String.valueOf(index)).child(String.valueOf(current_student.getIndex())).setValue(current_student);
-                                error_display.setText("");
-                                name_entry.setText("");
-                                code_entry.setText("");
-                                reference.addValueEventListener(init_enrolled_courses);
-                                return;
+                        if (verify_schedule(schedule, current)) {
+                            student_reference.child(String.valueOf(current.getIndex())).addValueEventListener(init_student_keys);
+                            if (!student_keys_list.containsKey(username)) {
+                                if (current.addStudent()) {
+                                    reference.child(String.valueOf(index)).child("number_of_students").setValue(current.getNumber_of_students());
+                                    Student current_student = new Student();
+                                    current_student.setUsername(username);
+                                    current_student.setIndex(createIndexStudents(students));
+                                    student_reference.child(String.valueOf(index)).child(String.valueOf(current_student.getIndex())).setValue(current_student);
+                                    error_display.setText("");
+                                    name_entry.setText("");
+                                    code_entry.setText("");
+                                    reference.addValueEventListener(init_enrolled_courses);
+                                    return;
+                                } else {
+                                    error_display.setText("Course at capacity. Enrolment failed");
+                                    return;
+                                }
                             } else {
-                                error_display.setText("Course at capacity. Enrolment failed");
-                                return;
+                                error_display.setText("You are already enrolled in this course");
                             }
                         } else {
-                            error_display.setText("You are already enrolled in this course");
+                            error_display.setText("You have a time conflict");
                         }
                     }
                 }
@@ -485,17 +490,6 @@ public class welcome_student extends AppCompatActivity {
         return null;
     }
 
-    /**Enters a list in a new list
-     * @author tannergiddings
-     * @param list1 list to be entered in list 2
-     * @param list2 list in which list1 is entered
-     */
-    private void enterDays(String[] list1, String[] list2) {
-        for (int i = 0; i < list1.length; i++) {
-            list2[i] = list1[i];
-        }
-    }
-
     private ArrayList<String> findDays(Course course) {
         ArrayList<String> currentCourse = getDays(course);
         int length = 1;
@@ -599,12 +593,27 @@ public class welcome_student extends AppCompatActivity {
         if (student_list.size() == 0) {
             return 0;
         } else {
-            int sum = 0;
-            for (int i = 0; i < student_list.size(); i++) {
-                sum += student_list.get(i).getIndex();
+            for (int i = 0; i <= student_list.size(); i++) {
+                if (!containsIndex(student_list, i)) {
+                    return i;
+                }
             }
-            return sum;
         }
+        return -1;
+    }
+
+    /**
+     * Verifies if an index is contained in any course
+     * @param student_list list of courses
+     * @param index index to find
+     */
+    private boolean containsIndex(ArrayList<Student> student_list, int index) {
+        for (int i = 0; i < student_list.size(); i++) {
+            if (student_list.get(i).getIndex() == index) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**Verifies if student is in list of students
@@ -809,7 +818,6 @@ public class welcome_student extends AppCompatActivity {
         return true;
     }
 
-    //time1 = start_time1, time2 = end_time1, new_time1 = start_time2, new_time2 = end_time2
     public static boolean isOut(int start_time1, int end_time1, int start_time2, int end_time2) {
         if (start_time1 < start_time2 && start_time1 < end_time2 && end_time1 <= start_time2 && end_time1 < end_time2) {
             return true;

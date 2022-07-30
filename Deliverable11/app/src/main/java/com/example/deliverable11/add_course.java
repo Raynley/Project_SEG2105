@@ -107,7 +107,6 @@ public class add_course extends AppCompatActivity {
      * @return an index or -1 if error
      */
     public int createIndexCourses(ArrayList<Course> course_list) {
-        boolean found;
         if (course_list.size() == 0) {
             return 0;
         } else {
