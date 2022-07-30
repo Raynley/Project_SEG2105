@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.renderscript.Sampler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -18,6 +17,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**Methods and functionnalities for welcome_student.xml
  * @author tannergiddings
@@ -29,6 +31,7 @@ public class welcome_student extends AppCompatActivity {
     ArrayList<Course> courseList;
     FirebaseDatabase database;
     DatabaseReference reference, student_reference;
+    Map<Integer, List<String>> all_enrolled_students;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +51,47 @@ public class welcome_student extends AppCompatActivity {
         reference = database.getReference("Courses");
         student_reference = database.getReference("Students");
         courseList = new ArrayList<>();
-        ArrayList<Course> enrolled_courses = new ArrayList<>();
         ArrayList<Student> students = new ArrayList<>();
+        ArrayList<Integer> enrolled_courses_id = new ArrayList<>();
+        Map<String, Integer> student_keys_list = new HashMap<>();
+
+        ValueEventListener init_student_keys = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    student_keys_list.clear();
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        student_keys_list.put(ds.child("username").getValue(String.class), ds.child("index").getValue(Integer.class));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        ValueEventListener initList = new ValueEventListener() {
+            /**Initialises courseList
+             * @author tannergiddings
+             * @param snapshot
+             */
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    courseList.clear();
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        courseList.add(ds.getValue(Course.class));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
 
         ValueEventListener postListener = new ValueEventListener() {
             /**Displays the course to the user
@@ -99,9 +141,11 @@ public class welcome_student extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    Course current;
-                    String textDisplay = "";
+                    reference.addValueEventListener(initList);
                     String username;
+                    ArrayList<Integer> key_list = new ArrayList<>();
+                    ArrayList<Course> course_list;
+
                     if (savedInstanceState == null) {
                         Bundle b = getIntent().getExtras();
                         if (b == null) {
@@ -112,19 +156,61 @@ public class welcome_student extends AppCompatActivity {
                     } else {
                         username = (String) savedInstanceState.getSerializable("USERNAME");
                     }
+
                     for (DataSnapshot ds : snapshot.getChildren()) {
-                        current = ds.getValue(Course.class);
-                        for (DataSnapshot ds_student : ds.child("Students").getChildren()) {
-                            if (ds_student.getValue(Student.class).getUsername().equals(username)) {
-                                enrolled_courses.add(current);
+                        for (DataSnapshot ds_sub : ds.getChildren()) {
+                            if (ds_sub.child("username").getValue().equals(username)) {
+                                key_list.add(Integer.parseInt(ds.getKey()));
                                 break;
                             }
                         }
                     }
-                    for (int i = 0; i < enrolled_courses.size(); i++) {
-                        textDisplay = textDisplay + enrolled_courses.get(i).basicToString();
+
+                    course_list = findCoursesByIds(key_list, courseList);
+                    String text = "";
+
+                    for (int i = 0; i < course_list.size(); i++) {
+                        text = text + course_list.get(i).basicToString() + "\n";
+                    }
+
+                    course_view.setText(text);
+
+                    /*
+                    Course current;
+                    String textDisplay = "";
+                    String username;
+                    String current_student;
+                    all_enrolled_students = new HashMap<>();
+
+                    if (savedInstanceState == null) {
+                        Bundle b = getIntent().getExtras();
+                        if (b == null) {
+                            username = null;
+                        } else {
+                            username = b.getString("USERNAME");
+                        }
+                    } else {
+                        username = (String) savedInstanceState.getSerializable("USERNAME");
+                    }
+
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        reference.addValueEventListener(initList);
+                        enrolled_courses_id.clear();
+                        int index;
+                        for (DataSnapshot ds_student : ds.child("Students").getChildren()) {
+                            current_student = ds_student.child("username").getValue(String.class);
+                            if (current_student.equals(username)) {
+                                index = Integer.parseInt(ds_student.getKey());
+                                current = findCourse(index, courseList);
+                                if (current != null) {
+                                    textDisplay = textDisplay + current.stud_toString() + "\n";
+                                    enrolled_courses_id.add(index);
+                                }
+                            }
+                        }
                     }
                     course_view.setText(textDisplay);
+                    */
                 }
             }
 
@@ -134,34 +220,8 @@ public class welcome_student extends AppCompatActivity {
             }
         };
 
-        ValueEventListener initList = new ValueEventListener() {
-            /**Initialises the list of courses
-             * @author tannergiddings
-             * @param snapshot
-             */
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    courseList.clear();
-                    for (DataSnapshot ds : snapshot.getChildren()) {
-                        courseList.add(ds.getValue(Course.class));
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-
+        student_reference.addValueEventListener(init_enrolled_courses);
         reference.addValueEventListener(postListener);
-        reference.addValueEventListener(init_enrolled_courses);
-        /*
-        Having trouble adding student to database.
-        Have to verify if you can add ArrayLists to databases.
-        Possible changes required.
-         */
         add_btn.setOnClickListener(new View.OnClickListener() {
             /**Adds the student to the course
              * @author tannergiddings
@@ -197,7 +257,6 @@ public class welcome_student extends AppCompatActivity {
                     error_display.setText("");
                     return;
                 }
-                reference.addValueEventListener(initList);
                 int index = getIndex(new Course(name, code), courseList);
                 if (index < 0) {
                     error_display.setText("Course not found");
@@ -210,17 +269,25 @@ public class welcome_student extends AppCompatActivity {
                         return;
                     } else {
                         Course current = findCourse(index, courseList);
-                        if (current.addStudent()) {
-                            reference.child(String.valueOf(index)).child("course_capacity").setValue(current.getCourse_capacity());
-                            Student current_student = new Student();
-                            current_student.setUsername(username);
-                            current_student.setIndex(createIndexStudents(students));
-                            student_reference.child(String.valueOf(index)).child(String.valueOf(current_student.getIndex())).setValue(current_student);
-                            error_display.setText("");
-                            name_entry.setText("");
-                            code_entry.setText("");
+                        student_reference.child(String.valueOf(current.getIndex())).addValueEventListener(init_student_keys);
+                        if (!student_keys_list.containsKey(username)) {
+                            if (current.addStudent()) {
+                                reference.child(String.valueOf(index)).child("number_of_students").setValue(current.getNumber_of_students());
+                                Student current_student = new Student();
+                                current_student.setUsername(username);
+                                current_student.setIndex(createIndexStudents(students));
+                                student_reference.child(String.valueOf(index)).child(String.valueOf(current_student.getIndex())).setValue(current_student);
+                                error_display.setText("");
+                                name_entry.setText("");
+                                code_entry.setText("");
+                                reference.addValueEventListener(init_enrolled_courses);
+                                return;
+                            } else {
+                                error_display.setText("Course at capacity. Enrolment failed");
+                                return;
+                            }
                         } else {
-                            error_display.setText("Course at capacity. Enrolment failed");
+                            error_display.setText("You are already enrolled in this course");
                         }
                     }
                 }
@@ -256,6 +323,64 @@ public class welcome_student extends AppCompatActivity {
                 displayCourses.setText(toStringList(courses_to_display));
             }
         });
+
+        remove_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = name_entry.getText().toString();
+                String code = code_entry.getText().toString();
+                reference.addValueEventListener(initList);
+                String username;
+                if (savedInstanceState == null) {
+                    Bundle b = getIntent().getExtras();
+                    if (b == null) {
+                        username = null;
+                    } else {
+                        username = b.getString("USERNAME");
+                    }
+                } else {
+                    username = (String) savedInstanceState.getSerializable("USERNAME");
+                }
+                if (TextUtils.isEmpty(name) && TextUtils.isEmpty(code)) {
+                    name_entry.setText("Name required");
+                    code_entry.setText("Code required");
+                    error_display.setText("");
+                    return;
+                } else if (TextUtils.isEmpty(name)) {
+                    name_entry.setText("Name required");
+                    error_display.setText("");
+                    return;
+                } else if (TextUtils.isEmpty(code)) {
+                    code_entry.setText("Code required");
+                    error_display.setText("");
+                    return;
+                }
+                student_reference.addValueEventListener(init_enrolled_courses);
+                ArrayList<Course> enrolled_courses = findCoursesByIds(enrolled_courses_id, courseList);
+                Course current = findCourseInList(courseList, new Course(name, code));
+
+                if (current == null) {
+                    error_display.setText("Course not found");
+                    return;
+                } else {
+                    int index = current.getIndex();
+                    student_reference.child(String.valueOf(index)).addValueEventListener(init_student_keys);
+                    if (student_keys_list.containsKey(username)) {
+                        int current_student_index = student_keys_list.get(username);
+                        student_reference.child(String.valueOf(index)).child(String.valueOf(current_student_index)).removeValue();
+                        current.remove_number_of_students();
+                        reference.child(String.valueOf(index)).child("number_of_students").setValue(current.getNumber_of_students());
+                        return;
+                    } else {
+                        error_display.setText("You are not enrolled in this course");
+                        return;
+                    }
+                }
+
+
+            }
+        });
+
         displayCourses.setOnClickListener(new View.OnClickListener() {
             /**displays courses
              * @author tannergiddings
@@ -267,6 +392,13 @@ public class welcome_student extends AppCompatActivity {
             }
         });
         reference.addValueEventListener(postListener);
+
+        course_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                student_reference.addValueEventListener(init_enrolled_courses);
+            }
+        });
     }
 
     /**finds index for a course
@@ -384,6 +516,16 @@ public class welcome_student extends AppCompatActivity {
         return listDays;
     }
 
+    public boolean findDayAmongString(String string_of_days, String day) {
+        String[] days = string_of_days.split(",");
+        for (int i = 0; i < days.length; i++) {
+            if (day.equals(days[i].trim())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**Finds the courses which are offered on a specific day
      * @author tannergiddings
      * @param courses list of courses to be verified
@@ -393,7 +535,7 @@ public class welcome_student extends AppCompatActivity {
     public ArrayList<Course> findDaysAmongCourses(ArrayList<Course> courses, String day) {
         ArrayList<Course> courseList = new ArrayList<>();
         for (int i = 0; i < courses.size(); i++) {
-            if (courses.get(i).equals(day)) {
+            if (findDayAmongString(courseList.get(i).getDays(), day.trim())) {
                 courseList.add(courses.get(i));
             }
         }
@@ -460,5 +602,68 @@ public class welcome_student extends AppCompatActivity {
             }
             return sum;
         }
+    }
+
+    /**Verifies if student is in list of students
+     * @author tannergiddings
+     * @param student student to look for
+     * @param studentList list in which to look for
+     * @return returns a boolean value showing if student is in studentList
+     */
+    public boolean findEnrolmentStudent(ArrayList<String> studentList, String student) {
+        for (int i = 0; i < studentList.size(); i++) {
+            if (studentList.get(i).equals(student)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Finds a list of courses based on a list of course id
+     * @param courseList list of all courses
+     * @param integer_list list of indices for which we want the courses
+     * @return returns the courses who's indices are in integer_list
+     */
+    public ArrayList<Course> findCoursesByIds(ArrayList<Integer> integer_list, ArrayList<Course> courseList) {
+        ArrayList<Course> new_course_list = new ArrayList<>();
+        for (int i = 0; i < courseList.size(); i++) {
+            if (integer_list.contains(courseList.get(i).getIndex())) {
+                new_course_list.add(courseList.get(i));
+            }
+        }
+        return new_course_list;
+    }
+
+    /**
+     * Finds a course in a list and returns its index
+     * @author tannergiddings
+     * @param courseList list of courses
+     * @param course course to find
+     * @return index of course
+     */
+    public int findCourseIndex(ArrayList<Course> courseList, Course course) {
+        for (int i = 0; i < courseList.size(); i++) {
+            if (course.equals(courseList.get(i))) {
+                return courseList.get(i).getIndex();
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Finds a course in a list
+     * @author tannergiddings
+     * @param courseList list of courses
+     * @param course to find
+     * @return complete course info
+     */
+    public Course findCourseInList(ArrayList<Course> courseList, Course course) {
+        for (int i = 0; i < courseList.size(); i++) {
+            if (courseList.get(i).equals(course)) {
+                return courseList.get(i);
+            }
+        }
+        return null;
     }
 }

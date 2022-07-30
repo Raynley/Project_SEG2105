@@ -178,6 +178,7 @@ public class welcome_instructor extends AppCompatActivity {
              */
             @Override
             public void onClick(View v) {
+                error_display.setText("");
                 String name = name_entry.getText().toString();
                 String code = code_entry.getText().toString();
                 String days = new_days.getText().toString();
@@ -233,7 +234,7 @@ public class welcome_instructor extends AppCompatActivity {
                         new_capacity.setText("");
                         new_description.setText("");
                     } else {
-                        newCourse = courseList.get(index);
+                        newCourse = findCourse(index, courseList);
                         if (newCourse.getInstructor().equals(username)) {
                             if (!TextUtils.isEmpty(days)) {
                                 if (isValidDays(days)) {
@@ -521,5 +522,37 @@ public class welcome_instructor extends AppCompatActivity {
             }
         }
         return -1;
+    }
+
+    /**Finds the instructor for a course in specific
+     * @author tannergiddings
+     * @param index index of the course
+     * @param courseList list of courses
+     */
+    public String findInstructor(int index, ArrayList<Course> courseList) {
+        for (int i = 0; i < courseList.size(); i++) {
+            if (courseList.get(i).getIndex() == index) {
+                if (courseList.get(i).getHasInstructor()) {
+                    return courseList.get(i).getInstructor();
+                } else {
+                    return "";
+                }
+            }
+        }
+        return "";
+    }
+
+    /**Finds a course in courseList with index
+     * @param index index of the course
+     * @param courseList course list
+     * @return course with that index
+     */
+    public Course findCourse(int index, ArrayList<Course> courseList) {
+        for (int i = 0; i < courseList.size(); i++) {
+            if (courseList.get(i).getIndex() == index) {
+                return courseList.get(i);
+            }
+        }
+        return null;
     }
 }

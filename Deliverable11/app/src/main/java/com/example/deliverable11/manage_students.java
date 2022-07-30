@@ -70,10 +70,9 @@ public class manage_students extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    Student student = snapshot.getValue(Student.class);
                     String textDisplay = "";
                     for (DataSnapshot ds : snapshot.getChildren()) {
-                        textDisplay = textDisplay + ds.getValue(Student.class).toString() + "\n";
+                        textDisplay = textDisplay + ds.getValue(Student.class).getUsername() + "\n";
                     }
                     display.setText(textDisplay);
                 }
@@ -93,6 +92,8 @@ public class manage_students extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String name = name_entry.getText().toString();
+                reference.addValueEventListener(initList);
+
                 if (TextUtils.isEmpty(name)) {
                     name_entry.setError("Name is required");
                 } else {

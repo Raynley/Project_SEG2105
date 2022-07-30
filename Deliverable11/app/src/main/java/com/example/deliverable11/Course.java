@@ -25,13 +25,6 @@ public class Course {
     public Course(String name, String code) {
         this.name = name;
         this.code = code;
-        instructor = "";
-        hasInstructor = false;
-        description = "";
-        days = "";
-        hours = "";
-        course_capacity = 0;
-        number_of_students = 0;
     }
 
     /**Constructor without parameters
@@ -224,5 +217,13 @@ public class Course {
      */
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    public int getNumber_of_students() {
+        return number_of_students;
+    }
+
+    public void remove_number_of_students() {
+        number_of_students--;
     }
 }
