@@ -125,9 +125,11 @@ public class welcome_instructor extends AppCompatActivity {
                     error_display.setText("");
                     return;
                 }
+
                 reference.addValueEventListener(initList);
                 Course newCourse = new Course(name, code);
                 int index = getIndex(newCourse, courseList);
+
                 if (index < 0) {
                     error_display.setText("Course was not found");
                     name_entry.setText("");
@@ -138,6 +140,7 @@ public class welcome_instructor extends AppCompatActivity {
                 } else {
                     String username;
                     newCourse = findCourse(index, courseList);
+
                     if (savedInstanceState == null) {
                         Bundle b = getIntent().getExtras();
                         if (b == null) {
@@ -148,19 +151,19 @@ public class welcome_instructor extends AppCompatActivity {
                     } else {
                         username = (String) savedInstanceState.getSerializable("USERNAME");
                     }
+
                     if (!newCourse.getHasInstructor()) {
                         newCourse.setInstructor(username);
-                        reference.child(String.valueOf(index)).setValue(newCourse);
+                        reference.child(String.valueOf(index)).child("instructor").setValue(newCourse.getInstructor());
+                        reference.child(String.valueOf(index)).child
                         name_entry.setText("");
                         code_entry.setText("");
                         new_days.setText("");
                         new_capacity.setText("");
                         new_description.setText("");
                         error_display.setText("");
-                        return;
                     } else {
                         error_display.setText("Course already has an instructor assigned to it");
-                        return;
                     }
                 }
                 reference.addValueEventListener(postListener);
@@ -205,6 +208,7 @@ public class welcome_instructor extends AppCompatActivity {
                 String capacityString = new_capacity.getText().toString();
                 String description = new_description.getText().toString();
                 String username;
+
                 if (savedInstanceState == null) {
                     Bundle b = getIntent().getExtras();
                     if (b == null) {
@@ -224,6 +228,7 @@ public class welcome_instructor extends AppCompatActivity {
                         return;
                     }
                 }
+
                 if (TextUtils.isEmpty(name) && TextUtils.isEmpty(code)) {
                     name_entry.setText("Name required");
                     code_entry.setText("Code required");
@@ -443,75 +448,6 @@ public class welcome_instructor extends AppCompatActivity {
         }
     }
 
-    /**Verifies if days is a valid string of days of the week
-     * @author tannergiddings
-     * @param days entry to be verified
-     * @return if it is valid
-     */
-    public boolean isValidDays(String days) {
-        String[] list_days = days.split(",");
-        boolean verification = true;
-        for (int i = 0; i < list_days.length; i++) {
-            verification = verification && isDayOfWeek(list_days[i]);
-            if (!verification) {
-                break;
-            }
-        }
-        return verification;
-    }
-
-    /**Verifies if the entry is a valid hour
-     * @author tannergiddings
-     * @param hour entry to be verified
-     * @return if it is valid
-     */
-    private boolean isHour(String hour) {
-        String[] hourNumbers = hour.split(":");
-        boolean verification = true;
-        int numb;
-        for (int i = 0; i < hourNumbers.length; i++) {
-            try {
-                numb = Integer.parseInt(hourNumbers[i]);
-            } catch (NumberFormatException e) {
-                verification = false;
-                break;
-            }
-        }
-        return verification;
-    }
-
-    /**Verifies if the entry is a valid time
-     * @author tannergiddings
-     * @param time entry to be verified
-     * @return if it is a valid time
-     */
-    private boolean isValidTime(String time) {
-        String[] time_list = time.split("-");
-        boolean verification = true;
-        for (int i = 0; i < time_list.length; i++) {
-            verification = isHour(time_list[i]);
-            if (!verification) {
-                break;
-            }
-        }
-        return verification;
-    }
-
-    /**Verifies if the entry is valid for hours of the course
-     * @author tannergiddings
-     * @param hours entry to be verified
-     * @return if it is valid
-     */
-    public boolean isValidHours(String hours) {
-        String[] hours_list = hours.split(" ");
-        for (int i = 0; i < hours_list.length; i++) {
-            if (!isValidTime(hours_list[i])) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     /**Verifies if the entry is a valid description
      * @author tannergiddings
      * @param description entry to be verified
@@ -574,6 +510,14 @@ public class welcome_instructor extends AppCompatActivity {
      * @return if it is valid
      */
     public boolean valid_time_entry(String entry) {
+        String[] times = entry.split(",");
+        for (int i = 0; i < times.length; i++) {
+            if (!isValidTime(times[i])) {
+                return false;
+            }
+        }
+        return true;
+        /*
         String[] split_entry = entry.split("-");
         for (int i = 0; i < split_entry.length; i++) {
             if (!isValidHours(split_entry[i]) && isValidDays(split_entry[i])) {
@@ -581,7 +525,27 @@ public class welcome_instructor extends AppCompatActivity {
             }
         }
         return true;
+         */
     }
+
+    private boolean isValidTime(String entry) {
+        String[] times = entry.split(" ");
+        return isDayOfWeek(times[0]) && isValidHourSpread(times[1]);
+    }
+
+    private boolean isValidHourSpread(String entry) {
+        String[] times = entry.split("-");
+        return isValidHour(times[0]) && isValidHour(times[1]);
+    }
+
+    private boolean isValidHour(String entry) {
+        String[] times = entry.split(":");
+        int hour = convertStringToInt(times[0]);
+        int minute = convertStringToInt(times[1]);
+        return hour >= 0 && hour < 24 && minute >= 0 && minute < 60;
+    }
+
+
 
     /**
      * Converts time entry to a map
