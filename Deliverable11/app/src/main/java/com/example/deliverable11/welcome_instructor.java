@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**Allows instructor to add themselves to a course. Change the details of it and remove
@@ -55,7 +56,8 @@ public class welcome_instructor extends AppCompatActivity {
         ArrayList<Course> courseList = new ArrayList<Course>();
 
         ValueEventListener postListener = new ValueEventListener() {
-            /**Displays the courses to the instructor
+            /**
+             * Displays the courses to the instructor
              * @author tannergiddings
              * @param snapshot snapshot of database
              */
@@ -75,7 +77,8 @@ public class welcome_instructor extends AppCompatActivity {
         };
 
         ValueEventListener initList = new ValueEventListener() {
-            /**Initialises courseList
+            /**
+             * Initialises courseList
              * @author tannergiddings
              * @param snapshot
              */
@@ -98,7 +101,8 @@ public class welcome_instructor extends AppCompatActivity {
         reference.addValueEventListener(postListener);
 
         add_btn.setOnClickListener(new View.OnClickListener() {
-            /**Adds instructor to course if there isn't already an instructor assigned to it
+            /**
+             * Adds instructor to course if there isn't already an instructor assigned to it
              * @author tannergiddings
              * @param v
              */
@@ -186,7 +190,8 @@ public class welcome_instructor extends AppCompatActivity {
         });
 
         edit_btn.setOnClickListener(new View.OnClickListener() {
-            /**Allows instructor to edit a course's details
+            /**
+             * Allows instructor to edit a course's details
              * @author tannergiddings
              * @param v
              */
@@ -251,7 +256,8 @@ public class welcome_instructor extends AppCompatActivity {
                         if (newCourse.getInstructor().equals(username)) {
                             if (!TextUtils.isEmpty(times)) {
                                 if (valid_time_entry(times)) {
-                                    reference.child(String.valueOf(index)).child("times").setValue(times);
+                                    newCourse.setTimes(times);
+                                    reference.child(String.valueOf(index)).setValue(newCourse);
                                 } else {
                                     new_days.setText("Invalid days entered");
                                 }
@@ -259,14 +265,16 @@ public class welcome_instructor extends AppCompatActivity {
 
                             if (!TextUtils.isEmpty(capacityString)) {
                                 if (isValidCapacity(capacityString)) {
-                                    reference.child(String.valueOf(index)).child("course_capacity").setValue(capacity);
+                                    newCourse.setCourse_capacity(capacity);
+                                    reference.child(String.valueOf(index)).setValue(newCourse);
                                 } else {
                                     new_capacity.setText("Invalid capacity entered");
                                 }
                             }
                             if (!TextUtils.isEmpty(description)) {
                                 if (isValidDescription(description)) {
-                                    reference.child(String.valueOf(index)).child("description").setValue(description);
+                                    newCourse.setDescription(description);
+                                    reference.child(String.valueOf(index)).setValue(newCourse);
                                 } else {
                                     new_description.setText("Invalid description entered");
                                 }
@@ -398,7 +406,6 @@ public class welcome_instructor extends AppCompatActivity {
                 reference.addValueEventListener(postListener);
             }
         });
-        reference.addValueEventListener(postListener);
     }
 
     /**Verifies if the entry is a valid capacity. i.e is a positive integer
@@ -580,19 +587,36 @@ public class welcome_instructor extends AppCompatActivity {
      * @param entry String entry of time
      * @return map of the times
      */
-    public Map<String, ArrayList<Integer>> convertToMap(String entry) {
+    public HashMap<String, ArrayList<Integer>> convertToMap(String entry) {
         String[] entry_splits = entry.split(" ");
         String[] current_split;
         ArrayList<Integer> new_times;
         int time1 = -1;
         int time2 = -1;
+        String day = null;
+        HashMap<String, ArrayList<Integer>> map = new HashMap<>();
+
         for (int i = 0; i < entry_splits.length; i++) {
             current_split = entry_splits[i].split("-");
             new_times = new ArrayList<>();
             for (int j = 0; j < current_split.length; j++) {
-                if ()
+                if (isDayOfWeek(current_split[j].trim())) {
+                    day = current_split[j];
+                } else if (convertToInt(current_split[j].trim()) != -1) {
+                    if (time1 == -1) {
+                        time1 = convertToInt(current_split[j].trim());
+                    } else if (time2 == -1) {
+                        time2 = convertToInt(current_split[j].trim());
+                    }
+                }
+            }
+            if (day != null && time1 != -1 && time2 != 1) {
+                new_times.add(time1);
+                new_times.add(time2);
+                map.put(day, new_times);
             }
         }
+        return map;
     }
 
     private int convertToInt(String entry) {

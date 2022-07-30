@@ -110,12 +110,27 @@ public class add_course extends AppCompatActivity {
         if (course_list.size() == 0) {
             return 0;
         } else {
-            int sum = 0;
-            for (int i = 0; i < course_list.size(); i++) {
-                sum += course_list.get(i).getIndex();
+            for (int i = 0; i <= course_list.size(); i++) {
+                if (!containsIndex(course_list, i)) {
+                    return i;
+                }
             }
-            return sum;
         }
+        return -1;
+    }
+
+    /**
+     * Verifies if an index is contained in any course
+     * @param course_list list of courses
+     * @param index index to find
+     */
+    private boolean containsIndex(ArrayList<Course> course_list, int index) {
+        for (int i = 0; i < course_list.size(); i++) {
+            if (course_list.get(i).getIndex() == index) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
