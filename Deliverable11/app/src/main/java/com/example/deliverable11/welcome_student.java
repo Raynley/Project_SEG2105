@@ -196,12 +196,43 @@ public class welcome_student extends AppCompatActivity {
                     schedule.clear();
                     student_reference.addValueEventListener(init_enrolled_courses);
                     ArrayList<Course> enrolled_course_list = findCoursesByIds(enrolled_courses_id, courseList);
-                    Map<String, ArrayList<Integer>> timesMap;
+                    ArrayList<Integer> time_list;
+                    String[] times_split;
+                    String[] times;
+                    String day;
+                    String hour_spread;
+                    String[] hours_spread2;
+                    String[] this_split;
+                    int start_time;
+                    int end_time;
+                    String current_time;
 
                     for (int i = 0; i < enrolled_course_list.size(); i++) {
+                        current_time = enrolled_course_list.get(i).getTimes();
+                        if (current_time != null) {
+                            times_split = current_time.split(",");
+                            for (int j = 0; i < times_split.length; i++) {
+                                time_list = new ArrayList<>();
+                                times = times_split[j].split(" ");
+                                day = times[0];
+                                hour_spread = times[1];
+                                hours_spread2 = hour_spread.split("-");
+                                start_time = convertToInt(hours_spread2[0]);
+                                end_time = convertToInt(hours_spread2[1]);
+                                if (start_time >= 0 && end_time >= 0) {
+                                    if (start_time <= end_time) {
+                                        time_list.add(start_time);
+                                        time_list.add(end_time);
+                                    } else {
+                                        time_list.add(end_time);
+                                        time_list.add(start_time);
+                                    }
+                                    schedule.put(day, time_list);
+                                }
+                            }
+                        /*
                         timesMap = enrolled_course_list.get(i).returnMap();
-                        for (String day : timesMap.keySet()) {
-                            schedule.put(day, timesMap.get(day));
+                         */
                         }
                     }
                 }
@@ -213,8 +244,10 @@ public class welcome_student extends AppCompatActivity {
             }
         };
 
+        reference.addValueEventListener(initList);
         student_reference.addValueEventListener(init_enrolled_courses);
         reference.addValueEventListener(postListener);
+        student_reference.addValueEventListener(init_schedule);
         add_btn.setOnClickListener(new View.OnClickListener() {
             /**Adds the student to the course
              * @author tannergiddings
@@ -273,7 +306,8 @@ public class welcome_student extends AppCompatActivity {
                                     Student current_student = new Student();
                                     current_student.setUsername(username);
                                     current_student.setIndex(createIndexStudents(students));
-                                    student_reference.child(String.valueOf(index)).child(String.valueOf(current_student.getIndex())).setValue(current_student);
+                                    student_reference.child(String.valueOf(index)).child(String.valueOf(current_student.getIndex())).child("username").setValue(username);
+                                    student_reference.child(String.valueOf(index)).child(String.valueOf(current_student.getIndex())).child("index").setValue(current_student.getIndex());
                                     error_display.setText("");
                                     name_entry.setText("");
                                     code_entry.setText("");
@@ -711,7 +745,7 @@ public class welcome_student extends AppCompatActivity {
         String time = course.getTimes();
         HashMap<String, ArrayList<Integer>> new_times = new HashMap<>();
         ArrayList<Integer> new_hours;
-        String[] time_split = time.split(",");
+        String[] time_split;
         String[] days_and_time;
         String day;
         String[] times;
@@ -719,9 +753,10 @@ public class welcome_student extends AppCompatActivity {
         int start_time = -1;
         int end_time = -1;
 
-        if (course.getDays() == null) {
+        if (course.getTimes() == null) {
             return true;
         } else {
+            time_split = time.split(",");
             for (int i = 0; i < time_split.length; i++) {
                 new_hours = new ArrayList<>();
                 days_and_time = time_split[i].split(" ");
