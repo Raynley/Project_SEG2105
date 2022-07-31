@@ -87,7 +87,7 @@ public class ViewStudent extends AppCompatActivity {
         };
 
         ValueEventListener init_student_map = new ValueEventListener() {
-            /**Initialises list of students
+            /**Initialises map of students
              * @author tannergiddings
              * @param snapshot
              */
@@ -112,7 +112,7 @@ public class ViewStudent extends AppCompatActivity {
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         current = ds.getValue(Course.class);
                         if (current.getInstructor().equals(username)) {
-                            student_reference.addValueEventListener(init_student_list);
+                            student_reference.child(String.valueOf(current.getIndex())).addValueEventListener(init_student_list);
                             my_students.put(current, enrolled_students);
                         }
                     }
@@ -132,7 +132,7 @@ public class ViewStudent extends AppCompatActivity {
                 String str = "";
                 ArrayList<String> current_students;
                 for (Course current : my_students.keySet()) {
-                    current_students = new ArrayList<>();
+                    current_students = my_students.get(current);
                     str += current.basicToString() + "\n";
                     for (int i = 0; i < current_students.size(); i++) {
                         str += current_students.get(i) + ", ";

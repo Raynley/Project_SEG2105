@@ -273,6 +273,7 @@ public class welcome_student extends AppCompatActivity {
                 String code = code_entry.getText().toString();
                 reference.addValueEventListener(initList);
                 String username;
+
                 if (savedInstanceState == null) {
                     Bundle b = getIntent().getExtras();
                     if (b == null) {
@@ -283,6 +284,7 @@ public class welcome_student extends AppCompatActivity {
                 } else {
                     username = (String) savedInstanceState.getSerializable("USERNAME");
                 }
+
                 if (TextUtils.isEmpty(name) && TextUtils.isEmpty(code)) {
                     name_entry.setText("Name required");
                     code_entry.setText("Code required");
@@ -297,7 +299,9 @@ public class welcome_student extends AppCompatActivity {
                     error_display.setText("");
                     return;
                 }
+
                 int index = getIndex(new Course(name, code), courseList);
+
                 if (index < 0) {
                     error_display.setText("Course not found");
                     return;
@@ -322,12 +326,10 @@ public class welcome_student extends AppCompatActivity {
                                     error_display.setText("");
                                     name_entry.setText("");
                                     code_entry.setText("");
-                                    reference.addValueEventListener(init_enrolled_courses);
-                                    return;
                                 } else {
                                     error_display.setText("Course at capacity. Enrolment failed");
-                                    return;
                                 }
+                                return;
                             } else {
                                 error_display.setText("You are already enrolled in this course");
                             }
@@ -768,54 +770,52 @@ public class welcome_student extends AppCompatActivity {
         int start_time = -1;
         int end_time = -1;
 
-        for (int i = 0; i < time_split.length; i++) {
-            new_hours = new ArrayList<>();
-            days_and_time = time_split[i].split(" ");
-            day = days_and_time[0];
-            times = days_and_time[1].split("-");
-            hours = times[0].split(":");
-            if (convertToInt(hours[0]) >= 0 && convertToInt(hours[1]) >= 0) {
-                start_time = convertToInt(hours[0]) * 60 + convertToInt(hours[1]);
-            }
-            hours = times[1].split(":");
-            if (convertToInt(hours[0]) >= 0 && convertToInt(hours[1]) >= 0) {
-                end_time = convertToInt(hours[0]) * 60 + convertToInt(hours[1]);
-            }
-            if (end_time > 0 && start_time > 0) {
-                if (end_time >= start_time) {
-                    new_hours.add(start_time);
-                    new_hours.add(end_time);
-                } else {
-                    new_hours.add(end_time);
-                    new_hours.add(start_time);
+        if (course.getDays() == null) {
+            return true;
+        } else {
+            for (int i = 0; i < time_split.length; i++) {
+                new_hours = new ArrayList<>();
+                days_and_time = time_split[i].split(" ");
+                day = days_and_time[0];
+                times = days_and_time[1].split("-");
+                start_time = convertToInt(times[0]);
+                end_time = convertToInt(times[1]);
+                if (end_time > 0 && start_time > 0) {
+                    if (end_time >= start_time) {
+                        new_hours.add(start_time);
+                        new_hours.add(end_time);
+                    } else {
+                        new_hours.add(end_time);
+                        new_hours.add(start_time);
+                    }
+                    new_times.put(day, new_hours);
                 }
-                new_times.put(day,new_hours);
             }
-        }
-        ArrayList<Integer> hours1;
-        ArrayList<Integer> hours2;
-        HashMap<String, ArrayList<Integer>> new_schedule = new HashMap<>();
-        for (String current_day : new_times.keySet()) {
-            if (!schedule.containsKey(current_day)) {
-                new_schedule.put(current_day,new_times.get(current_day));
-            } else {
-                hours1 = new_times.get(current_day);
-                hours2 = schedule.get(current_day);
-                if (hours1.get(0) != null && hours1.get(1) != null && hours2.get(0) != null && hours2.get(1) != null) {
-                    if (isOut(hours1.get(0), hours1.get(1), hours2.get(0), hours2.get(1))) {
-                        new_schedule.put(current_day, hours1);
+            ArrayList<Integer> hours1;
+            ArrayList<Integer> hours2;
+            HashMap<String, ArrayList<Integer>> new_schedule = new HashMap<>();
+            for (String current_day : new_times.keySet()) {
+                if (!schedule.containsKey(current_day)) {
+                    new_schedule.put(current_day, new_times.get(current_day));
+                } else {
+                    hours1 = new_times.get(current_day);
+                    hours2 = schedule.get(current_day);
+                    if (hours1.get(0) != null && hours1.get(1) != null && hours2.get(0) != null && hours2.get(1) != null) {
+                        if (isOut(hours1.get(0), hours1.get(1), hours2.get(0), hours2.get(1))) {
+                            new_schedule.put(current_day, hours1);
+                        } else {
+                            return false;
+                        }
                     } else {
                         return false;
                     }
-                } else {
-                    return false;
                 }
             }
+            for (String day_to_be_added : new_schedule.keySet()) {
+                schedule.put(day_to_be_added, new_schedule.get(day_to_be_added));
+            }
+            return true;
         }
-        for (String day_to_be_added : new_schedule.keySet()) {
-            schedule.put(day_to_be_added, new_schedule.get(day_to_be_added));
-        }
-        return true;
     }
 
     public static boolean isOut(int start_time1, int end_time1, int start_time2, int end_time2) {
