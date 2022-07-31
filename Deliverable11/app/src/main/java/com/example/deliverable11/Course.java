@@ -283,7 +283,6 @@ public class Course {
         return hour + ":" + minute;
     }
 
-
     public ArrayList<String> getDays() {
         String time = times;
         String[] times_split = time.split(",");
@@ -316,4 +315,66 @@ public class Course {
         }
         return false;
     }
+
+    /**
+     * Returns the day and times in a map format
+     */
+    public Map<String, ArrayList<Integer>> returnMap() {
+        Map<String, ArrayList<Integer>> timesMap = new HashMap<>();
+        ArrayList<Integer> time_list;
+        String[] times_split = times.split(",");
+        String day;
+        String hour_spread;
+        String[] hours_spread2;
+        String[] this_split;
+        int start_time;
+        int end_time;
+
+        for (int i = 0; i < times_split.length; i++) {
+            time_list = new ArrayList<>();
+            this_split = times_split[i].split(" ");
+            day = this_split[0];
+            hour_spread = this_split[1];
+            hours_spread2 = hour_spread.split("-");
+            start_time = convertToInt(hours_spread2[0]);
+            end_time = convertToInt(hours_spread2[1]);
+            if (start_time >= 0 && end_time >= 0) {
+                if (start_time <= end_time) {
+                    time_list.add(start_time);
+                    time_list.add(end_time);
+                } else {
+                    time_list.add(end_time);
+                    time_list.add(start_time);
+                }
+                timesMap.put(day, time_list);
+            }
+        }
+        return timesMap;
+    }
+
+    private int convertToInt(String entry) {
+        String[] entry_splits = entry.split(":");
+        int[] int_entry_splits = new int[2];
+        for (int i = 0; i < 2; i++) {
+            int_entry_splits[i] = convertStringToInt(entry_splits[i]);
+            if (int_entry_splits[i] == -1) {
+                return -1;
+            }
+        }
+        return int_entry_splits[0] * 60 + int_entry_splits[1];
+    }
+
+    /**
+     * Converts String to int
+     * @param entry String entry to convert to int
+     * @return int value of entry
+     */
+    public static int convertStringToInt(String entry) {
+        try {
+            return Integer.parseInt(entry.trim());
+        } catch(NumberFormatException e) {
+            return -1;
+        }
+    }
+
 }
