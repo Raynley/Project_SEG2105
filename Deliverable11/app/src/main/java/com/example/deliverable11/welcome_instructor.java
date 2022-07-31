@@ -185,7 +185,7 @@ public class welcome_instructor extends AppCompatActivity {
                     username = (String) savedInstanceState.getSerializable("USERNAME");
                 }
 
-                Intent intent = new Intent(welcome_instructor.this, ViewStudent.class);
+                Intent intent = new Intent(welcome_instructor.this, view_student.class);
                 intent.putExtra("USERNAME", username);
                 startActivity(intent);
             }

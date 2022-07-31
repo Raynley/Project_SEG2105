@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ViewStudent">
+    tools:context=".view_student">
 
     <TextView
         android:id="@+id/enter_course_info"
@@ -83,5 +83,6 @@
         tools:layout_editor_absoluteX="154dp"
         tools:layout_editor_absoluteY="343dp"
         tools:ignore="MissingConstraints" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

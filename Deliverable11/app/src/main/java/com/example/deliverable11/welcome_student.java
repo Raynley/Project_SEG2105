@@ -417,11 +417,10 @@ public class welcome_student extends AppCompatActivity {
                         student_reference.child(String.valueOf(index)).child(String.valueOf(current_student_index)).removeValue();
                         current.remove_student();
                         reference.child(String.valueOf(index)).child("number_of_students").setValue(current.getNumber_of_students());
-                        return;
                     } else {
                         error_display.setText("You are not enrolled in this course");
-                        return;
                     }
+                    return;
                 }
 
             }
