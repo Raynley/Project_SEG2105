@@ -32,7 +32,7 @@ public class view_student extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_student);
+        setContentView(R.layout.activity_view_student2);
         this.setTitle("View Students");
 
         course_name = findViewById(R.id.course_code_info);
@@ -45,7 +45,6 @@ public class view_student extends AppCompatActivity {
         reference = database.getReference("Courses");
         student_reference = database.getReference("Students");
         ArrayList<String> enrolled_students = new ArrayList<>();
-        Map<Course, ArrayList<String>> my_students = new HashMap<>();
 
         ValueEventListener initList = new ValueEventListener() {
             /**Initialises courseList
@@ -85,11 +84,12 @@ public class view_student extends AppCompatActivity {
             }
         };
 
+        /**Initialises map of students
+         * @author tannergiddings
+         * @param snapshot
+         */
+        /*
         ValueEventListener init_student_map = new ValueEventListener() {
-            /**Initialises map of students
-             * @author tannergiddings
-             * @param snapshot
-             */
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -123,22 +123,21 @@ public class view_student extends AppCompatActivity {
 
             }
         };
+        */
 
+        /**
+         * Use on student_reference
+         */
         ValueEventListener display_students = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                reference.addValueEventListener(init_student_map);
-                String str = "";
-                ArrayList<String> current_students;
-                for (Course current : my_students.keySet()) {
-                    current_students = my_students.get(current);
-                    str += current.basicToString() + "\n";
-                    for (int i = 0; i < current_students.size(); i++) {
-                        str += current_students.get(i) + ", ";
+                if (snapshot.exists()) {
+                    String str = "";
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        str += ds.getValue(Student.class).getUsername();
                     }
-                    str += "\n";
+                    view_students.setText(str);
                 }
-                view_students.setText(str);
             }
 
             @Override
@@ -174,13 +173,27 @@ public class view_student extends AppCompatActivity {
                         view_students.setText("Course was not found");
                         return;
                     } else {
-                        reference.addValueEventListener(init_student_map);
-                        ArrayList<String> current_students = my_students.get(current);
-                        String display = "";
-                        for (int i = 0; i < current_students.size(); i++) {
-                            display = display + current_students.get(i);
+                        String username;
+
+                        if (savedInstanceState == null) {
+                            Bundle b = getIntent().getExtras();
+                            if (b == null) {
+                                username = null;
+                            } else {
+                                username = b.getString("USERNAME");
+                            }
+                        } else {
+                            username = (String) savedInstanceState.getSerializable("USERNAME");
                         }
-                        view_students.setText(display);
+
+                        current = findCourseWithId(courseList, index);
+                        if (current.getInstructor().equals(username)) {
+                            student_reference.child(String.valueOf(index)).addValueEventListener(display_students);
+                            return;
+                        } else {
+                            view_students.setText("You are not the instructor for this course");
+                            return;
+                        }
                     }
                 }
             }
@@ -245,5 +258,17 @@ public class view_student extends AppCompatActivity {
             }
         }
         return str;
+    }
+
+    /**
+     * Finds a course based on index
+     */
+    public Course findCourseWithId(ArrayList<Course> courseList, int index) {
+        for (int i = 0; i < courseList.size(); i++) {
+            if (courseList.get(i).getIndex() == index) {
+                return courseList.get(i);
+            }
+        }
+        return null;
     }
 }
