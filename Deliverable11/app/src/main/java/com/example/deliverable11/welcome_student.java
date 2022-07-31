@@ -78,80 +78,6 @@ public class welcome_student extends AppCompatActivity {
             }
         };
 
-        /**
-         * Use on student_reference
-         */
-        ValueEventListener init_schedule = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    String username;
-                    ArrayList<Integer> course_indices = new ArrayList<>();
-                    if (savedInstanceState == null) {
-                        Bundle b = getIntent().getExtras();
-                        if (b == null) {
-                            username = null;
-                        } else {
-                            username = b.getString("USERNAME");
-                        }
-                    } else {
-                        username = (String) savedInstanceState.getSerializable("USERNAME");
-                    }
-
-                    schedule.clear();
-                    for (DataSnapshot ds : snapshot.getChildren()) {
-                        for (DataSnapshot ds_2 : ds.getChildren()) {
-                            if (ds_2.child("username").getValue(String.class).equals(username)) {
-                                course_indices.add(Integer.parseInt(ds.getKey()));
-                                break;
-                            }
-                        }
-                    }
-                    reference.addValueEventListener(initList);
-                    ArrayList<Course> courses = findCoursesByIds(course_indices, courseList);
-                    String day;
-                    int start_time;
-                    int end_time;
-                    String beginning;
-                    String end;
-                    String time;
-                    String[] times_split;
-                    String[] days_and_time;
-                    String[] times_only;
-                    int swap;
-                    ArrayList<Integer> times_list = new ArrayList<>();
-
-                    for (int i = 0; i < courses.size(); i++) {
-                        time = courses.get(i).getTimes();
-                        times_split = time.split(",");
-                        for (int j = 0; j < times_split.length; i++) {
-                            days_and_time = times_split[j].split(" ");
-                            day = days_and_time[0];
-                            times_only = days_and_time[1].split("-");
-                            start_time = convertToInt(times_only[0]);
-                            end_time = convertToInt(times_only[1]);
-                            if (end_time < start_time) {
-                                swap = end_time;
-                                end_time = start_time;
-                                start_time = swap;
-                            }
-
-                            if (day != null && start_time >= 0 && end_time >= 0) {
-                                times_list.add(start_time);
-                                times_list.add(end_time);
-                                schedule.put(day, times_list);
-                            }
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-
 
         ValueEventListener init_student_keys = new ValueEventListener() {
             @Override
@@ -220,7 +146,7 @@ public class welcome_student extends AppCompatActivity {
                 if (snapshot.exists()) {
                     reference.addValueEventListener(initList);
                     String username;
-                    ArrayList<Integer> key_list = new ArrayList<>();
+                    enrolled_courses_id.clear();
                     ArrayList<Course> course_list;
 
                     if (savedInstanceState == null) {
@@ -237,13 +163,13 @@ public class welcome_student extends AppCompatActivity {
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         for (DataSnapshot ds_sub : ds.getChildren()) {
                             if (ds_sub.child("username").getValue().equals(username)) {
-                                key_list.add(Integer.parseInt(ds.getKey()));
+                                enrolled_courses_id.add(Integer.parseInt(ds.getKey()));
                                 break;
                             }
                         }
                     }
 
-                    course_list = findCoursesByIds(key_list, courseList);
+                    course_list = findCoursesByIds(enrolled_courses_id, courseList);
                     String text = "";
 
                     for (int i = 0; i < course_list.size(); i++) {
@@ -251,6 +177,33 @@ public class welcome_student extends AppCompatActivity {
                     }
 
                     course_view.setText(text);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        /**
+         * Use on student_reference
+         */
+        ValueEventListener init_schedule = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    schedule.clear();
+                    student_reference.addValueEventListener(init_enrolled_courses);
+                    ArrayList<Course> enrolled_course_list = findCoursesByIds(enrolled_courses_id, courseList);
+                    Map<String, ArrayList<Integer>> timesMap;
+
+                    for (int i = 0; i < enrolled_course_list.size(); i++) {
+                        timesMap = enrolled_course_list.get(i).returnMap();
+                        for (String day : timesMap.keySet()) {
+                            schedule.put(day, timesMap.get(day));
+                        }
+                    }
                 }
             }
 
@@ -304,13 +257,11 @@ public class welcome_student extends AppCompatActivity {
 
                 if (index < 0) {
                     error_display.setText("Course not found");
-                    return;
                 } else {
                     student_reference.child(String.valueOf(index)).addValueEventListener(init_students);
                     boolean inCourse = inCourse(username, students);
                     if (inCourse) {
                         error_display.setText("You are already enrolled in this course");
-                        return;
                     } else {
                         student_reference.addValueEventListener(init_schedule);
                         Course current = findCourse(index, courseList);
@@ -329,7 +280,6 @@ public class welcome_student extends AppCompatActivity {
                                 } else {
                                     error_display.setText("Course at capacity. Enrolment failed");
                                 }
-                                return;
                             } else {
                                 error_display.setText("You are already enrolled in this course");
                             }
