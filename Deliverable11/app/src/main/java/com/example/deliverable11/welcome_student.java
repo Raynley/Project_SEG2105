@@ -298,7 +298,7 @@ public class welcome_student extends AppCompatActivity {
                     } else {
                         student_reference.addValueEventListener(init_schedule);
                         Course current = findCourse(index, courseList);
-                        if (verify_schedule(schedule, current)) {
+                        if (verify_schedule2(findCoursesByIds(enrolled_courses_id,courseList), current)) {
                             student_reference.child(String.valueOf(current.getIndex())).addValueEventListener(init_student_keys);
                             if (!student_keys_list.containsKey(username)) {
                                 if (current.addStudent()) {
@@ -800,6 +800,31 @@ public class welcome_student extends AppCompatActivity {
             }
             return true;
         }
+    }
+
+    public boolean verify_schedule2(ArrayList<Course> courseList, Course course) {
+        if (course.getTimes() != null) {
+            String[] times = course.getTimes().split(",");
+            for (int i = 0; i < courseList.size(); i++) {
+                if (courseList.get(i).getTimes() != null) {
+                    if (!verify(times, courseList.get(i).getTimes().split(","))) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean verify(String[] string1, String[] string2) {
+        for (int i = 0; i < string1.length; i++) {
+            for (int j = 0; j < string2.length; j++) {
+                if (string1[i].equals(string2[j])) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public static boolean isOut(int start_time1, int end_time1, int start_time2, int end_time2) {
