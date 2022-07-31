@@ -60,19 +60,30 @@
         android:id="@+id/view_students"
         android:layout_width="410dp"
         android:layout_height="219dp"
-        android:text=""
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="2dp"
         android:clickable="true"
-        tools:layout_editor_absoluteX="-2dp"
-        tools:layout_editor_absoluteY="510dp"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="406dp"
         android:layout_height="31dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="29dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginBottom="3dp"
         android:text="Students registered in the course"
-        tools:layout_editor_absoluteX="2dp"
-        tools:layout_editor_absoluteY="476dp"
+        app:layout_constraintBottom_toTopOf="@+id/view_students"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/find_students"
         tools:ignore="MissingConstraints" />
 
     <Button

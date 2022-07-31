@@ -84,47 +84,6 @@ public class view_student extends AppCompatActivity {
             }
         };
 
-        /**Initialises map of students
-         * @author tannergiddings
-         * @param snapshot
-         */
-        /*
-        ValueEventListener init_student_map = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    my_students.clear();
-                    String username;
-                    Course current;
-
-                    if (savedInstanceState == null) {
-                        Bundle b = getIntent().getExtras();
-                        if (b == null) {
-                            username = null;
-                        } else {
-                            username = b.getString("USERNAME");
-                        }
-                    } else {
-                        username = (String) savedInstanceState.getSerializable("USERNAME");
-                    }
-
-                    for (DataSnapshot ds : snapshot.getChildren()) {
-                        current = ds.getValue(Course.class);
-                        if (current.getInstructor().equals(username)) {
-                            student_reference.child(String.valueOf(current.getIndex())).addValueEventListener(init_student_list);
-                            my_students.put(current, enrolled_students);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-        */
-
         /**
          * Use on student_reference
          */
@@ -132,9 +91,13 @@ public class view_student extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
+                    reference.addValueEventListener(initList);
                     String str = "";
                     for (DataSnapshot ds : snapshot.getChildren()) {
-                        str += ds.getValue(Student.class).getUsername();
+                        str += ds.child("username").getValue(String.class) + "\n";
+                    }
+                    if (str.equals("")) {
+                        str = "There are no enrolled students in this course";
                     }
                     view_students.setText(str);
                 }
