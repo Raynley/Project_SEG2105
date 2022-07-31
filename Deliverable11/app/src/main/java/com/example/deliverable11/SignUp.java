@@ -212,12 +212,13 @@ public class SignUp extends AppCompatActivity {
         if (student_list.size() == 0) {
             return 0;
         } else {
-            int sum = 0;
-            for (int i = 0; i < student_list.size(); i++) {
-                sum += student_list.get(i).getIndex();
+            for (int i = 0; i <= student_list.size(); i++) {
+                if (!containsIndexStudent(student_list, i)) {
+                    return i;
+                }
             }
-            return sum;
         }
+        return -1;
     }
 
     /**Returns a valid index for instructor's lists
@@ -229,11 +230,40 @@ public class SignUp extends AppCompatActivity {
         if (instructor_list.size() == 0) {
             return 0;
         } else {
-            int sum = 0;
-            for (int i = 0; i < instructor_list.size(); i++) {
-                sum += instructor_list.get(i).getIndex();
+            for (int i = 0; i <= instructor_list.size(); i++) {
+                if (!containsIndexInstructor(instructor_list, i)) {
+                    return i;
+                }
             }
-            return sum;
         }
+        return -1;
+    }
+
+    /**
+     * Verifies if an index is contained for any student
+     * @param student_list list of courses
+     * @param index index to find
+     */
+    private boolean containsIndexStudent(ArrayList<Student> student_list, int index) {
+        for (int i = 0; i < student_list.size(); i++) {
+            if (student_list.get(i).getIndex() == index) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Verifies if an index is contained for any instructor
+     * @param student_list list of courses
+     * @param index index to find
+     */
+    private boolean containsIndexInstructor(ArrayList<Instructor> student_list, int index) {
+        for (int i = 0; i < student_list.size(); i++) {
+            if (student_list.get(i).getIndex() == index) {
+                return true;
+            }
+        }
+        return false;
     }
 }
