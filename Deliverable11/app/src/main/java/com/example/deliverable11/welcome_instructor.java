@@ -153,8 +153,9 @@ public class welcome_instructor extends AppCompatActivity {
                     }
 
                     if (!newCourse.getHasInstructor()) {
-                        newCourse.setInstructor(username);
-                        reference.child(String.valueOf(index)).setValue(newCourse);
+                        //newCourse.setInstructor(username);
+                        reference.child(String.valueOf(index)).child("instructor").setValue(username);
+                        reference.child(String.valueOf(index)).child("hasInstructor").setValue(true);
                         name_entry.setText("");
                         code_entry.setText("");
                         new_days.setText("");
@@ -165,7 +166,6 @@ public class welcome_instructor extends AppCompatActivity {
                         error_display.setText("Course already has an instructor assigned to it");
                     }
                 }
-                reference.addValueEventListener(postListener);
             }
         });
 
@@ -261,7 +261,7 @@ public class welcome_instructor extends AppCompatActivity {
                             if (!TextUtils.isEmpty(times)) {
                                 if (valid_time_entry(times)) {
                                     newCourse.setTimes(times);
-                                    reference.child(String.valueOf(index)).setValue(newCourse);
+                                    reference.child(String.valueOf(index)).child("times").setValue(times);
                                 } else {
                                     new_days.setText("Invalid days entered");
                                 }
@@ -270,7 +270,7 @@ public class welcome_instructor extends AppCompatActivity {
                             if (!TextUtils.isEmpty(capacityString)) {
                                 if (isValidCapacity(capacityString)) {
                                     newCourse.setCourse_capacity(capacity);
-                                    reference.child(String.valueOf(index)).setValue(newCourse);
+                                    reference.child(String.valueOf(index)).child("capacity").setValue(capacity);
                                 } else {
                                     new_capacity.setText("Invalid capacity entered");
                                 }
@@ -278,7 +278,7 @@ public class welcome_instructor extends AppCompatActivity {
                             if (!TextUtils.isEmpty(description)) {
                                 if (isValidDescription(description)) {
                                     newCourse.setDescription(description);
-                                    reference.child(String.valueOf(index)).setValue(newCourse);
+                                    reference.child(String.valueOf(index)).child("description").setValue(description);
                                 } else {
                                     new_description.setText("Invalid description entered");
                                 }
@@ -295,7 +295,6 @@ public class welcome_instructor extends AppCompatActivity {
                     }
 
                 }
-                reference.addValueEventListener(postListener);
             }
         });
 
@@ -324,36 +323,18 @@ public class welcome_instructor extends AppCompatActivity {
                 } else {
                     reference.addValueEventListener(initList);
                     Course newCourse = new Course(name, code);
-                    for (int i = 0; i < courseList.size(); i++) {
-                        if (courseList.get(i).equals(newCourse)) {
-                            newCourse = courseList.get(i);
-                            String username;
-                            if (savedInstanceState == null) {
-                                Bundle b = getIntent().getExtras();
-                                if (b == null) {
-                                    username = null;
-                                } else {
-                                    username = b.getString("USERNAME");
-                                }
-                            } else {
-                                username = (String) savedInstanceState.getSerializable("USERNAME");
-                            }
-                            if (reference.child(String.valueOf(newCourse.getIndex())).child("username").equals(username)) {
-                                newCourse = new Course(name, code);
-                                reference.child(name).removeValue();
-                                reference.child(name).setValue(newCourse);
-                                name_entry.setText("");
-                                code_entry.setText("");
-                                new_days.setText("");
-                                new_capacity.setText("");
-                                new_description.setText("");
-                                error_display.setText("");
-                            } else {
-                                error_display.setText("You are not the instructor for this course");
-                            }
-                        } else {
-                            error_display.setText("Course wasn't found");
-                        }
+                    int index = getIndex(newCourse, courseList);
+                    if (index < 0) {
+                        error_display.setText("Course wasn't found");
+                    } else {
+                        reference.child(String.valueOf(index)).child("username").removeValue();
+                        reference.child(String.valueOf(index)).child("hasInstructor").setValue(false);
+                        name_entry.setText("");
+                        code_entry.setText("");
+                        new_days.setText("");
+                        new_capacity.setText("");
+                        new_description.setText("");
+                        error_display.setText("");
                     }
                 }
                 reference.addValueEventListener(postListener);

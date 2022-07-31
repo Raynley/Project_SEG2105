@@ -321,32 +321,34 @@ public class Course {
      */
     public Map<String, ArrayList<Integer>> returnMap() {
         Map<String, ArrayList<Integer>> timesMap = new HashMap<>();
-        ArrayList<Integer> time_list;
-        String[] times_split = times.split(",");
-        String day;
-        String hour_spread;
-        String[] hours_spread2;
-        String[] this_split;
-        int start_time;
-        int end_time;
+        if (times != null) {
+            ArrayList<Integer> time_list;
+            String[] times_split = times.split(",");
+            String day;
+            String hour_spread;
+            String[] hours_spread2;
+            String[] this_split;
+            int start_time;
+            int end_time;
 
-        for (int i = 0; i < times_split.length; i++) {
-            time_list = new ArrayList<>();
-            this_split = times_split[i].split(" ");
-            day = this_split[0];
-            hour_spread = this_split[1];
-            hours_spread2 = hour_spread.split("-");
-            start_time = convertToInt(hours_spread2[0]);
-            end_time = convertToInt(hours_spread2[1]);
-            if (start_time >= 0 && end_time >= 0) {
-                if (start_time <= end_time) {
-                    time_list.add(start_time);
-                    time_list.add(end_time);
-                } else {
-                    time_list.add(end_time);
-                    time_list.add(start_time);
+            for (int i = 0; i < times_split.length; i++) {
+                time_list = new ArrayList<>();
+                this_split = times_split[i].split(" ");
+                day = this_split[0];
+                hour_spread = this_split[1];
+                hours_spread2 = hour_spread.split("-");
+                start_time = convertToInt(hours_spread2[0]);
+                end_time = convertToInt(hours_spread2[1]);
+                if (start_time >= 0 && end_time >= 0) {
+                    if (start_time <= end_time) {
+                        time_list.add(start_time);
+                        time_list.add(end_time);
+                    } else {
+                        time_list.add(end_time);
+                        time_list.add(start_time);
+                    }
+                    timesMap.put(day, time_list);
                 }
-                timesMap.put(day, time_list);
             }
         }
         return timesMap;
